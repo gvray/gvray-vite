@@ -1,0 +1,84 @@
+// 全局样式
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.color-weak {
+  filter: invert(80%);
+}
+
+.gray-mode {
+  filter: grayscale(100%);
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+.ant-pro-sider.ant-layout-sider.ant-pro-sider-fixed {
+  left: unset;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* antd Button link 跟随主题色 */
+.ant-btn.ant-btn-link {
+  color: var(--gvray-color-primary) !important;
+
+  &:where(:hover, :focus) {
+    color: var(--gvray-color-primary-hover) !important;
+  }
+
+  &:where(:active) {
+    color: var(--gvray-color-primary-active) !important;
+  }
+}
+
+/* antd Typography copy 图标跟随主题色 */
+.ant-typography-copy {
+  color: var(--gvray-color-primary) !important;
+
+  &:where(:hover) {
+    color: var(--gvray-color-primary-hover) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .ant-table {
+    width: 100%;
+    overflow-x: auto;
+    &-thead > tr,
+    &-tbody > tr {
+      > th,
+      > td {
+        white-space: pre;
+        > span {
+          display: block;
+        }
+      }
+    }
+  }
+}

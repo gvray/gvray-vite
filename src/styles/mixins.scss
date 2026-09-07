@@ -1,0 +1,181 @@
+// 全局 SCSS Mixins
+// 提供常用的样式混合，支持主题和响应式
+
+// ============ 布局 Mixins ============
+
+// 弹性居中布局
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 弹性垂直居中
+@mixin flex-align-center {
+  display: flex;
+  align-items: center;
+}
+
+// 弹性水平居中
+@mixin flex-justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+// 弹性列布局
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// ============ 文本 Mixins ============
+
+// 单行文本溢出省略
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 多行文本溢出省略
+@mixin text-ellipsis-multi($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// ============ 动画 Mixins ============
+
+// 过渡动画
+@mixin transition($property: all, $duration: 0.2s, $timing: ease) {
+  transition: $property $duration $timing;
+}
+
+// 悬停上浮效果
+@mixin hover-lift($distance: -2px) {
+  @include transition(transform);
+  &:hover {
+    transform: translateY($distance);
+  }
+}
+
+// 悬停放大效果
+@mixin hover-scale($scale: 1.05) {
+  @include transition(transform);
+  &:hover {
+    transform: scale($scale);
+  }
+}
+
+// ============ 阴影 Mixins ============
+
+// 卡片阴影
+@mixin card-shadow {
+  box-shadow: var(--gvray-box-shadow);
+}
+
+// 卡片悬停阴影
+@mixin card-shadow-hover {
+  box-shadow: var(--gvray-box-shadow-secondary);
+}
+
+// 自定义阴影
+@mixin box-shadow($x: 0, $y: 2px, $blur: 8px, $spread: 0, $color: var(--gvray-box-shadow)) {
+  box-shadow: $x $y $blur $spread $color;
+}
+
+// ============ 渐变 Mixins ============
+
+// 主色渐变背景
+@mixin gradient-primary {
+  background: linear-gradient(
+    135deg,
+    var(--gvray-color-primary) 0%,
+    var(--gvray-color-info) 100%
+  );
+}
+
+// 自定义渐变
+@mixin gradient($start-color, $end-color, $angle: 135deg) {
+  background: linear-gradient($angle, $start-color 0%, $end-color 100%);
+}
+
+// ============ 响应式 Mixins ============
+
+// 移动端
+@mixin mobile {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+// 平板
+@mixin tablet {
+  @media (min-width: 769px) and (max-width: 1024px) {
+    @content;
+  }
+}
+
+// 桌面端
+@mixin desktop {
+  @media (min-width: 1025px) {
+    @content;
+  }
+}
+
+// ============ 其他常用 Mixins ============
+
+// 清除浮动
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+// 隐藏滚动条
+@mixin hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// 自定义滚动条
+@mixin custom-scrollbar($width: 6px, $track-color: transparent, $thumb-color: var(--gvray-color-fill-secondary)) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $width / 2;
+    &:hover {
+      background: var(--gvray-color-fill);
+    }
+  }
+}
+
+// 绝对定位居中
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// 全屏覆盖
+@mixin full-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

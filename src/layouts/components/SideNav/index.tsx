@@ -1,0 +1,161 @@
+import { Icon } from '@/components';
+import type { SiderTheme } from '@/constants/runtime-settings';
+import { useAuthStore, useSettingStore } from '@/stores';
+import { runtimeConfig } from '@/utils/runtime-config';
+import type { MenuProps } from 'antd';
+import { Layout, Menu, Skeleton } from 'antd';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useIntl } from 'react-intl';
+import { useLocation, useNavigate } from 'react-router';
+import styled from 'styled-components';
+import Logo from '../Logo';
+import CollapseTrigger from './CollapseTrigger';
+
+const { Sider } = Layout;
+
+const SiderWrapper = styled.div`
+  position: relative;
+  height: 100vh;
+
+  /* 去掉 antd Menu 默认右边框 */
+  .ant-menu-light.ant-menu-root.ant-menu-inline,
+  .ant-menu-light.ant-menu-root.ant-menu-vertical {
+    border-inline-end: none;
+  }
+`;
+
+const siderStyle: React.CSSProperties = {
+  overflow: 'auto',
+  height: '100vh',
+  position: 'sticky',
+  insetInlineStart: 0,
+  top: 0,
+  scrollbarWidth: 'thin',
+  scrollbarGutter: 'stable',
+};
+
+interface SideNavProps {
+  collapsed: boolean;
+  sidebarTheme: SiderTheme;
+  width?: number;
+  collapsedWidth?: number;
+  showLogo?: boolean;
+}
+
+const transformMenuItems = (
+  menuData: any[],
+  formatMessage: (descriptor: {
+    id: string;
+    defaultMessage?: string;
+  }) => string,
+): NonNullable<MenuProps['items']> => {
+  return (menuData || [])
+    .filter((item: any) => item.hidden !== true)
+    .map((item: any) => {
+      // 优先使用 code 做国际化，找不到时 fallback 到 name
+      const label = item.code
+        ? formatMessage({
+            id: item.code,
+            defaultMessage: item.name || item.label,
+          })
+        : item.name || item.label;
+
+      return {
+        key: item.path || item.key,
+        icon: item.icon ? <Icon name={item.icon} /> : undefined,
+        label,
+        children: item.children?.length
+          ? transformMenuItems(item.children, formatMessage)
+          : undefined,
+      };
+    });
+};
+
+const SideNav: React.FC<SideNavProps> = ({
+  collapsed,
+  sidebarTheme,
+  width = 220,
+  collapsedWidth = 64,
+  showLogo = true,
+}) => {
+  const menus = useAuthStore((s) => s.menus);
+  const siteName = runtimeConfig.get().system.name;
+  const toggleSidebarCollapsed = useSettingStore(
+    (s) => s.toggleSidebarCollapsed,
+  );
+  const intl = useIntl();
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const loading = menus === undefined;
+
+  const [openKeys, setOpenKeys] = useState<string[]>([]);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+
+  useEffect(() => {
+    const pathname = location.pathname;
+    setSelectedKeys([pathname]);
+
+    const segments = pathname.split('/').filter(Boolean);
+    const keys: string[] = [];
+    let path = '';
+
+    for (let i = 0; i < segments.length - 1; i++) {
+      path += `/${segments[i]}`;
+      keys.push(path);
+    }
+    setOpenKeys(keys);
+  }, [location.pathname]);
+
+  const handleMenuClick: MenuProps['onClick'] = (e) => {
+    setSelectedKeys([e.key]);
+    navigate(e.key);
+  };
+
+  const items = useMemo(() => {
+    return transformMenuItems(menus || [], intl.formatMessage);
+  }, [menus, intl.formatMessage]);
+
+  if (!loading && items.length === 0) {
+    return null;
+  }
+
+  return (
+    <SiderWrapper>
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        width={width}
+        collapsedWidth={collapsedWidth}
+        theme={sidebarTheme}
+        style={{
+          ...siderStyle,
+        }}
+      >
+        {showLogo && <Logo title={siteName} collapsed={collapsed} />}
+
+        <Skeleton loading={loading} active round style={{ padding: 15 }}>
+          <Menu
+            mode="inline"
+            theme={sidebarTheme}
+            inlineIndent={10}
+            items={items}
+            openKeys={openKeys}
+            selectedKeys={selectedKeys}
+            onOpenChange={(keys) => setOpenKeys(keys as string[])}
+            onClick={handleMenuClick}
+          />
+        </Skeleton>
+      </Sider>
+
+      <CollapseTrigger
+        collapsed={collapsed}
+        onToggle={toggleSidebarCollapsed}
+      />
+    </SiderWrapper>
+  );
+};
+
+export default SideNav;

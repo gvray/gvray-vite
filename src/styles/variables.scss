@@ -1,0 +1,91 @@
+// 全局主题 CSS 变量速查表
+// 由 ThemeTokenInjector 在 Layout 中动态注入，支持主题切换和昼夜模式
+//
+// 命名规范：antd v5 token 名转 kebab-case，前缀替换为 --gvray-
+// 例：colorPrimary → --gvray-color-primary
+//
+// ⚠️ 重要：直接在样式中使用 var(--gvray-color-xxx)，不要通过 LESS 变量包装
+// 因为 LESS 编译 + PostCSS 优化可能会将 CSS 变量求值为静态值
+//
+// ============ 使用示例 ============
+// .myClass {
+//   color: var(--gvray-color-primary);         // ✅ 正确
+//   background: var(--gvray-color-bg-container); // ✅ 正确
+//   border: 1px solid var(--gvray-color-border); // ✅ 正确
+// }
+//
+// 完整规范见：docs/theme-guidelines.md
+// ============================================================
+
+// ============ 主色系 ============
+// --gvray-color-primary              // 主色（colorPrimary）
+// --gvray-color-primary-hover        // 主色 hover（colorPrimaryHover）
+// --gvray-color-primary-active       // 主色 active（colorPrimaryActive）
+// --gvray-color-primary-bg           // 主色最浅背景（colorPrimaryBg）
+// --gvray-color-primary-bg-hover     // 主色浅背景 hover（colorPrimaryBgHover）
+// --gvray-color-primary-border       // 主色边框（colorPrimaryBorder）
+// --gvray-color-primary-border-hover // 主色边框 hover（colorPrimaryBorderHover）
+
+// ============ 功能色 ============
+// --gvray-color-success              // 成功色（colorSuccess）
+// --gvray-color-success-bg           // 成功背景（colorSuccessBg）
+// --gvray-color-success-border       // 成功边框（colorSuccessBorder）
+// --gvray-color-warning              // 警告色（colorWarning）
+// --gvray-color-warning-bg           // 警告背景（colorWarningBg）
+// --gvray-color-warning-border       // 警告边框（colorWarningBorder）
+// --gvray-color-error                // 错误色（colorError）
+// --gvray-color-error-bg             // 错误背景（colorErrorBg）
+// --gvray-color-error-border         // 错误边框（colorErrorBorder）
+// --gvray-color-info                 // 信息色（colorInfo）
+// --gvray-color-info-bg              // 信息背景（colorInfoBg）
+// --gvray-color-info-border          // 信息边框（colorInfoBorder）
+
+// ============ 文本色 ============
+// --gvray-color-text                 // 主文本（colorText）
+// --gvray-color-text-secondary       // 次要文本（colorTextSecondary）
+// --gvray-color-text-tertiary        // 三级文本（colorTextTertiary）
+// --gvray-color-text-quaternary      // 四级文本（colorTextQuaternary）
+// --gvray-color-text-disabled        // 禁用文本（colorTextDisabled）
+// --gvray-color-text-placeholder     // 占位文本（colorTextPlaceholder）
+// --gvray-color-text-heading         // 标题色（colorTextHeading）
+// --gvray-color-text-label           // 标签色（colorTextLabel）
+// --gvray-color-text-description     // 描述色（colorTextDescription）
+
+// ============ 背景色 ============
+// --gvray-color-bg-base              // 基础背景（colorBgBase）
+// --gvray-color-bg-container         // 容器背景（colorBgContainer）
+// --gvray-color-bg-elevated          // 浮层背景（colorBgElevated）
+// --gvray-color-bg-layout            // 布局背景（colorBgLayout）
+// --gvray-color-bg-spotlight         // 高亮背景（colorBgSpotlight）
+// --gvray-color-bg-mask              // 遮罩背景（colorBgMask）
+
+// ============ 边框 / 分割线 ============
+// --gvray-color-border               // 主边框（colorBorder）
+// --gvray-color-border-secondary     // 次边框（colorBorderSecondary）
+// --gvray-color-split                // 分割线（colorSplit）
+
+// ============ 填充色 ============
+// --gvray-color-fill                 // 主填充（colorFill）
+// --gvray-color-fill-secondary       // 次填充（colorFillSecondary）
+// --gvray-color-fill-tertiary        // 三级填充（colorFillTertiary）
+// --gvray-color-fill-quaternary      // 四级填充（colorFillQuaternary）
+
+// ============ 尺寸 ============
+// --gvray-border-radius              // 圆角（borderRadius）
+// --gvray-border-radius-lg           // 大圆角（borderRadiusLG）
+// --gvray-border-radius-sm           // 小圆角（borderRadiusSM）
+// --gvray-border-radius-xs           // 极小圆角（borderRadiusXS）
+
+// ============ 阴影 ============
+// --gvray-box-shadow                 // 主阴影（boxShadow）
+// --gvray-box-shadow-secondary       // 次阴影（boxShadowSecondary）
+// --gvray-box-shadow-tertiary        // 三级阴影（boxShadowTertiary）
+
+// ============ 链接色 ============
+// --gvray-color-link                 // 链接色（colorLink）
+// --gvray-color-link-hover           // 链接 hover（colorLinkHover）
+// --gvray-color-link-active          // 链接 active（colorLinkActive）
+
+// ============ 图标色 ============
+// --gvray-color-icon                 // 图标默认色（colorIcon）
+// --gvray-color-icon-hover           // 图标 hover 色（colorIconHover）
