@@ -5,9 +5,25 @@
   "scripts": {
     "dev": "tsx scripts/dev.ts",
     "start:dev": "tsx scripts/dev.ts --mode dev --port 9527 --mock true",
-    "build": "tsc -b && vite build",
+    "start:staging": "tsx scripts/dev.ts --mode staging --port 9528",
+    "start:prod": "tsx scripts/dev.ts --mode prod --port 9529",
+    "build": "tsc -b && vite build --mode prod",
+    "build:dev": "tsc -b && vite build --mode dev",
+    "build:staging": "tsc -b && vite build --mode staging",
+    "build:prod": "tsc -b && vite build --mode prod",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gen:api": "tsx scripts/gen-api-types.ts",
+    "docker:build": "tsx scripts/docker-build.ts",
+    "docker:build:multiarch": "tsx scripts/docker-build.ts -m",
+    "docker:build:scan": "tsx scripts/docker-build.ts -s",
+    "docker:compose:down": "docker-compose down",
+    "docker:compose:logs": "docker-compose logs -f",
+    "docker:compose:up": "docker-compose up -d",
+    "docker:deploy": "tsx scripts/docker-deploy.ts",
+    "docker:logs": "docker logs -f gvray-vite-web",
+    "docker:run": "docker run -d --name gvray-vite-web -p 8080:80 gvray/gvray-vite:latest",
+    "docker:stop": "docker stop gvray-vite-web && docker rm gvray-vite-web"
   },
   "dependencies": {
     "@ant-design/icons": "^6.3.2",

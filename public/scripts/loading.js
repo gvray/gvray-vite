@@ -3,18 +3,18 @@
  * 解决首次加载时白屏的问题
  */
 (function () {
-  const _app = document.querySelector('#app');
+  const _app = document.querySelector('#root');
   if (_app && _app.innerHTML === '') {
     _app.innerHTML = `
       <style>
         html,
         body,
-        #app {
+        #root {
           height: 100%;
           margin: 0;
           padding: 0;
         }
-        #app {
+        #root {
           background-repeat: no-repeat;
           background-size: 100% auto;
         }

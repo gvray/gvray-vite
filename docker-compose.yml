@@ -1,0 +1,38 @@
+# ==========================================
+# Docker Compose 配置文件
+# 用于本地开发和测试环境
+# ==========================================
+
+services:
+  # ==========================================
+  # 前端应用服务
+  # ==========================================
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: production
+    image: ${DOCKER_REGISTRY:-docker.io}/${DOCKER_NAMESPACE:-gvray}/gvray-vite:${VERSION:-latest}
+    platform: ${PLATFORM:-linux/amd64}
+    container_name: gvray-vite-web
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - TZ=Asia/Shanghai
+      - NODE_ENV=production
+    volumes:
+      # 挂载日志目录
+      - ./logs/nginx:/var/log/nginx
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    labels:
+      - "com.example.description=Gvray Admin Frontend"
+      - "com.example.version=1.0.0"

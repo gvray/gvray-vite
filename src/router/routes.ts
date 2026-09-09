@@ -32,15 +32,15 @@ export const routes: AppRouteObject[] = [
     children: [
       {
         path: '/',
-        component: 'pages/Docs',
+        component: 'pages/Dashboard',
         meta: {
-          title: '文档',
+          title: '仪表板',
           permissions: [],
         },
       },
       {
         path: '/profile',
-        component: 'pages/PlaceholderPage',
+        component: 'pages/Profile',
         meta: {
           title: '个人资料',
           permissions: [],

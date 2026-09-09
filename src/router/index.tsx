@@ -9,11 +9,13 @@ import { routes as appRoutes, type AppRouteObject } from './routes';
  * 组件路径映射表。
  * 未迁移的业务页面统一指向 PlaceholderPage，避免白屏。
  */
-const componentMap: Record<string, React.ComponentType<any>> = {
+const componentMap: Record<string, React.ComponentType<Record<string, never>>> = {
   'layouts/index': lazy(() => import('@/layouts')),
   'pages/Login': lazy(() => import('@/pages/Login')),
   'pages/Register': lazy(() => import('@/pages/PlaceholderPage')),
+  'pages/Dashboard': lazy(() => import('@/pages/Dashboard')),
   'pages/Docs': lazy(() => import('@/pages/Docs')),
+  'pages/Profile': lazy(() => import('@/pages/Profile')),
   'pages/Error/403': lazy(() => import('@/pages/Error/403')),
   'pages/Error/404': lazy(() => import('@/pages/Error/404')),
   'pages/PlaceholderPage': lazy(() => import('@/pages/PlaceholderPage')),
@@ -58,5 +60,3 @@ export function Router() {
     </AppProviders>
   );
 }
-
-export default router;

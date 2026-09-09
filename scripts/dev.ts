@@ -8,9 +8,9 @@ const mode = args.mode || 'dev';
 const port = args.port || 8000;
 const mock = args.mock;
 
-loadEnvFromEnv(mode);
+loadEnvFromEnv(mode, { port, mock });
 
 process.env.APP_MOCK_ENABLED = mock || process.env.APP_MOCK_ENABLED || 'false';
 
 // 启动 Vite dev server（本地开发）
-execSync(`npx vite --port ${port}`, { stdio: 'inherit' });
+execSync(`npx vite --mode ${mode} --port ${port}`, { stdio: 'inherit' });
