@@ -1,0 +1,192 @@
+import { Icon } from '@/components';
+import { Spin, Tag, Timeline, Typography } from 'antd';
+import React from 'react';
+import styled from 'styled-components';
+import type { ActivityLog } from '../model';
+
+const { Text } = Typography;
+
+interface ActivityTimelineProps {
+  logs: ActivityLog[];
+  loading?: boolean;
+}
+
+const TimelineWrapper = styled.div`
+  padding: 8px 0;
+  .ant-timeline-item-content {
+    margin-inline-start: 24px;
+  }
+`;
+
+const ActivityItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: var(--gvray-color-bg-elevated);
+  transition: background 0.2s;
+  &:hover {
+    background: var(--gvray-color-primary-bg);
+  }
+`;
+
+const ActivityLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const ActivityInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+const ActivityRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+const IpText = styled(Text)`
+  font-family: 'SF Mono', 'Menlo', monospace;
+  font-size: 12px;
+`;
+
+const getActionIcon = (action: string) => {
+  if (action.includes('删除'))
+    return (
+      <Icon
+        name="DeleteOutlined"
+        style={{ color: 'var(--gvray-color-error)' }}
+      />
+    );
+  if (
+    action.includes('修改') ||
+    action.includes('编辑') ||
+    action.includes('更新')
+  )
+    return (
+      <Icon
+        name="EditOutlined"
+        style={{ color: 'var(--gvray-color-warning)' }}
+      />
+    );
+  if (action.includes('登录'))
+    return (
+      <Icon
+        name="LoginOutlined"
+        style={{ color: 'var(--gvray-color-primary)' }}
+      />
+    );
+  if (action.includes('权限'))
+    return (
+      <Icon
+        name="SafetyCertificateOutlined"
+        style={{ color: 'var(--gvray-color-info)' }}
+      />
+    );
+  if (
+    action.includes('新增') ||
+    action.includes('创建') ||
+    action.includes('注册')
+  )
+    return (
+      <Icon
+        name="UserAddOutlined"
+        style={{ color: 'var(--gvray-color-success)' }}
+      />
+    );
+  return (
+    <Icon
+      name="EditOutlined"
+      style={{ color: 'var(--gvray-color-text-placeholder)' }}
+    />
+  );
+};
+
+const getTimelineDotColor = (status: string): string => {
+  return status === '成功'
+    ? 'var(--gvray-color-success)'
+    : 'var(--gvray-color-error)';
+};
+
+const ActivityTimeline: React.FC<ActivityTimelineProps> = ({
+  logs,
+  loading,
+}) => {
+  if (loading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '40px 0' }}>
+        <Spin />
+      </div>
+    );
+  }
+
+  if (!logs || logs.length === 0) {
+    return (
+      <div
+        style={{
+          textAlign: 'center',
+          padding: '40px 0',
+          color: 'var(--gvray-color-text-placeholder)',
+        }}
+      >
+        暂无操作记录
+      </div>
+    );
+  }
+
+  return (
+    <TimelineWrapper>
+      <Timeline
+        items={logs.map((log) => ({
+          color: getTimelineDotColor(log.status),
+          children: (
+            <ActivityItem>
+              <ActivityLeft>
+                <span style={{ fontSize: 16 }}>
+                  {getActionIcon(log.action)}
+                </span>
+                <ActivityInfo>
+                  <Text strong style={{ fontSize: 13 }}>
+                    {log.user}{' '}
+                    <Text type="secondary" style={{ fontWeight: 400 }}>
+                      {log.action}
+                    </Text>
+                  </Text>
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    {log.time}
+                  </Text>
+                </ActivityInfo>
+              </ActivityLeft>
+              <ActivityRight>
+                <IpText type="secondary">{log.ip}</IpText>
+                {log.status === '成功' ? (
+                  <Tag
+                    icon={<Icon name="CheckCircleOutlined" />}
+                    color="success"
+                    style={{ margin: 0, borderRadius: 12 }}
+                  >
+                    成功
+                  </Tag>
+                ) : (
+                  <Tag
+                    icon={<Icon name="CloseCircleOutlined" />}
+                    color="error"
+                    style={{ margin: 0, borderRadius: 12 }}
+                  >
+                    失败
+                  </Tag>
+                )}
+              </ActivityRight>
+            </ActivityItem>
+          ),
+        }))}
+      />
+    </TimelineWrapper>
+  );
+};
+
+export default ActivityTimeline;

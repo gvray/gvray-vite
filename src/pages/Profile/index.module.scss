@@ -1,0 +1,647 @@
+.profilePage {
+  .profileShell,
+  .profileOverview,
+  .profileHero,
+  .profileSummary,
+  .profileMain,
+  .tabsCard,
+  .moduleCard,
+  .responsiveTabs {
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  .profileShell {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .profileOverview {
+    display: grid;
+    grid-template-columns: minmax(480px, 1.15fr) minmax(420px, 1fr);
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  .profileHero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 18px 20px;
+    border: 1px solid var(--gvray-color-border-secondary);
+    border-radius: 18px;
+    background: radial-gradient(
+        circle at 86% 18%,
+        rgba(114, 46, 209, 0.18),
+        transparent 32%
+      ),
+      radial-gradient(
+        circle at 12% 88%,
+        rgba(22, 119, 255, 0.14),
+        transparent 28%
+      ),
+      linear-gradient(135deg, rgba(22, 119, 255, 0.1), rgba(114, 46, 209, 0.05)),
+      var(--gvray-color-bg-container);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+
+    &::before,
+    &::after {
+      position: absolute;
+      content: '';
+      pointer-events: none;
+    }
+
+    &::before {
+      top: -64px;
+      right: -52px;
+      width: 190px;
+      height: 190px;
+      border: 1px solid rgb(from var(--gvray-color-primary) r g b / 0.16);
+      border-radius: 50%;
+      background: rgb(from var(--gvray-color-bg-container) r g b / 0.16);
+    }
+
+    &::after {
+      right: 32px;
+      bottom: 24px;
+      width: 160px;
+      height: 80px;
+      background-image: radial-gradient(
+        var(--gvray-color-primary-border) 1px,
+        transparent 1px
+      );
+      background-size: 14px 14px;
+      opacity: 0.5;
+    }
+  }
+
+  .heroIdentity {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+  }
+
+  .avatarRing {
+    flex-shrink: 0;
+    border: 3px solid rgba(255, 255, 255, 0.86);
+    box-shadow: 0 8px 24px rgba(22, 119, 255, 0.18);
+  }
+
+  .heroMain {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .heroTitleRow {
+    margin-bottom: 4px;
+  }
+
+  .userName {
+    margin: 0 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.2px;
+  }
+
+  .heroMetaLine {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    color: var(--gvray-color-text-secondary);
+    font-size: 13px;
+    line-height: 1.7;
+
+    span {
+      max-width: 280px;
+      @include text-ellipsis;
+    }
+  }
+
+  .roleTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+
+    :global(.ant-tag) {
+      max-width: 160px;
+      margin-inline-end: 0;
+      @include text-ellipsis;
+    }
+  }
+
+  .profileSummary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .summaryCard {
+    height: 100%;
+    border: 1px solid var(--gvray-color-border-secondary);
+    border-radius: 16px;
+    box-shadow: none;
+
+    :global(.ant-card-body) {
+      display: flex;
+      height: 100%;
+      min-height: 168px;
+      flex-direction: column;
+      gap: 10px;
+      padding: 16px 18px;
+    }
+  }
+
+  .summaryHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .summaryIcon,
+  .contactLargeIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 11px;
+    color: var(--gvray-color-primary);
+    background: var(--gvray-color-primary-bg);
+    font-size: 17px;
+  }
+
+  .summaryMeta {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .summaryTitle {
+    min-width: 0;
+    @include text-ellipsis;
+    color: var(--gvray-color-text);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  .summaryRows {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 2px;
+  }
+
+  .summaryRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    font-size: 12px;
+
+    > span:first-child {
+      flex-shrink: 0;
+      color: var(--gvray-color-text-secondary);
+    }
+
+    :global(.ant-typography) {
+      min-width: 0;
+      @include text-ellipsis;
+    }
+  }
+
+  .bindingStatus {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+
+    :global(.ant-tag) {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-inline-end: 0;
+    }
+  }
+
+  .profileMain {
+    width: 100%;
+  }
+
+  .tabsCard,
+  .moduleCard,
+  .prefCard {
+    border: 1px solid var(--gvray-color-border-secondary);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  }
+
+  .tabsCard {
+    overflow: visible;
+
+    :global(.ant-card-body) {
+      padding: 0;
+    }
+  }
+
+  .responsiveTabs {
+    :global(.ant-tabs-nav) {
+      position: sticky;
+      top: var(--profile-sticky-top, 64px);
+      z-index: 20;
+      margin: 0;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--gvray-color-border-secondary);
+      border-radius: 16px 16px 0 0;
+      background: var(--gvray-color-bg-container);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    :global(.ant-tabs-nav-wrap) {
+      overflow: auto;
+    }
+
+    :global(.ant-tabs-tab) {
+      padding: 15px 0;
+      font-weight: 600;
+    }
+
+    :global(.ant-tabs-content-holder) {
+      min-width: 0;
+      padding: 24px;
+    }
+  }
+
+  .tabLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .profileNotice,
+  .securityAlert {
+    margin-bottom: 16px;
+  }
+
+  .moduleCard {
+    margin-bottom: 16px;
+    overflow: visible;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    :global(.ant-card-head) {
+      min-height: 48px;
+      border-bottom-color: var(--gvray-color-border-secondary);
+      padding: 0 20px;
+      font-size: 14px;
+    }
+
+    :global(.ant-card-body) {
+      min-width: 0;
+      padding: 20px;
+    }
+  }
+
+  .readonlyField {
+    color: var(--gvray-color-text-secondary);
+
+    :global(.anticon) {
+      margin-left: 6px;
+      color: var(--gvray-color-text-placeholder);
+      font-size: 11px;
+    }
+  }
+
+  .contactRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .contactContent {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .contactTitle {
+    color: var(--gvray-color-text);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .contactDesc {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .contactText {
+    min-width: 0;
+    @include text-ellipsis;
+  }
+
+  .contactDivider {
+    margin: 16px 0;
+  }
+
+  .verifiedIcon,
+  .unverifiedIcon {
+    flex-shrink: 0;
+    font-size: 13px;
+  }
+
+  .verifiedIcon,
+  .safeIcon {
+    color: var(--gvray-color-success);
+  }
+
+  .unverifiedIcon {
+    color: var(--gvray-color-warning);
+  }
+
+  .securityGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .responsiveListItem {
+    gap: 12px;
+  }
+
+  .safeIcon,
+  .mutedIcon {
+    font-size: 18px;
+  }
+
+  .mutedIcon {
+    color: var(--gvray-color-text-placeholder);
+  }
+
+  .listTitle,
+  .tableStrongText {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .tableMetaText {
+    font-size: 12px;
+  }
+
+  .inlineTag {
+    margin: 0;
+  }
+
+  .centerLoading {
+    padding: 48px;
+    text-align: center;
+  }
+
+  .innerTabs {
+    min-width: 0;
+
+    :global(.ant-tabs-nav-wrap) {
+      overflow: auto;
+    }
+  }
+
+  .roleList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 4px 0;
+  }
+
+  .roleTag {
+    max-width: 160px;
+    margin: 0;
+    padding: 2px 10px;
+    @include text-ellipsis;
+    font-size: 13px;
+  }
+
+  .permissionFilter {
+    min-width: 200px;
+  }
+
+  .superAdminTip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .treeScroll {
+    min-width: 0;
+    overflow-x: auto;
+    padding: 2px 4px 4px;
+
+    :global(.ant-tree) {
+      min-width: max-content;
+      background: transparent;
+    }
+  }
+
+  .permissionNodeTitle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .permissionName {
+    font-size: 13px;
+  }
+
+  .permissionCode {
+    font-size: 12px;
+  }
+
+  .permissionDescIcon {
+    color: var(--gvray-color-text-placeholder);
+    font-size: 12px;
+    cursor: help;
+
+    &:hover {
+      color: var(--gvray-color-primary);
+    }
+  }
+
+  .permissionAction {
+    margin: 0;
+    font-size: 11px;
+  }
+
+  .logFilters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .logFilterControl,
+  .logStatusSelect,
+  .logRangePicker,
+  .logActions {
+    width: 100%;
+  }
+
+  .logActions {
+    :global(.ant-space-item),
+    :global(.ant-btn) {
+      width: 100%;
+    }
+  }
+
+  .prefCard {
+    height: 100%;
+    box-shadow: none;
+
+    :global(.ant-card-head) {
+      min-height: 48px;
+      border-bottom-color: var(--gvray-color-border-secondary);
+      padding: 0 20px;
+    }
+
+    :global(.ant-card-body) {
+      padding: 12px 20px;
+    }
+
+    :global(.ant-list-item) {
+      gap: 12px;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .profileOverview {
+      grid-template-columns: 1fr;
+    }
+
+    .profileSummary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 992px) {
+    .profileHero {
+      padding: 18px;
+    }
+
+    .responsiveTabs {
+      :global(.ant-tabs-nav) {
+        padding: 0 20px;
+      }
+
+      :global(.ant-tabs-content-holder) {
+        padding: 20px;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .heroIdentity {
+      align-items: flex-start;
+    }
+
+    .profileSummary,
+    .securityGrid {
+      grid-template-columns: 1fr;
+    }
+
+    .responsiveTabs {
+      :global(.ant-tabs-nav) {
+        padding: 0 16px;
+      }
+
+      :global(.ant-tabs-content-holder) {
+        padding: 16px;
+      }
+    }
+
+    .moduleCard {
+      :global(.ant-card-head) {
+        padding: 0 16px;
+      }
+
+      :global(.ant-card-body) {
+        padding: 16px;
+      }
+    }
+
+    .permissionFilter {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .profileShell {
+      gap: 12px;
+    }
+
+    .profileHero {
+      padding: 16px;
+      border-radius: 14px;
+    }
+
+    .heroIdentity {
+      gap: 12px;
+    }
+
+    .summaryCard :global(.ant-card-body) {
+      min-height: auto;
+      padding: 12px;
+    }
+
+    .summaryRow {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .responsiveTabs {
+      :global(.ant-tabs-nav) {
+        top: var(--profile-sticky-top, 56px);
+      }
+
+      :global(.ant-tabs-content-holder) {
+        padding: 12px;
+      }
+    }
+
+    .contactRow,
+    .responsiveListItem {
+      align-items: flex-start;
+    }
+
+    .superAdminTip {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .prefCard {
+      :global(.ant-list-item) {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      :global(.ant-list-item-action) {
+        margin-inline-start: 0;
+      }
+    }
+  }
+}
