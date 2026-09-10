@@ -1,8 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import type { RouteObject } from 'react-router';
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter } from 'react-router';
 import PageLoading from '@/components/PageLoading';
-import { AppProviders } from '@/providers';
 import { routes as appRoutes, type AppRouteObject } from './routes';
 
 /**
@@ -10,7 +9,8 @@ import { routes as appRoutes, type AppRouteObject } from './routes';
  * 未迁移的业务页面统一指向 PlaceholderPage，避免白屏。
  */
 const componentMap: Record<string, React.ComponentType<Record<string, never>>> = {
-  'layouts/index': lazy(() => import('@/layouts')),
+  'layouts/BasicLayout': lazy(() => import('@/layouts/BasicLayout')),
+  'layouts/Layout': lazy(() => import('@/layouts/Layout')),
   'pages/Login': lazy(() => import('@/pages/Login')),
   'pages/Register': lazy(() => import('@/pages/PlaceholderPage')),
   'pages/Dashboard': lazy(() => import('@/pages/Dashboard')),
@@ -51,12 +51,4 @@ function normalizeRoutes(routes: AppRouteObject[]): RouteObject[] {
   });
 }
 
-const router = createBrowserRouter(normalizeRoutes(appRoutes));
-
-export function Router() {
-  return (
-    <AppProviders>
-      <RouterProvider router={router} />
-    </AppProviders>
-  );
-}
+export const router = createBrowserRouter(normalizeRoutes(appRoutes));

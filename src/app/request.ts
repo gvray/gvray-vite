@@ -1,9 +1,9 @@
 import { isString } from '@gvray/eskit';
 import { createClient } from '@gvray/request';
 import { httpConfig } from './httpConfig';
-import { refreshToken } from './services/auth';
-import { tokenManager } from './utils';
-import { wrapToBizError } from './utils/errors';
+import { refreshToken } from '@/services/auth';
+import { tokenManager } from '@/utils';
+import { wrapToBizError } from '@/utils/errors';
 
 // 创建并初始化请求客户端
 const client = createClient({

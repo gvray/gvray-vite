@@ -10,8 +10,15 @@ body,
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-.colorWeak {
-  filter: invert(80%);
+/* 项目自定义运行时变量：亮/暗各一份（<html data-theme> 由 useTheme 同步） */
+:root {
+  --gvray-shadow-card: 0 8px 24px rgba(15, 23, 42, 0.04);
+  --gvray-shadow-card-lg: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+:root[data-theme='dark'] {
+  --gvray-shadow-card: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --gvray-shadow-card-lg: 0 10px 30px rgba(0, 0, 0, 0.55);
 }
 
 .color-weak {
@@ -66,7 +73,26 @@ ol {
   }
 }
 
-@media (max-width: 768px) {
+/* Sider 独立主题变量 */
+[data-sider-theme='light'] {
+  --gvray-sider-text: var(--gvray-color-text);
+  --gvray-sider-text-secondary: var(--gvray-color-text-placeholder);
+  --gvray-sider-bg: var(--gvray-color-bg-elevated);
+  --gvray-sider-bg-hover: var(--gvray-color-bg-container);
+  --gvray-sider-border: var(--gvray-color-border);
+  --gvray-sider-shadow: var(--gvray-box-shadow);
+}
+
+[data-sider-theme='dark'] {
+  --gvray-sider-text: rgba(255, 255, 255, 0.95);
+  --gvray-sider-text-secondary: rgba(255, 255, 255, 0.65);
+  --gvray-sider-bg: #001529;
+  --gvray-sider-bg-hover: #002140;
+  --gvray-sider-border: rgba(255, 255, 255, 0.15);
+  --gvray-sider-shadow: rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: $bp-md) {
   .ant-table {
     width: 100%;
     overflow-x: auto;

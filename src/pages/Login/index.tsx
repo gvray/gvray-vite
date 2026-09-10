@@ -94,22 +94,22 @@ const LoginPage: React.FC = () => {
     <ConfigProvider theme={{ algorithm: theme.defaultAlgorithm }}>
       <LoginBg title={siteName}>
         <CardContainer>
-          <LoginCard
-            siteName={siteName}
-            registerEnabled={registerEnabled}
-            guestAccount={guestAccount}
-            activeTab={activeTab}
-            countdown={countdown}
-            onTabChange={handleTabChange}
-            onAccountSubmit={handleAccountSubmit}
-            onPhoneSubmit={handlePhoneSubmit}
-            onSendCode={handleSendCode}
-            onNavigateRegister={handleNavigateRegister}
-            initialAccountValues={rememberData}
-          />
-          <LoadingMask $visible={isLogging}>
-            <Spin />
-          </LoadingMask>
+      <LoginCard
+        siteName={siteName}
+        registerEnabled={registerEnabled}
+        guestAccount={guestAccount}
+        activeTab={activeTab}
+        countdown={countdown}
+        onTabChange={handleTabChange}
+        onAccountSubmit={handleAccountSubmit}
+        onPhoneSubmit={handlePhoneSubmit}
+        onSendCode={handleSendCode}
+        onNavigateRegister={handleNavigateRegister}
+        initialAccountValues={rememberData}
+      />
+      <LoadingMask $visible={isLogging}>
+        <Spin />
+      </LoadingMask>
         </CardContainer>
       </LoginBg>
     </ConfigProvider>

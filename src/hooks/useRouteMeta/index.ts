@@ -23,19 +23,20 @@ export const useRouteMeta = (): RouteMeta & { auth?: boolean } => {
     pathname: string,
   ): RouteWithMeta | null => {
     for (const route of routeList) {
-      if (!route.path) continue;
-
-      // 精确匹配
-      if (route.path === pathname) {
-        return route;
-      }
-
-      // 动态路由匹配（如 /system/user-auth/role/:userId）
-      if (route.path.includes(':')) {
-        const routePattern = route.path.replace(/:[^/]+/g, '[^/]+');
-        const regex = new RegExp(`^${routePattern}$`);
-        if (regex.test(pathname)) {
+      // 无 path 的 layout 路由不能直接匹配，但仍需遍历其 children
+      if (route.path) {
+        // 精确匹配
+        if (route.path === pathname) {
           return route;
+        }
+
+        // 动态路由匹配（如 /system/user-auth/role/:userId）
+        if (route.path.includes(':')) {
+          const routePattern = route.path.replace(/:[^/]+/g, '[^/]+');
+          const regex = new RegExp(`^${routePattern}$`);
+          if (regex.test(pathname)) {
+            return route;
+          }
         }
       }
 

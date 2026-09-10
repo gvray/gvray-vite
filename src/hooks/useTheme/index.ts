@@ -30,6 +30,14 @@ const useAppTheme = () => {
     };
   }, [theme]);
 
+  // 把解析后的主题写到 <html data-theme>，供自定义 CSS 变量（如 --gvray-shadow-card）
+  // 按亮/暗分桶。antd cssVar 不暴露此属性，这里自有作用域。
+  useEffect(() => {
+    const resolved =
+      theme === 'dark' || (theme === 'system' && systemTheme === 'dark');
+    document.documentElement.dataset.theme = resolved ? 'dark' : 'light';
+  }, [theme, systemTheme]);
+
   return { themeAlgorithm };
 };
 

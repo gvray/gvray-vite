@@ -122,7 +122,7 @@ const SideNav: React.FC<SideNavProps> = ({
   }
 
   return (
-    <SiderWrapper>
+    <SiderWrapper data-sider-theme={sidebarTheme}>
       <Sider
         trigger={null}
         collapsible

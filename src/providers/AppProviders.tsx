@@ -1,7 +1,6 @@
 import { bootstrap } from '@/app/bootstrap';
 import PageLoading from '@/components/PageLoading';
 import { useAppTheme } from '@/hooks';
-import ThemeTokenInjector from '@/layouts/components/ThemeTokenInjector';
 import { useSettingStore } from '@/stores';
 import { runtimeConfig } from '@/utils/runtime-config';
 import { App, ConfigProvider } from 'antd';
@@ -65,6 +64,7 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({
           locale={antdLocale}
           theme={{
             algorithm: themeAlgorithm,
+            cssVar: { prefix: 'gvray', key: 'gvray' },
             token: { colorPrimary, colorInfo: colorPrimary },
             components: {
               Menu: {
@@ -74,9 +74,7 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({
           }}
         >
           <App>
-            <ThemeTokenInjector>
-              <StyledThemeProvider>{children}</StyledThemeProvider>
-            </ThemeTokenInjector>
+            <StyledThemeProvider>{children}</StyledThemeProvider>
           </App>
         </ConfigProvider>
       </AppIntlProvider>

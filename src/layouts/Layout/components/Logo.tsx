@@ -12,7 +12,7 @@ const LogoWrapper = styled.div<{
 }>`
   margin: ${(props) => (props.$collapsed ? '12px 8px' : '12px 10px 2px 10px')};
   border-radius: ${(props) => (props.$collapsed ? '24px' : '8px')};
-  /* 颜色由 ThemeTokenInjector 注入的 --gvray-sider-text 变量控制 */
+  /* 颜色由 [data-sider-theme] 上的 --gvray-sider-text 变量控制 */
   color: var(--gvray-sider-text);
   line-height: 32px;
   text-align: center;

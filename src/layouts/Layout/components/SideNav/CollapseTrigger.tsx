@@ -24,7 +24,7 @@ const TriggerButton = styled.button`
   font-size: 11px;
   transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 
-  /* 颜色由 ThemeTokenInjector 注入的 --gvray-sider-xxx 变量控制 */
+  /* 颜色由 [data-sider-theme] 上的 --gvray-sider-xxx 变量控制 */
   color: var(--gvray-sider-text-secondary);
   background: var(--gvray-sider-bg);
   border: 1px solid var(--gvray-sider-border);

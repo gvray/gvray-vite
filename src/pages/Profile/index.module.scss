@@ -39,12 +39,16 @@
       ),
       radial-gradient(
         circle at 12% 88%,
-        rgba(22, 119, 255, 0.14),
+        rgb(from var(--gvray-color-primary) r g b / 0.14),
         transparent 28%
       ),
-      linear-gradient(135deg, rgba(22, 119, 255, 0.1), rgba(114, 46, 209, 0.05)),
+      linear-gradient(
+        135deg,
+        rgb(from var(--gvray-color-primary) r g b / 0.1),
+        rgba(114, 46, 209, 0.05)
+      ),
       var(--gvray-color-bg-container);
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    box-shadow: var(--gvray-shadow-card-lg);
 
     &::before,
     &::after {
@@ -89,7 +93,7 @@
   .avatarRing {
     flex-shrink: 0;
     border: 3px solid rgba(255, 255, 255, 0.86);
-    box-shadow: 0 8px 24px rgba(22, 119, 255, 0.18);
+    box-shadow: 0 8px 24px rgb(from var(--gvray-color-primary) r g b / 0.18);
   }
 
   .heroMain {
@@ -241,7 +245,7 @@
   .prefCard {
     border: 1px solid var(--gvray-color-border-secondary);
     border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    box-shadow: var(--gvray-shadow-card);
   }
 
   .tabsCard {
@@ -262,7 +266,7 @@
       border-bottom: 1px solid var(--gvray-color-border-secondary);
       border-radius: 16px 16px 0 0;
       background: var(--gvray-color-bg-container);
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+      box-shadow: var(--gvray-shadow-card);
     }
 
     :global(.ant-tabs-nav-wrap) {
@@ -526,7 +530,7 @@
     }
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: $bp-xl) {
     .profileOverview {
       grid-template-columns: 1fr;
     }
@@ -536,7 +540,7 @@
     }
   }
 
-  @media (max-width: 992px) {
+  @media (max-width: $bp-lg) {
     .profileHero {
       padding: 18px;
     }
@@ -552,7 +556,7 @@
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $bp-md) {
     .heroIdentity {
       align-items: flex-start;
     }
@@ -588,7 +592,7 @@
     }
   }
 
-  @media (max-width: 576px) {
+  @media (max-width: $bp-sm) {
     .profileShell {
       gap: 12px;
     }

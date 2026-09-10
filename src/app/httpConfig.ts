@@ -6,8 +6,8 @@ import {
   type GvrayResponse,
 } from '@gvray/request';
 import { message as msg, notification } from 'antd';
-import { statusMap } from './constants/httpStatus';
-import { type BizErrorDetails, throwBizError, wrapToBizError } from './utils/errors';
+import { statusMap } from '@/constants/httpStatus';
+import { type BizErrorDetails, throwBizError, wrapToBizError } from '@/utils/errors';
 
 const handleBizErrorMessage = (details: BizErrorDetails) => {
   const { message, code, showType } = details;

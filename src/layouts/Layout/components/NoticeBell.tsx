@@ -8,10 +8,11 @@ import {
   markNoticeRead,
   queryNoticeList,
 } from '@/services/notice';
-import { logger } from '@/utils';
+import { ACCESS_TOKEN_KEY, logger } from '@/utils';
 import { sleep } from '@gvray/eskit';
 import { Badge, Button, Drawer, Empty, Popover, Spin, Tabs, Tag } from 'antd';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import storetify from 'storetify';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
@@ -278,6 +279,8 @@ const NoticeBell: React.FC = () => {
     while (pollingRef.current) {
       const success = await fetchUnreadCount();
       if (!success) {
+        // 失败（如 token 过期且 count 接口不触发刷新）：停止轮询，
+        // 待 access token 被其他交互接口刷新后，由订阅恢复。
         pollingRef.current = false;
         break;
       }
@@ -291,6 +294,20 @@ const NoticeBell: React.FC = () => {
       pollingRef.current = false;
     };
   }, [fetchUnreadCount, runPolling]);
+
+  // 轮询因失败停止后，监听 access token 写入（refresh 成功/登录）以恢复轮询。
+  // 直接用 storetify 原生 subscribe，组件卸载时 unsubscribe。
+  useEffect(() => {
+    const listener = (e: { newValue: unknown }) => {
+      if (typeof e.newValue === 'string' && !pollingRef.current) {
+        runPolling();
+      }
+    };
+    storetify.subscribe(ACCESS_TOKEN_KEY, listener);
+    return () => {
+      storetify.unsubscribe(ACCESS_TOKEN_KEY, listener);
+    };
+  }, [runPolling]);
 
   useEffect(() => {
     if (open) {
