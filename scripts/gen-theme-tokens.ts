@@ -2,7 +2,7 @@
  * 生成 antd CSS 变量参考表（--gvray-*）。
  *
  * 原理：在 jsdom 里真渲染 <ConfigProvider theme={{ cssVar }}>，
- * 读取 antd cssinjs 注入到 :root 的真实样式表 —— 名字与值都来自 antd 运行时，
+ * 读取 antd cssinjs 注入到 .gvray 作用域的真实样式表 —— 名字与值都来自 antd 运行时，
  * 不靠手抄、不靠正则猜 camelCase→kebab 规则（borderRadiusLG 是 lg 还是 l-g 由 antd 说了算）。
  *
  * 产出：src/styles/_theme-tokens.scss（纯注释参考表，不参与编译）。

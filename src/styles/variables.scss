@@ -2,8 +2,16 @@
 // 设计 Token
 // ------------------------------------------------------------
 // 编译期常量用 SCSS 变量（$）；运行时 / 主题相关用 CSS 变量 var(--gvray-*)。
-// 颜色、圆角、阴影等随主题切换的值一律走 CSS 变量，不要用 SCSS 变量二次包装
-// —— SCSS 变量在编译期即固化，会丢失运行时动态性。
+// 颜色、圆角、阴影等随主题切换的值走 CSS 变量，勿用 SCSS 变量二次包装
+// （SCSS 变量编译期即固化，会丢失运行时动态性）。
+//
+// 运行时 var(--gvray-*) 由 antd ConfigProvider 的 cssVar: { prefix: 'gvray', key: 'gvray' }
+// 注入到 .gvray 作用域（非 :root）；该 class 由 <App> 挂在根容器，故 App 子树内可解析。
+//   - colorPrimary → --gvray-color-primary；:root / html 级样式拿不到，需自行声明（见 global.scss）。
+//   - 完整变量表（439 项）见 _theme-tokens.scss，由 scripts/gen-theme-tokens.ts
+//     自动生成，勿手改；antd 升级 / 主色调整后重跑 pnpm gen:theme-tokens
+//   - 项目自定义变量见 global.scss：--gvray-shadow-card(-lg)、--gvray-sider-*
+//   - 上游 seed token 文档：https://ant.design/docs/react/customize-theme#seedtoken
 // ============================================================
 
 // ============ 响应式断点（max-width 边界值，@media 专用） ============
@@ -12,20 +20,3 @@ $bp-md: 768px;   // ≤768  平板
 $bp-lg: 992px;   // ≤992  小屏桌面
 $bp-xl: 1200px;  // ≤1200 桌面
 $bp-xxl: 1600px; // ≤1600 大屏
-
-// ============================================================
-// 运行时 CSS 变量 var(--gvray-*)
-// ------------------------------------------------------------
-// 由 antd ConfigProvider 的 cssVar: { prefix: 'gvray' } 自动注入到 :root，
-// token 名 = antd token 转 kebab-case 并替换前缀
-// （colorPrimary → --gvray-color-primary，borderRadiusLG → --gvray-border-radius-lg）。
-//
-// 完整变量参考表（含当前实际取值，共 439 项）见 _theme-tokens.scss：
-//   - 该文件由 scripts/gen-theme-tokens.ts 从 antd 运行时自动生成，勿手改
-//   - antd 升级 / 主色调整后重跑：pnpm gen:theme-tokens
-// 上游 seed token 文档：https://ant.design/docs/react/customize-theme#seedtoken
-//
-// 项目自定义的运行时变量（不随 antd token 自动产出）见 global.scss：
-//   --gvray-shadow-card / --gvray-shadow-card-lg  自定义卡片阴影（亮/暗各一份）
-//   --gvray-sider-*                                 Sider 独立主题
-// ============================================================

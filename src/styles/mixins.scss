@@ -1,33 +1,6 @@
 // 全局 SCSS Mixins
 // 提供常用的样式混合，支持主题和响应式
 
-// ============ 布局 Mixins ============
-
-// 弹性居中布局
-@mixin flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-// 弹性垂直居中
-@mixin flex-align-center {
-  display: flex;
-  align-items: center;
-}
-
-// 弹性水平居中
-@mixin flex-justify-center {
-  display: flex;
-  justify-content: center;
-}
-
-// 弹性列布局
-@mixin flex-column {
-  display: flex;
-  flex-direction: column;
-}
-
 // ============ 文本 Mixins ============
 
 // 单行文本溢出省略
@@ -56,6 +29,7 @@
 // 悬停上浮效果
 @mixin hover-lift($distance: -2px) {
   @include transition(transform);
+
   &:hover {
     transform: translateY($distance);
   }
@@ -64,6 +38,7 @@
 // 悬停放大效果
 @mixin hover-scale($scale: 1.05) {
   @include transition(transform);
+
   &:hover {
     transform: scale($scale);
   }
@@ -90,11 +65,9 @@
 
 // 主色渐变背景
 @mixin gradient-primary {
-  background: linear-gradient(
-    135deg,
-    var(--gvray-color-primary) 0%,
-    var(--gvray-color-info) 100%
-  );
+  background: linear-gradient(135deg,
+      var(--gvray-color-primary) 0%,
+      var(--gvray-color-info) 100%);
 }
 
 // 自定义渐变
@@ -103,24 +76,25 @@
 }
 
 // ============ 响应式 Mixins ============
+// 断点值见 variables.scss（$bp-sm … $bp-xxl），@media 内勿再硬编码数值。
 
-// 移动端
+// 移动端（≤768）
 @mixin mobile {
-  @media (max-width: 768px) {
+  @media (max-width: $bp-md) {
     @content;
   }
 }
 
-// 平板
+// 平板（769–992）
 @mixin tablet {
-  @media (min-width: 769px) and (max-width: 1024px) {
+  @media (min-width: #{$bp-md + 1px}) and (max-width: $bp-lg) {
     @content;
   }
 }
 
-// 桌面端
+// 桌面端（≥993）
 @mixin desktop {
-  @media (min-width: 1025px) {
+  @media (min-width: #{$bp-lg + 1px}) {
     @content;
   }
 }
@@ -140,6 +114,7 @@
 @mixin hide-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -151,12 +126,15 @@
     width: $width;
     height: $width;
   }
+
   &::-webkit-scrollbar-track {
     background: $track-color;
   }
+
   &::-webkit-scrollbar-thumb {
     background: $thumb-color;
     border-radius: $width / 2;
+
     &:hover {
       background: var(--gvray-color-fill);
     }
