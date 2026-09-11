@@ -1,24 +1,53 @@
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import type { RouteObject } from 'react-router';
 import { createBrowserRouter } from 'react-router';
+import { lazyProgress } from '@/components/NavigationProgress';
 import PageLoading from '@/components/PageLoading';
 import { routes as appRoutes, type AppRouteObject } from './routes';
 
 /**
  * 组件路径映射表。
- * 未迁移的业务页面统一指向 PlaceholderPage，避免白屏。
  */
 const componentMap: Record<string, React.ComponentType<Record<string, never>>> = {
-  'layouts/BasicLayout': lazy(() => import('@/layouts/BasicLayout')),
-  'layouts/Layout': lazy(() => import('@/layouts/Layout')),
-  'pages/Login': lazy(() => import('@/pages/Login')),
-  'pages/Register': lazy(() => import('@/pages/PlaceholderPage')),
-  'pages/Dashboard': lazy(() => import('@/pages/Dashboard')),
-  'pages/Docs': lazy(() => import('@/pages/Docs')),
-  'pages/Profile': lazy(() => import('@/pages/Profile')),
-  'pages/Error/403': lazy(() => import('@/pages/Error/403')),
-  'pages/Error/404': lazy(() => import('@/pages/Error/404')),
-  'pages/PlaceholderPage': lazy(() => import('@/pages/PlaceholderPage')),
+  'layouts/BasicLayout': lazyProgress(() => import('@/layouts/BasicLayout')),
+  'layouts/Layout': lazyProgress(() => import('@/layouts/Layout')),
+  'pages/Login': lazyProgress(() => import('@/pages/Login')),
+  'pages/Register': lazyProgress(() => import('@/pages/Register')),
+  'pages/Dashboard': lazyProgress(() => import('@/pages/Dashboard')),
+  'pages/Docs': lazyProgress(() => import('@/pages/Docs')),
+  'pages/Profile': lazyProgress(() => import('@/pages/Profile')),
+  'pages/Error/403': lazyProgress(() => import('@/pages/Error/403')),
+  'pages/Error/404': lazyProgress(() => import('@/pages/Error/404')),
+  'pages/System/User': lazyProgress(() => import('@/pages/System/User')),
+  'pages/System/Role': lazyProgress(() => import('@/pages/System/Role')),
+  'pages/System/Permission': lazyProgress(() => import('@/pages/System/Permission')),
+  'pages/System/Menu': lazyProgress(() => import('@/pages/System/Menu')),
+  'pages/System/Department': lazyProgress(() => import('@/pages/System/Department')),
+  'pages/System/Position': lazyProgress(() => import('@/pages/System/Position')),
+  'pages/System/Dictionary': lazyProgress(() => import('@/pages/System/Dictionary')),
+  'pages/System/Dictionary/Items': lazyProgress(
+    () => import('@/pages/System/Dictionary/Items'),
+  ),
+  'pages/System/Config': lazyProgress(() => import('@/pages/System/Config')),
+  'pages/System/Notice': lazyProgress(() => import('@/pages/System/Notice')),
+  'pages/System/Log/Login': lazyProgress(() => import('@/pages/System/Log/Login')),
+  'pages/System/Log/Operation': lazyProgress(
+    () => import('@/pages/System/Log/Operation'),
+  ),
+  'pages/System/User/AuthRole': lazyProgress(
+    () => import('@/pages/System/User/AuthRole'),
+  ),
+  'pages/System/Role/AuthPermission': lazyProgress(
+    () => import('@/pages/System/Role/AuthPermission'),
+  ),
+  'pages/System/Role/AuthUser': lazyProgress(
+    () => import('@/pages/System/Role/AuthUser'),
+  ),
+  'pages/Monitor/Server': lazyProgress(() => import('@/pages/Monitor/Server')),
+  'pages/Monitor/OnlineUser': lazyProgress(() => import('@/pages/Monitor/OnlineUser')),
+  'pages/Monitor/CacheMonitor': lazyProgress(
+    () => import('@/pages/Monitor/CacheMonitor'),
+  ),
 };
 
 const LazyWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (

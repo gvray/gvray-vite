@@ -26,5 +26,9 @@ export function redirectToLogin() {
 
   // 清除可能存在的旧 redirectPath
   sessionStorage.removeItem('redirectPath');
-  window.location.href = createLoginRedirect(LOGIN_PATH, redirect);
+  // redirect 为根路径时无需携带：登录后默认即跳根路径，带 ?redirect=%2F 纯属冗余。
+  window.location.href =
+    redirect === '/'
+      ? LOGIN_PATH
+      : createLoginRedirect(LOGIN_PATH, redirect);
 }

@@ -7,6 +7,8 @@ export interface IconProps {
   name: IconKey;
   /** 尺寸，默认 16 */
   size?: number;
+  /** 是否旋转动画（仅 antd 图标生效） */
+  spin?: boolean;
   className?: string;
   style?: React.CSSProperties;
 }

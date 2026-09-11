@@ -1,5 +1,6 @@
 import { useFeedback } from '@/hooks';
 import { runtimeConfig } from '@/utils/runtime-config';
+import { getSafeLoginRedirect } from '@gvray/adminkit';
 import { ConfigProvider, Spin, theme } from 'antd';
 import { useNavigate, useSearchParams } from 'react-router';
 import styled from 'styled-components';
@@ -63,11 +64,7 @@ const LoginPage: React.FC = () => {
 
     message.success(result.message || '登录成功');
 
-    const redirect = searchParams.get('redirect');
-    const safeRedirect =
-      redirect && redirect.startsWith('/') && !redirect.startsWith('//')
-        ? redirect
-        : '/';
+    const safeRedirect = getSafeLoginRedirect(searchParams.toString());
     navigate(safeRedirect);
   };
 

@@ -1,4 +1,3 @@
-import NavigationProgress from '@/components/NavigationProgress';
 import { useAuth, useRouteMeta } from '@/hooks';
 import { RouteMetaProvider } from '@/providers';
 import { useSettingStore } from '@/stores';
@@ -15,7 +14,7 @@ import { Navigate, Outlet } from 'react-router';
  * - 路由级认证 / 权限守卫
  * - 文档标题（Helmet）
  * - 当前路由元信息注入（RouteMetaProvider，供下层视觉 Layout 及子组件消费）
- * - 页面切换进度（NavigationProgress）
+ * - 页面切换进度（lazyProgress 驱动）
  * - 全局视觉态类名（color-weak / gray-mode）
  *
  * 不含视觉布局壳（Sider/Header/Content 在子级 Layout），
@@ -57,7 +56,6 @@ const BasicLayout: React.FC = () => {
         <title>{documentTitle}</title>
       </Helmet>
       <div className={layoutClassName}>
-        <NavigationProgress />
         <Outlet />
       </div>
     </RouteMetaProvider>

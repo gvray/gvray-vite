@@ -1,3 +1,12 @@
+import {
+  getPermissionById,
+  queryPermissionFlat,
+  scanPermissions,
+  updatePermission,
+} from '@/services/permission';
+import { logger } from '@/utils';
+import { useCallback, useState } from 'react';
+
 /** 虚拟节点类型标记 */
 type VirtualNodeType = 'DOMAIN' | 'RESOURCE' | 'ACTION';
 
@@ -87,4 +96,53 @@ export function buildPermissionTree(
  */
 export function getDefaultExpandedKeys(tree: PermissionTreeNode[]): string[] {
   return tree.map((domain) => domain.permissionId);
+}
+
+export function usePermissionModel() {
+  const [loading, setLoading] = useState(false);
+  const [scanning, setScanning] = useState(false);
+
+  const fetchPermissionList = useCallback(async () => {
+    const res = await queryPermissionFlat();
+    if (res?.data) {
+      const tree = buildPermissionTree(res.data);
+      return { data: tree, total: res.data.length };
+    }
+    return { data: [] as PermissionTreeNode[], total: 0 };
+  }, []);
+
+  const fetchPermissionDetail = useCallback(async (permissionId: string) => {
+    const { data } = await getPermissionById(permissionId);
+    return data;
+  }, []);
+
+  const modifyPermission = useCallback(
+    async (permissionId: string, data: API.UpdatePermissionDto) => {
+      await updatePermission(permissionId, data);
+    },
+    [],
+  );
+
+  const syncPermissions = useCallback(async () => {
+    setScanning(true);
+    try {
+      const res = await scanPermissions();
+      return res;
+    } catch (error) {
+      logger.error(error);
+      throw error;
+    } finally {
+      setScanning(false);
+    }
+  }, []);
+
+  return {
+    loading,
+    setLoading,
+    scanning,
+    fetchPermissionList,
+    fetchPermissionDetail,
+    modifyPermission,
+    syncPermissions,
+  };
 }

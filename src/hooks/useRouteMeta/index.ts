@@ -23,7 +23,16 @@ export const useRouteMeta = (): RouteMeta & { auth?: boolean } => {
     pathname: string,
   ): RouteWithMeta | null => {
     for (const route of routeList) {
-      // 无 path 的 layout 路由不能直接匹配，但仍需遍历其 children
+      // 优先递归子路由：让更具体的叶子路由先于父级布局路由命中。
+      // 例如根路径 "/"，根布局路由与 Dashboard 路由的 path 同为 "/"，
+      // 需返回叶子 Dashboard 的 meta（auth 缺省=需登录）而非根布局的
+      // { auth: false }，否则 BasicLayout 守卫不触发，页面先渲染再跳转。
+      if (route.children) {
+        const found = findRouteByPath(route.children, pathname);
+        if (found) return found;
+      }
+
+      // 无 path 的 layout 路由不能直接匹配
       if (route.path) {
         // 精确匹配
         if (route.path === pathname) {
@@ -38,12 +47,6 @@ export const useRouteMeta = (): RouteMeta & { auth?: boolean } => {
             return route;
           }
         }
-      }
-
-      // 递归查找子路由
-      if (route.children) {
-        const found = findRouteByPath(route.children, pathname);
-        if (found) return found;
       }
     }
     return null;

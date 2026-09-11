@@ -1,7 +1,10 @@
 class ProgressManager {
   el: HTMLDivElement | null = null;
   progress = 0;
-  timer: any = null;
+  target = 0;
+  speed = 0.08;
+  rafId: number | null = null;
+  finishTimer: ReturnType<typeof setTimeout> | null = null;
   requests = 0;
 
   private readPrimaryColor(): string {
@@ -17,6 +20,8 @@ class ProgressManager {
   mount() {
     if (this.el) return;
 
+    const color = this.readPrimaryColor();
+
     this.el = document.createElement('div');
 
     Object.assign(this.el.style, {
@@ -25,13 +30,38 @@ class ProgressManager {
       left: '0',
       height: '2px',
       width: '0%',
-      background: this.readPrimaryColor(),
+      background: color,
+      boxShadow: `0 0 10px ${color}`,
       zIndex: '99999',
       opacity: '0',
-      transition: 'width 0.2s ease, opacity 0.2s ease',
+      transition: 'opacity 0.35s ease',
+      willChange: 'width, opacity',
     });
 
     document.body.appendChild(this.el);
+  }
+
+  private loop = () => {
+    if (!this.el) return;
+    const diff = this.target - this.progress;
+    if (Math.abs(diff) < 0.2) {
+      this.progress = this.target;
+    } else {
+      this.progress += diff * this.speed;
+    }
+    this.el.style.width = `${this.progress}%`;
+
+    if (this.progress !== this.target) {
+      this.rafId = requestAnimationFrame(this.loop);
+    } else {
+      this.rafId = null;
+    }
+  };
+
+  private animate() {
+    if (this.rafId == null) {
+      this.rafId = requestAnimationFrame(this.loop);
+    }
   }
 
   show() {
@@ -41,41 +71,37 @@ class ProgressManager {
 
   hide() {
     if (!this.el) return;
-
     this.el.style.opacity = '0';
-
     setTimeout(() => {
       if (this.el) {
         this.el.style.width = '0%';
+        this.progress = 0;
+        this.target = 0;
       }
-    }, 200);
-  }
-
-  render() {
-    if (!this.el) return;
-    this.el.style.width = `${this.progress}%`;
+    }, 350);
   }
 
   start() {
     this.mount();
     this.show();
 
-    if (this.timer) clearInterval(this.timer);
+    if (this.finishTimer) {
+      clearTimeout(this.finishTimer);
+      this.finishTimer = null;
+    }
 
-    this.progress = Math.max(this.progress, 20);
-    this.render();
-
-    this.timer = setInterval(() => {
-      if (this.requests > 0) return;
-
-      if (this.progress < 90) {
-        this.progress += Math.random() * 8;
-        this.render();
-      }
-    }, 120);
+    // 缓动逼近加载区(90%),渐近不触底,自然减速
+    this.speed = 0.08;
+    this.target = 90;
+    this.progress = Math.max(this.progress, 10);
+    this.animate();
   }
 
   inc() {
+    if (this.finishTimer) {
+      clearTimeout(this.finishTimer);
+      this.finishTimer = null;
+    }
     this.requests++;
     this.start();
   }
@@ -84,26 +110,39 @@ class ProgressManager {
     this.requests = Math.max(0, this.requests - 1);
 
     if (this.requests === 0) {
-      this.finish();
+      if (this.finishTimer) clearTimeout(this.finishTimer);
+      this.finishTimer = setTimeout(() => {
+        this.finishTimer = null;
+        this.finish();
+      }, 100);
     }
   }
 
   finish() {
-    this.progress = 100;
-    this.render();
+    if (this.finishTimer) {
+      clearTimeout(this.finishTimer);
+      this.finishTimer = null;
+    }
+
+    // 加速收尾到 100%,再淡出
+    this.speed = 0.3;
+    this.target = 100;
+    this.animate();
 
     setTimeout(() => {
       this.hide();
       this.reset();
-    }, 120);
+    }, 260);
   }
 
   reset() {
-    this.progress = 0;
-
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
+    if (this.rafId != null) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+    if (this.finishTimer) {
+      clearTimeout(this.finishTimer);
+      this.finishTimer = null;
     }
   }
 }

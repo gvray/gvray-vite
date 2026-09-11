@@ -1,5 +1,6 @@
-import { Spin, theme } from 'antd';
-import React from 'react';
+import { ConfigProvider, Spin, theme } from 'antd';
+import React, { useMemo } from 'react';
+import { useSettingStore } from '@/stores';
 
 export type PageLoadingProps = {
   /**
@@ -14,7 +15,9 @@ export type PageLoadingProps = {
   style?: React.CSSProperties;
 };
 
-const PageLoading: React.FC<PageLoadingProps> = ({
+// 内层：在自带的 ConfigProvider 上下文内读取主题 token，
+// 保证 boot 阶段（外层 ConfigProvider 尚未挂载）也能拿到正确的主题色 / 昼夜色。
+const PageLoadingInner: React.FC<PageLoadingProps> = ({
   fullScreen = true,
   tip = '加载中…',
   size = 'large',
@@ -32,19 +35,43 @@ const PageLoading: React.FC<PageLoadingProps> = ({
         justifyContent: 'center',
         alignItems: 'center',
         gap: 16,
-        ...(fullScreen ? { minHeight: '100vh' } : { flex: 1 }),
+        color: token.colorTextSecondary,
+        ...(fullScreen
+          ? { minHeight: '100vh', background: token.colorBgContainer }
+          : { flex: 1 }),
         ...style,
       }}
     >
       <Spin size={size} />
       {tip ? (
-        <span
-          style={{ color: token.colorTextSecondary, fontSize: token.fontSize }}
-        >
+        <span style={{ color: token.colorTextSecondary, fontSize: token.fontSize }}>
           {tip}
         </span>
       ) : null}
     </div>
+  );
+};
+
+const PageLoading: React.FC<PageLoadingProps> = (props) => {
+  const colorPrimary = useSettingStore((s) => s.colorPrimary);
+  const themeMode = useSettingStore((s) => s.theme);
+
+  // 与 useAppTheme 的解析逻辑一致：system 回退到系统偏好。
+  const dark = useMemo(() => {
+    if (themeMode === 'dark') return true;
+    if (themeMode === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }, [themeMode]);
+
+  return (
+    <ConfigProvider
+      theme={{
+        algorithm: dark ? theme.darkAlgorithm : theme.defaultAlgorithm,
+        token: { colorPrimary, colorInfo: colorPrimary },
+      }}
+    >
+      <PageLoadingInner {...props} />
+    </ConfigProvider>
   );
 };
 

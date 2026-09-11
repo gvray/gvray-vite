@@ -2,7 +2,7 @@ import React from 'react';
 import { iconMap } from './map';
 import type { IconProps } from './types';
 
-const Icon: React.FC<IconProps> = ({ name, size = 16, className, style }) => {
+const Icon: React.FC<IconProps> = ({ name, size = 16, spin, className, style }) => {
   const config = iconMap[name];
 
   if (!config) {
@@ -12,7 +12,11 @@ const Icon: React.FC<IconProps> = ({ name, size = 16, className, style }) => {
   if (config.type === 'antd') {
     const Component = config.component;
     return (
-      <Component className={className} style={{ fontSize: size, ...style }} />
+      <Component
+        className={className}
+        style={{ fontSize: size, ...style }}
+        spin={spin}
+      />
     );
   }
 

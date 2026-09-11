@@ -14,7 +14,6 @@ import FormLoading from './FormLoading';
 import Icon from './Icon';
 import IconPicker from './Icon/IconPicker';
 import IconPreview from './Icon/IconPreview';
-import NavigationProgress from './NavigationProgress';
 import PageContainer from './PageContainer';
 import PageLoading from './PageLoading';
 import PagePlaceholder from './PagePlaceholder';
@@ -39,7 +38,6 @@ export {
   Icon,
   IconPicker,
   IconPreview,
-  NavigationProgress,
   PageContainer,
   PageLoading,
   PagePlaceholder,
