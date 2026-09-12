@@ -1,8 +1,17 @@
 import { AuthButton, Icon, PageContainer, TablePro } from '@/components';
 import { type TableProRef } from '@/components/TablePro';
 import { PERM } from '@/constants';
+import { normalizeListResponse } from '@gvray/adminkit';
+import { formatPercentValue } from '@gvray/formatkit';
 import { useFeedback } from '@/hooks';
-import { callRef, formatBytes, logger } from '@/utils';
+import {
+  callRef,
+  confirmAction,
+  formatBytes,
+  formatDuration,
+  getRateColor,
+  logger,
+} from '@/utils';
 import {
   Card,
   Col,
@@ -54,12 +63,9 @@ const CacheMonitorPage: React.FC = () => {
   };
 
   const handleDeleteKey = (record: API.CacheKeyInfoDto) => {
-    Modal.confirm({
-      title: '系统提示',
+    confirmAction({
       content: `是否确认删除缓存 key "${record.key}"？`,
-      okText: '确认',
       okButtonProps: { danger: true },
-      cancelText: '取消',
       async onOk() {
         try {
           await handleClearCache(record.key);
@@ -95,12 +101,11 @@ const CacheMonitorPage: React.FC = () => {
     const trimmed = clearPattern.trim();
     const pattern = trimmed || '*';
     if (!trimmed) {
-      Modal.confirm({
+      confirmAction({
         title: '危险操作',
         content: '您即将清空所有缓存，此操作不可恢复，是否继续？',
         okText: '确认清空',
         okButtonProps: { danger: true },
-        cancelText: '取消',
         async onOk() {
           await doClearCache(pattern);
         },
@@ -120,16 +125,7 @@ const CacheMonitorPage: React.FC = () => {
               if (typeof ttl !== 'number') return '-';
               if (ttl === -1) return <Tag>永久</Tag>;
               if (ttl === -2) return <Tag color="red">已过期</Tag>;
-              const hours = Math.floor(ttl / 3600);
-              const minutes = Math.floor((ttl % 3600) / 60);
-              const seconds = ttl % 60;
-              if (hours > 0) {
-                return `${hours}h ${minutes}m ${seconds}s`;
-              }
-              if (minutes > 0) {
-                return `${minutes}m ${seconds}s`;
-              }
-              return `${seconds}s`;
+              return formatDuration(ttl);
             },
           };
         }
@@ -176,12 +172,7 @@ const CacheMonitorPage: React.FC = () => {
         page: params?.page,
         pageSize: params?.pageSize,
       });
-      return {
-        data: {
-          items: res.data?.items ?? [],
-          total: res.data?.total ?? 0,
-        },
-      };
+      return { data: normalizeListResponse<API.CacheKeyInfoDto>(res.data) };
     },
     [pattern, fetchCacheKeys],
   );
@@ -237,15 +228,9 @@ const CacheMonitorPage: React.FC = () => {
             >
               <Statistic
                 title="命中率"
-                value={stats ? Math.round(stats.hitRate * 100) : 0}
-                suffix="%"
+                value={stats ? formatPercentValue(stats.hitRate * 100, { digits: 0 }) : '0%'}
                 valueStyle={{
-                  color:
-                    stats && stats.hitRate >= 0.9
-                      ? '#52c41a'
-                      : stats && stats.hitRate >= 0.7
-                      ? '#faad14'
-                      : '#ff4d4f',
+                  color: stats ? getRateColor(stats.hitRate) : '#ff4d4f',
                 }}
               />
             </Card>

@@ -10,6 +10,7 @@ import {
   Typography,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { formatDateTime } from '@/utils';
 import styles from './index.module.scss';
 import { useProfileLoginLogModel } from './model';
 
@@ -24,7 +25,7 @@ const TabLoginLog: React.FC = () => {
       title: '登录时间',
       dataIndex: 'createdAt',
       width: 180,
-      render: (text: string) => new Date(text).toLocaleString(),
+      render: (text: string) => formatDateTime(text),
     },
     {
       title: 'IP 地址',

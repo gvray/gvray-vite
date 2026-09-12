@@ -12,8 +12,8 @@ import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import type { DictOption } from '@/types/dict';
-import { callRef, logger } from '@/utils';
-import { Modal, Space } from 'antd';
+import { callRef, confirmAction, logger } from '@/utils';
+import { Space } from 'antd';
 import { useRef } from 'react';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
 import { getPositionColumns } from './columns';
@@ -40,12 +40,8 @@ const PositionPage = () => {
   };
 
   const handleDelete = async (record: API.PositionResponseDto) => {
-    Modal.confirm({
-      title: `系统提示`,
-      icon: <Icon name="ExclamationCircleOutlined" />,
+    confirmAction({
       content: `是否确认删除岗位“${record.name}”？`,
-      okText: '确认',
-      cancelText: '取消',
       async onOk() {
         try {
           await removePosition(String(record.positionId));

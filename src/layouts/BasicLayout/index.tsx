@@ -1,5 +1,6 @@
 import { useAuth, useRouteMeta } from '@/hooks';
 import { RouteMetaProvider } from '@/providers';
+import { hasPermissions } from '@gvray/adminkit';
 import { useSettingStore } from '@/stores';
 import { redirectToLogin } from '@/utils';
 import { runtimeConfig } from '@/utils/runtime-config';
@@ -42,9 +43,7 @@ const BasicLayout: React.FC = () => {
   }
 
   if (isLogin && meta.permissions && meta.permissions.length > 0) {
-    const hasPermission =
-      permissions?.includes('*:*:*') ||
-      meta.permissions.every((permission) => permissions?.includes(permission));
+    const hasPermission = hasPermissions(permissions, meta.permissions);
     if (!hasPermission) {
       return <Navigate to="/403" replace />;
     }

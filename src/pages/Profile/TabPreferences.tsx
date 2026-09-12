@@ -5,6 +5,7 @@ import {
   queryProfileSettings,
   updateProfileSettings,
 } from '@/services/profile';
+import { shallowMerge } from '@gvray/eskit';
 import { useSettingStore } from '@/stores';
 import { runtimeConfig } from '@/utils/runtime-config';
 import type { UserSettings } from '@/constants/runtime-settings';
@@ -84,23 +85,7 @@ const TabPreferences: React.FC = () => {
 
   /** 变更后排队同步到服务端（嵌套字段做一层浅合并），500ms 防抖 */
   const queueSync = useCallback((patch: Record<string, unknown>) => {
-    const prev = pendingRef.current;
-    const next: Record<string, unknown> = { ...prev };
-    for (const [key, val] of Object.entries(patch)) {
-      if (
-        typeof val === 'object' &&
-        val !== null &&
-        !Array.isArray(val) &&
-        typeof prev[key] === 'object' &&
-        prev[key] !== null &&
-        !Array.isArray(prev[key])
-      ) {
-        next[key] = { ...(prev[key] as Record<string, unknown>), ...val };
-      } else {
-        next[key] = val;
-      }
-    }
-    pendingRef.current = next;
+    pendingRef.current = shallowMerge(pendingRef.current, patch);
 
     if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
     flushTimerRef.current = setTimeout(() => {

@@ -1,5 +1,6 @@
 import { Icon } from '@/components';
 import type { SiderTheme } from '@/constants/runtime-settings';
+import { getParentPaths } from '@gvray/adminkit';
 import { useAuthStore, useSettingStore } from '@/stores';
 import { runtimeConfig } from '@/utils/runtime-config';
 import type { MenuProps } from 'antd';
@@ -96,16 +97,7 @@ const SideNav: React.FC<SideNavProps> = ({
   useEffect(() => {
     const pathname = location.pathname;
     setSelectedKeys([pathname]);
-
-    const segments = pathname.split('/').filter(Boolean);
-    const keys: string[] = [];
-    let path = '';
-
-    for (let i = 0; i < segments.length - 1; i++) {
-      path += `/${segments[i]}`;
-      keys.push(path);
-    }
-    setOpenKeys(keys);
+    setOpenKeys(getParentPaths(pathname));
   }, [location.pathname]);
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {

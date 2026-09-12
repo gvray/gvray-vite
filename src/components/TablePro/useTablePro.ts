@@ -1,3 +1,4 @@
+import { normalizeListResponse } from '@gvray/adminkit';
 import { useSettingStore } from '@/stores';
 import { logger } from '@/utils';
 import { useEffect, useRef, useState } from 'react';
@@ -37,10 +38,9 @@ export const useTablePro = (
         ...paramsRef.current,
         ...(isTree ? {} : paginationParams ?? pagination),
       });
-      setListData([...(data.items ?? data)]);
-      if (data.total !== undefined) {
-        setTotal(data.total ?? data.length);
-      }
+      const { items, total } = normalizeListResponse<any>(data);
+      setListData(items);
+      setTotal(total);
     } catch (error) {
       logger.error(error);
       setListData([]);

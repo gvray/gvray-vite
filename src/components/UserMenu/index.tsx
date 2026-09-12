@@ -1,3 +1,4 @@
+import { getAvatarInitial } from '@gvray/formatkit';
 import { useFeedback } from '@/hooks';
 import { logout } from '@/services/auth';
 import { useAuthStore, useSettingStore } from '@/stores';
@@ -72,8 +73,9 @@ const UserMenu: React.FC = () => {
     runtimeConfig.get().user.defaultAvatar ||
     DEFAULT_AVATAR_URL ||
     undefined;
-  const avatarText =
-    (userProfile?.nickname?.trim() || profile?.username)?.[0] ?? '?';
+  const avatarText = getAvatarInitial(
+    userProfile?.nickname?.trim() || profile?.username,
+  );
 
   return (
     <Dropdown

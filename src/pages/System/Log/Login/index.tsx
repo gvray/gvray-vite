@@ -12,8 +12,8 @@ import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import type { DictOption } from '@/types/dict';
-import { callRef, logger } from '@/utils';
-import { Modal, Space } from 'antd';
+import { callRef, confirmAction, logger } from '@/utils';
+import { Space } from 'antd';
 import React, { useRef } from 'react';
 import { getLoginLogColumns } from './columns';
 import { useLoginLog } from './model';
@@ -74,46 +74,38 @@ const LoginLog: React.FC = () => {
   });
 
   const handleDelete = async () => {
-    Modal.confirm({
-      title: '系统提示',
-      icon: <Icon name="ExclamationCircleOutlined" />,
+    confirmAction({
       content: '是否确认删除选中的登录日志？此操作不可恢复！',
-      okText: '确认',
-      cancelText: '取消',
-      onOk() {
+      async onOk() {
         setDeleting(true);
-        return batchRemoveLoginLogs(selectedRows as number[])
-          .then(() => {
-            setSelectedRows([]);
-            message.success('删除成功');
-            tableReload();
-          })
-          .catch((error) => {
-            logger.error(error);
-          })
-          .finally(() => setDeleting(false));
+        try {
+          await batchRemoveLoginLogs(selectedRows as number[]);
+          setSelectedRows([]);
+          message.success('删除成功');
+          tableReload();
+        } catch (error) {
+          logger.error(error);
+        } finally {
+          setDeleting(false);
+        }
       },
     });
   };
 
   const handleClear = async () => {
-    Modal.confirm({
-      title: '系统提示',
-      icon: <Icon name="ExclamationCircleOutlined" />,
+    confirmAction({
       content: '是否确认清理所有登录日志？此操作不可恢复！',
-      okText: '确认',
-      cancelText: '取消',
-      onOk() {
+      async onOk() {
         setClearing(true);
-        return clearLoginLogs()
-          .then(() => {
-            message.success('清理成功');
-            tableReload();
-          })
-          .catch((error) => {
-            logger.error(error);
-          })
-          .finally(() => setClearing(false));
+        try {
+          await clearLoginLogs();
+          message.success('清理成功');
+          tableReload();
+        } catch (error) {
+          logger.error(error);
+        } finally {
+          setClearing(false);
+        }
       },
     });
   };

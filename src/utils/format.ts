@@ -1,34 +1,12 @@
+import { formatDuration as formatKitDuration, formatFileSize } from '@gvray/formatkit';
+
 /**
  * 字节数转换为可读格式
  * @param bytes 字节数
  * @returns 如 "1.23 GB"
  */
 export function formatBytes(bytes: number): string {
-  if (bytes === 0) return '0 B';
-  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-  const k = 1024;
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  const unit = units[Math.min(i, units.length - 1)];
-  const value = bytes / Math.pow(k, i);
-  return `${value.toFixed(2)} ${unit}`;
-}
-
-/**
- * 秒数转换为 "X 天 X 小时 X 分" 格式
- * @param seconds 秒数
- * @returns 如 "2 天 3 小时 15 分"
- */
-export function formatUptime(seconds: number): string {
-  const days = Math.floor(seconds / 86400);
-  const hours = Math.floor((seconds % 86400) / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-
-  const parts: string[] = [];
-  if (days > 0) parts.push(`${days} 天`);
-  if (hours > 0) parts.push(`${hours} 小时`);
-  if (minutes > 0 || parts.length === 0) parts.push(`${minutes} 分`);
-
-  return parts.join(' ');
+  return formatFileSize(bytes);
 }
 
 /**
@@ -40,4 +18,36 @@ export function getUsageColor(percent: number): string {
   if (percent < 60) return '#52c41a'; // 绿
   if (percent < 80) return '#faad14'; // 黄
   return '#f5222d'; // 红
+}
+
+/**
+ * 秒级时长格式化为 "Xh Xm Xs"。
+ * @param seconds 秒数
+ */
+export function formatDuration(seconds: number): string {
+  return formatKitDuration(seconds);
+}
+
+/**
+ * 计算 part / total 的百分比。
+ * @param part 部分值
+ * @param total 总值
+ * @param options fallback 在 total 无效时返回
+ */
+export function calculatePercentage(
+  part: number,
+  total: number,
+  options: { fallback?: number } = {},
+): number {
+  if (!total || total <= 0) return options.fallback ?? 0;
+  return (part / total) * 100;
+}
+
+/**
+ * 根据命中率（0-1）获取阈值颜色。
+ */
+export function getRateColor(rate: number): string {
+  if (rate >= 0.9) return '#52c41a';
+  if (rate >= 0.7) return '#faad14';
+  return '#ff4d4f';
 }

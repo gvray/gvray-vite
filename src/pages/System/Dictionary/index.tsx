@@ -13,8 +13,8 @@ import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import type { DictOption } from '@/types/dict';
-import { callRef, logger } from '@/utils';
-import { Modal, Space, Tag } from 'antd';
+import { callRef, confirmAction, logger } from '@/utils';
+import { Space, Tag } from 'antd';
 import { useRef } from 'react';
 import { useNavigate } from 'react-router';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
@@ -44,9 +44,8 @@ const DictionaryPage = () => {
   };
 
   const handleDelete = async (record: API.DictionaryTypeResponseDto) => {
-    Modal.confirm({
-      title: `删除确认`,
-      icon: <Icon name="ExclamationCircleOutlined" />,
+    confirmAction({
+      title: '删除确认',
       content: (
         <div>
           <p>
@@ -64,8 +63,7 @@ const DictionaryPage = () => {
         </div>
       ),
       okText: '确认删除',
-      cancelText: '取消',
-      okType: 'danger',
+      okButtonProps: { danger: true },
       async onOk() {
         try {
           await removeDictionaryType(record.typeId);

@@ -7,6 +7,7 @@ import {
   queryMenuOptions,
   updateMenu,
 } from '@/services/menu';
+import { excludeByKey } from '@gvray/eskit';
 import type { DictOption } from '@/types/dict';
 import { logger } from '@/utils';
 import { createFormLayout, VIRTUAL_ROOT_ID } from '@gvray/adminkit';
@@ -108,10 +109,10 @@ const UpdateFormFunction: React.ForwardRefRenderFunction<
   }, [visible, editingId, form, message]);
 
   // 过滤自身：父级选项里不能选自己（防止循环引用）
-  const processedParentList = useMemo(() => {
-    if (!parentOptions?.length) return [];
-    return parentOptions.filter((item) => item.menuId !== menuId);
-  }, [parentOptions, menuId]);
+  const processedParentList = useMemo(
+    () => excludeByKey(parentOptions, 'menuId', menuId),
+    [parentOptions, menuId],
+  );
 
   const reset = () => {
     form.resetFields();

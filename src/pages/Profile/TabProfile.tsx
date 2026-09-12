@@ -1,6 +1,8 @@
 import { Icon } from '@/components';
+import { maskPhone } from '@gvray/formatkit';
 import { queryProfile } from '@/services/profile';
 import { useAuthStore } from '@/stores';
+import { formatDateTime } from '@/utils';
 import {
   Alert,
   Card,
@@ -45,9 +47,7 @@ const TabProfile: React.FC<TabProfileProps> = ({ profile }) => {
   const phone = (userProfile?.phone as unknown as string) || '';
   const emailBound = !!email;
   const phoneBound = !!phone;
-  const maskedPhone = phone
-    ? phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
-    : '';
+  const maskedPhone = maskPhone(phone);
 
   return (
     <>
@@ -163,9 +163,7 @@ const TabProfile: React.FC<TabProfileProps> = ({ profile }) => {
           </Descriptions.Item>
           <Descriptions.Item label="更新时间">
             <span className={styles.readonlyField}>
-              {userProfile?.updatedAt
-                ? new Date(userProfile.updatedAt).toLocaleString()
-                : '-'}{' '}
+              {formatDateTime(userProfile?.updatedAt)}{' '}
               <Icon name="LockOutlined" />
             </span>
           </Descriptions.Item>

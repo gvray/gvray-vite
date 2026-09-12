@@ -12,8 +12,8 @@ import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import type { DictOption } from '@/types/dict';
-import { callRef, logger } from '@/utils';
-import { Modal, Space, Tag } from 'antd';
+import { callRef, confirmAction, logger } from '@/utils';
+import { Space, Tag } from 'antd';
 import { useRef, useState } from 'react';
 import { getConfigColumns } from './columns';
 import ConfigValueViewer from './components/ConfigValueViewer';
@@ -45,21 +45,16 @@ const ConfigPage = () => {
   };
 
   const handleDelete = (record: API.ConfigResponseDto) => {
-    Modal.confirm({
-      title: `系统提示`,
-      icon: <Icon name="ExclamationCircleOutlined" />,
+    confirmAction({
       content: `是否确认删除配置"${record.name}"的数据项？`,
-      okText: '确认',
-      cancelText: '取消',
-      onOk() {
-        return removeConfig(record.configId)
-          .then(() => {
-            tableReload();
-            message.success(`删除成功`);
-          })
-          .catch((error) => {
-            logger.error(error);
-          });
+      async onOk() {
+        try {
+          await removeConfig(record.configId);
+          tableReload();
+          message.success(`删除成功`);
+        } catch (error) {
+          logger.error(error);
+        }
       },
     });
   };

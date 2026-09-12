@@ -1,3 +1,4 @@
+import { matchRoutePath } from '@gvray/adminkit';
 import { routes } from '@/router/routes';
 import type { RouteMeta } from '@/types/route';
 import { useLocation } from 'react-router';
@@ -40,12 +41,8 @@ export const useRouteMeta = (): RouteMeta & { auth?: boolean } => {
         }
 
         // 动态路由匹配（如 /system/user-auth/role/:userId）
-        if (route.path.includes(':')) {
-          const routePattern = route.path.replace(/:[^/]+/g, '[^/]+');
-          const regex = new RegExp(`^${routePattern}$`);
-          if (regex.test(pathname)) {
-            return route;
-          }
+        if (matchRoutePath(route.path, pathname)) {
+          return route;
         }
       }
     }

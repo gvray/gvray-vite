@@ -1,3 +1,4 @@
+import { caseInsensitiveIncludes } from '@gvray/formatkit';
 import { Input, Tabs } from 'antd';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -65,9 +66,7 @@ const IconPreview: React.FC<IconPreviewProps> = ({ onChange }) => {
     key: type,
     label: type.toUpperCase(),
     children: renderIcons(
-      names.filter((n) =>
-        (n as string).toLowerCase().includes(search.toLowerCase()),
-      ),
+      names.filter((n) => caseInsensitiveIncludes(n as string, search)),
     ),
   }));
 

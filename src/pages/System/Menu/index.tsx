@@ -11,8 +11,8 @@ import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import type { DictOption } from '@/types/dict';
-import { callRef, logger } from '@/utils';
-import { Modal, Space, Tag } from 'antd';
+import { callRef, confirmAction, logger } from '@/utils';
+import { Space, Tag } from 'antd';
 import { useCallback, useRef, useState } from 'react';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
 import { getMenuColumns } from './columns';
@@ -58,21 +58,16 @@ const MenuPage = () => {
   };
 
   const handleDelete = (record: API.MenuTreeNodeDto) => {
-    Modal.confirm({
-      title: '系统提示',
-      icon: <Icon name="ExclamationCircleOutlined" />,
+    confirmAction({
       content: `是否确认删除菜单"${record.name}"？`,
-      okText: '确认',
-      cancelText: '取消',
-      onOk() {
-        return removeMenu(record.menuId)
-          .then(() => {
-            tableReload();
-            message.success('删除成功');
-          })
-          .catch((error) => {
-            logger.error(error);
-          });
+      async onOk() {
+        try {
+          await removeMenu(record.menuId);
+          tableReload();
+          message.success('删除成功');
+        } catch (error) {
+          logger.error(error);
+        }
       },
     });
   };

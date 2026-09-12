@@ -11,10 +11,11 @@ import { type TableProRef } from '@/components/TablePro';
 import { PERM } from '@/constants';
 import { useAuth, useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
+import { hasPermissions } from '@gvray/adminkit';
 import type { DictOption } from '@/types/dict';
-import { callRef, logger } from '@/utils';
+import { callRef, confirmAction, logger } from '@/utils';
 import type { MenuProps } from 'antd';
-import { Button, Dropdown, Modal, Space } from 'antd';
+import { Button, Dropdown, Space } from 'antd';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { getRoleColumns } from './columns';
@@ -36,12 +37,8 @@ const RolePage = () => {
   const { fetchRoleList, removeRole } = useRoleModel();
 
   // 权限检查辅助函数
-  const hasPermission = (requiredPerms: string[]) => {
-    if (!requiredPerms || requiredPerms.length === 0) return true;
-    if (!permissions || permissions.length === 0) return false;
-    if (permissions.includes('*:*:*')) return true;
-    return requiredPerms.every((p) => permissions.includes(p));
-  };
+  const hasPermission = (requiredPerms: string[]) =>
+    hasPermissions(permissions, requiredPerms);
 
   // 数据权限弹窗状态
   const [dataPermissionVisible, setDataPermissionVisible] = useState(false);
@@ -58,21 +55,16 @@ const RolePage = () => {
   };
 
   const handleDelete = async (record: API.RoleResponseDto) => {
-    Modal.confirm({
-      title: `系统提示`,
-      icon: <Icon name="ExclamationCircleOutlined" />,
+    confirmAction({
       content: `是否确认删除角色编号为"${record.roleId}"的数据项？`,
-      okText: '确认',
-      cancelText: '取消',
-      onOk() {
-        return removeRole(record.roleId)
-          .then(() => {
-            tableReload();
-            message.success(`删除成功`);
-          })
-          .catch((error) => {
-            logger.error(error);
-          });
+      async onOk() {
+        try {
+          await removeRole(record.roleId);
+          tableReload();
+          message.success(`删除成功`);
+        } catch (error) {
+          logger.error(error);
+        }
       },
     });
   };

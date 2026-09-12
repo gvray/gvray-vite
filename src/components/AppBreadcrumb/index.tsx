@@ -1,4 +1,5 @@
 import { Icon } from '@/components';
+import { matchRoutePath } from '@gvray/adminkit';
 import { routes } from '@/router/routes';
 import { useSettingStore } from '@/stores';
 import { Breadcrumb } from 'antd';
@@ -37,9 +38,7 @@ function buildBreadcrumbs(
       if (route.path === '*' || route.path.includes('*')) continue;
 
       // 动态路由匹配
-      const pattern = route.path.replace(/:[^/]+/g, '[^/]+');
-      const regex = new RegExp(`^${pattern}$`);
-      const isExact = regex.test(pathname);
+      const isExact = matchRoutePath(route.path, pathname);
       const isPrefix = pathname.startsWith(route.path.replace(/:[^/]+/g, ''));
 
       if (isExact || isPrefix) {

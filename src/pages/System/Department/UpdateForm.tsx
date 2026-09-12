@@ -8,6 +8,7 @@ import {
   queryDepartmentOptions,
   updateDepartment,
 } from '@/services/department';
+import { excludeByKey } from '@gvray/eskit';
 import type { DictOption } from '@/types/dict';
 import { logger } from '@/utils';
 import { createFormLayout, VIRTUAL_ROOT_ID } from '@gvray/adminkit';
@@ -94,10 +95,10 @@ const UpdateFormFunction: React.ForwardRefRenderFunction<
   }, [visible, editingId, form, message]);
 
   // 过滤自身：上级部门里不能选自己（防止循环引用）
-  const processedParentList = useMemo(() => {
-    if (!departmentList?.length) return [];
-    return departmentList.filter((item) => item.departmentId !== editingId);
-  }, [departmentList, editingId]);
+  const processedParentList = useMemo(
+    () => excludeByKey(departmentList, 'departmentId', editingId),
+    [departmentList, editingId],
+  );
 
   const reset = () => {
     form.resetFields();

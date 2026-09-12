@@ -11,8 +11,9 @@ import { type TableProRef } from '@/components/TablePro';
 import { PERM } from '@/constants';
 import { useAuth, useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
+import { hasPermissions } from '@gvray/adminkit';
 import type { DictOption } from '@/types/dict';
-import { callRef, logger } from '@/utils';
+import { callRef, confirmAction, logger } from '@/utils';
 import type { MenuProps } from 'antd';
 import { Button, Dropdown, Form, Input, Modal, Space } from 'antd';
 import { useRef, useState } from 'react';
@@ -47,21 +48,16 @@ const UserPage = () => {
   };
 
   const handleDelete = async (record: API.UserResponseDto) => {
-    Modal.confirm({
-      title: `系统提示`,
-      icon: <Icon name="ExclamationCircleOutlined" />,
+    confirmAction({
       content: `是否确认删除用户编号为"${record.userId}"的数据项？`,
-      okText: '确认',
-      cancelText: '取消',
-      onOk() {
-        return removeUser(record.userId)
-          .then(() => {
-            tableReload();
-            message.success(`删除成功`);
-          })
-          .catch((error) => {
-            logger.error(error);
-          });
+      async onOk() {
+        try {
+          await removeUser(record.userId);
+          tableReload();
+          message.success(`删除成功`);
+        } catch (error) {
+          logger.error(error);
+        }
       },
     });
   };
@@ -103,12 +99,8 @@ const UserPage = () => {
   };
 
   // 权限检查辅助函数
-  const hasPermission = (requiredPerms: string[]) => {
-    if (!requiredPerms || requiredPerms.length === 0) return true;
-    if (!permissions || permissions.length === 0) return false;
-    if (permissions.includes('*:*:*')) return true;
-    return requiredPerms.every((p) => permissions.includes(p));
-  };
+  const hasPermission = (requiredPerms: string[]) =>
+    hasPermissions(permissions, requiredPerms);
 
   // 更多操作菜单
   const getMoreMenu = (record: API.UserResponseDto): MenuProps['items'] => {

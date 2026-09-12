@@ -1,4 +1,5 @@
 import AppBreadcrumb from './AppBreadcrumb';
+import AppLoading from './AppLoading';
 import AppWatermark from './AppWatermark';
 import AuthButton from './AuthButton';
 import BackButton from './BackButton';
@@ -23,6 +24,7 @@ import TablePro from './TablePro';
 
 export {
   AppBreadcrumb,
+  AppLoading,
   AppWatermark,
   AuthButton,
   BackButton,

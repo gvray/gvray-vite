@@ -7,20 +7,8 @@ class ProgressManager {
   finishTimer: ReturnType<typeof setTimeout> | null = null;
   requests = 0;
 
-  private readPrimaryColor(): string {
-    if (typeof window !== 'undefined') {
-      const val = getComputedStyle(document.documentElement).getPropertyValue(
-        '--gvray-color-primary',
-      );
-      if (val?.trim()) return val.trim();
-    }
-    return '#1677ff';
-  }
-
   mount() {
     if (this.el) return;
-
-    const color = this.readPrimaryColor();
 
     this.el = document.createElement('div');
 
@@ -30,15 +18,18 @@ class ProgressManager {
       left: '0',
       height: '2px',
       width: '0%',
-      background: color,
-      boxShadow: `0 0 10px ${color}`,
+      background: 'var(--gvray-color-primary, #1677ff)',
+      boxShadow: '0 0 10px var(--gvray-color-primary, #1677ff)',
       zIndex: '99999',
       opacity: '0',
       transition: 'opacity 0.35s ease',
       willChange: 'width, opacity',
     });
 
-    document.body.appendChild(this.el);
+    // antd ConfigProvider 的 cssVar 作用域挂在 .ant-app 根节点（非 :root），
+    // 进度条必须挂到该作用域内才能解析 --gvray-color-primary。
+    const container = document.querySelector('.ant-app') || document.body;
+    container.appendChild(this.el);
   }
 
   private loop = () => {

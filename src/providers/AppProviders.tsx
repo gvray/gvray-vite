@@ -1,6 +1,7 @@
 import { bootstrap } from '@/app/bootstrap';
-import PageLoading from '@/components/PageLoading';
+import AppLoading from '@/components/AppLoading';
 import { useAppTheme } from '@/hooks';
+import { toggleClass } from '@gvray/domkit';
 import { useSettingStore } from '@/stores';
 import { runtimeConfig } from '@/utils/runtime-config';
 import { App, ConfigProvider } from 'antd';
@@ -46,12 +47,12 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({
 
   // 全局样式类（色弱 / 灰度）挂到 body，比 Layout 级作用更早
   useEffect(() => {
-    document.body.classList.toggle('color-weak', !!colorWeak);
-    document.body.classList.toggle('gray-mode', !!grayMode);
+    toggleClass(document.body, 'color-weak', !!colorWeak);
+    toggleClass(document.body, 'gray-mode', !!grayMode);
   }, [colorWeak, grayMode]);
 
   if (!ready) {
-    return <PageLoading />;
+    return <AppLoading />;
   }
 
   return (

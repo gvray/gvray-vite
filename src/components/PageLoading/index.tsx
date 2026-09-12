@@ -1,6 +1,7 @@
+import { useSettingStore } from '@/stores';
+import { resolveThemeMode } from '@/utils';
 import { ConfigProvider, Spin, theme } from 'antd';
 import React, { useMemo } from 'react';
-import { useSettingStore } from '@/stores';
 
 export type PageLoadingProps = {
   /**
@@ -19,7 +20,7 @@ export type PageLoadingProps = {
 // 保证 boot 阶段（外层 ConfigProvider 尚未挂载）也能拿到正确的主题色 / 昼夜色。
 const PageLoadingInner: React.FC<PageLoadingProps> = ({
   fullScreen = true,
-  tip = '加载中…',
+  tip = null,
   size = 'large',
   className,
   style,
@@ -57,11 +58,10 @@ const PageLoading: React.FC<PageLoadingProps> = (props) => {
   const themeMode = useSettingStore((s) => s.theme);
 
   // 与 useAppTheme 的解析逻辑一致：system 回退到系统偏好。
-  const dark = useMemo(() => {
-    if (themeMode === 'dark') return true;
-    if (themeMode === 'light') return false;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }, [themeMode]);
+  const dark = useMemo(
+    () => resolveThemeMode(themeMode) === 'dark',
+    [themeMode],
+  );
 
   return (
     <ConfigProvider

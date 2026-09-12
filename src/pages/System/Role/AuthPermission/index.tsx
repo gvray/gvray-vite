@@ -27,6 +27,8 @@ import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useNavigate, useParams } from 'react-router';
+import { getPermissionAction, parsePermissionCode } from '@gvray/adminkit';
+import { arraysEqual, caseInsensitiveFilter } from '@gvray/eskit';
 import styles from './index.module.scss';
 import { useAuthPermission } from './model';
 
@@ -65,13 +67,8 @@ interface TreeNode {
   selectable?: boolean;
 }
 
-const getActionFromCode = (code?: string) => {
-  const parts = code?.split(':').filter(Boolean) || [];
-  return parts[parts.length - 1] || '';
-};
-
 const getActionTag = (code?: string) => {
-  const action = getActionFromCode(code);
+  const action = getPermissionAction(code);
   if (!action) return null;
   const info = ACTION_MAP[action] || { label: action, color: 'default' };
   return (
@@ -148,16 +145,12 @@ export default function AuthPermissionPage() {
   }, [selectedRole]);
 
   const filteredPermissions = useMemo(() => {
-    if (!searchText) return permissions;
-    const kw = searchText.toLowerCase();
-    return permissions.filter((p: any) => {
-      return (
-        p.name?.toLowerCase().includes(kw) ||
-        p.code?.toLowerCase().includes(kw) ||
-        p.description?.toLowerCase().includes(kw) ||
-        p.httpMethod?.toLowerCase().includes(kw)
-      );
-    });
+    return caseInsensitiveFilter(permissions, searchText, [
+      (p: any) => p.name,
+      (p: any) => p.code,
+      (p: any) => p.description,
+      (p: any) => p.httpMethod,
+    ]);
   }, [permissions, searchText]);
 
   const permissionTreeData = useMemo(() => {
@@ -179,20 +172,20 @@ export default function AuthPermissionPage() {
     };
 
     filteredPermissions.forEach((permission: any) => {
-      const parts = permission.code?.split(':').filter(Boolean) || [];
-      const domain = parts[0] || 'other';
-      const resource = parts.length >= 2 ? parts[1] : 'default';
-      const resourceKey = `${domain}:${resource}`;
+      const { domain, resource } = parsePermissionCode(permission.code);
+      const safeDomain = domain || 'other';
+      const safeResource = resource || 'default';
+      const resourceKey = `${safeDomain}:${safeResource}`;
 
-      if (!domainMap.has(domain)) {
-        domainMap.set(domain, {
-          key: `_domain_${domain}`,
-          name: getLabel(`permission.domain.${domain}`, domain),
+      if (!domainMap.has(safeDomain)) {
+        domainMap.set(safeDomain, {
+          key: `_domain_${safeDomain}`,
+          name: getLabel(`permission.domain.${safeDomain}`, safeDomain),
           resources: new Map(),
         });
       }
 
-      const domainNode = domainMap.get(domain)!;
+      const domainNode = domainMap.get(safeDomain)!;
       if (!domainNode.resources.has(resourceKey)) {
         domainNode.resources.set(resourceKey, {
           key: `_resource_${resourceKey}`,
@@ -325,9 +318,9 @@ export default function AuthPermissionPage() {
   const hasChanges = () => {
     const originalIds =
       selectedRole?.permissions?.map((p: any) => p.permissionId) || [];
-    if (originalIds.length !== selectedPermissionIds.length) return true;
-    return !originalIds.every((id: string) =>
-      selectedPermissionIds.includes(id),
+    return !arraysEqual(
+      [...originalIds].sort(),
+      [...selectedPermissionIds].sort(),
     );
   };
 
@@ -335,12 +328,13 @@ export default function AuthPermissionPage() {
     const domains = new Set<string>();
     const resources = new Set<string>();
     permissions.forEach((p: any) => {
-      const parts = p.code?.split(':').filter(Boolean) || [];
-      const domain = parts[0] || 'other';
-      const resource =
-        parts.length >= 2 ? `${domain}:${parts[1]}` : `${domain}:default`;
-      domains.add(domain);
-      resources.add(resource);
+      const { domain, resource } = parsePermissionCode(p.code);
+      const safeDomain = domain || 'other';
+      const safeResource = resource
+        ? `${safeDomain}:${resource}`
+        : `${safeDomain}:default`;
+      domains.add(safeDomain);
+      resources.add(safeResource);
     });
     return {
       domains: domains.size,

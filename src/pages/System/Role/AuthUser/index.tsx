@@ -12,6 +12,7 @@ import { useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import { queryRoleOptions } from '@/services/role';
 import type { DictOption } from '@/types/dict';
+import { arraysEqualIgnoreOrder, toggleArrayItem } from '@gvray/eskit';
 import { debounce } from '@gvray/eskit';
 import {
   Button,
@@ -140,17 +141,12 @@ export default function AuthUserPage() {
   };
 
   const toggleUser = (userId: string) => {
-    setSelectedUserIds((prev) =>
-      prev.includes(userId)
-        ? prev.filter((id) => id !== userId)
-        : [...prev, userId],
-    );
+    setSelectedUserIds((prev) => toggleArrayItem(prev, userId));
   };
 
   const hasChanges = () => {
     const originalIds = selectedRole?.users?.map((u: any) => u.userId) || [];
-    if (originalIds.length !== selectedUserIds.length) return true;
-    return !originalIds.every((id: string) => selectedUserIds.includes(id));
+    return !arraysEqualIgnoreOrder(originalIds, selectedUserIds);
   };
 
   if (loading) {

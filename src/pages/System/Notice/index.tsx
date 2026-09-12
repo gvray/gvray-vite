@@ -9,7 +9,7 @@ import {
 import { type TableProRef } from '@/components/TablePro';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
-import { callRef, logger } from '@/utils';
+import { callRef, confirmAction, logger } from '@/utils';
 import { Modal, Space, Tag } from 'antd';
 import { useRef, useState } from 'react';
 import { getNoticeColumns } from './columns';
@@ -48,21 +48,16 @@ const NoticePage = () => {
   };
 
   const handleDelete = (record: API.NoticeResponseDto) => {
-    Modal.confirm({
-      title: `系统提示`,
-      icon: <Icon name="ExclamationCircleOutlined" />,
+    confirmAction({
       content: `是否确认删除通知公告"${record.title}"？`,
-      okText: '确认',
-      cancelText: '取消',
-      onOk() {
-        return removeNotice(record.noticeId)
-          .then(() => {
-            tableReload();
-            message.success(`删除成功`);
-          })
-          .catch((error) => {
-            logger.error(error);
-          });
+      async onOk() {
+        try {
+          await removeNotice(record.noticeId);
+          tableReload();
+          message.success(`删除成功`);
+        } catch (error) {
+          logger.error(error);
+        }
       },
     });
   };
@@ -97,13 +92,12 @@ const NoticePage = () => {
       });
       return;
     }
-    Modal.confirm({
+    confirmAction({
       title: '批量删除确认',
       content: `确认删除选中的 ${selectedRowKeys.length} 条记录？`,
       okText: '删除',
       okButtonProps: { danger: true },
-      cancelText: '取消',
-      onOk: async () => {
+      async onOk() {
         try {
           const ids = selectedRowKeys.map((k) => String(k));
           await batchRemoveNotices(ids);

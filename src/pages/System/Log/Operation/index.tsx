@@ -7,7 +7,7 @@ import {
 import { type TableProRef } from '@/components/TablePro';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
-import { callRef, logger } from '@/utils';
+import { callRef, confirmAction, logger } from '@/utils';
 import { Modal, Tag, Tooltip } from 'antd';
 import React from 'react';
 import { getOperationLogColumns } from './columns';
@@ -80,9 +80,8 @@ const OperationLogPage: React.FC = () => {
       return;
     }
     const rows = tableProRef.current?.getSelectedRows() || [];
-    Modal.confirm({
+    confirmAction({
       title: '批量删除确认',
-      width: 520,
       content: (
         <div>
           确认删除以下 {selectedRowKeys.length} 条记录？
@@ -97,8 +96,7 @@ const OperationLogPage: React.FC = () => {
       ),
       okText: '删除',
       okButtonProps: { danger: true },
-      cancelText: '取消',
-      onOk: async () => {
+      async onOk() {
         try {
           const ids = selectedRowKeys.map((k) => Number(k));
           await batchRemoveOperationLogs(ids);
@@ -113,13 +111,12 @@ const OperationLogPage: React.FC = () => {
   };
 
   const handleClear = () => {
-    Modal.confirm({
+    confirmAction({
       title: '清空日志确认',
       content: '确认清空所有操作日志吗？该操作不可恢复。',
       okText: '清空',
       okButtonProps: { danger: true },
-      cancelText: '取消',
-      onOk: async () => {
+      async onOk() {
         try {
           await clearOperationLogs();
           message.success('操作日志已清空');

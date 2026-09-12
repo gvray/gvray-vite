@@ -11,6 +11,7 @@ import { Button, Card, Space, Tag, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import styles from './index.module.scss';
+import { arraysEqualIgnoreOrder, toggleArrayItem } from '@gvray/eskit';
 import { useAuthRole } from './model';
 
 const { Text } = Typography;
@@ -81,17 +82,12 @@ export default function AuthRolePage() {
   };
 
   const toggleRole = (roleId: string) => {
-    setSelectedRoleIds((prev) =>
-      prev.includes(roleId)
-        ? prev.filter((id) => id !== roleId)
-        : [...prev, roleId],
-    );
+    setSelectedRoleIds((prev) => toggleArrayItem(prev, roleId));
   };
 
   const hasChanges = () => {
     const originalIds = selectedUser?.roles?.map((r) => r.roleId) || [];
-    if (originalIds.length !== selectedRoleIds.length) return true;
-    return !originalIds.every((id) => selectedRoleIds.includes(id));
+    return !arraysEqualIgnoreOrder(originalIds, selectedRoleIds);
   };
 
   if (loading) {

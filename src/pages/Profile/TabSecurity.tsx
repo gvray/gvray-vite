@@ -10,6 +10,7 @@ import {
   Tag,
   Typography,
 } from 'antd';
+import { maskPhone } from '@gvray/formatkit';
 import styles from './index.module.scss';
 import { useProfileSecurityModel } from './model';
 
@@ -140,10 +141,7 @@ const TabSecurity: React.FC = () => {
               icon: <Icon name="MobileOutlined" />,
               title: '手机号绑定',
               desc: phoneBound
-                ? String(model.profile?.profile?.phone).replace(
-                    /(\d{3})\d{4}(\d{4})/,
-                    '$1****$2',
-                  )
+                ? maskPhone(String(model.profile?.profile?.phone ?? ''))
                 : '暂未绑定手机号，建议联系管理员补全',
               ok: phoneBound,
             },

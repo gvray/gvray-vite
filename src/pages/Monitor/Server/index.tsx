@@ -1,5 +1,11 @@
 import { Charts, Icon, PageContainer } from '@/components';
-import { formatBytes, formatUptime, getUsageColor } from '@/utils';
+import { formatPercentValue, formatUptime } from '@gvray/formatkit';
+import {
+  calculatePercentage,
+  formatBytes,
+  formatDateTime,
+  getUsageColor,
+} from '@/utils';
 import {
   Card,
   Col,
@@ -324,7 +330,7 @@ const ServerMonitorPage: React.FC = () => {
           <Space>
             {data && (
               <Text type="secondary" style={{ fontSize: 12 }}>
-                数据更新时间：{new Date(data.timestamp).toLocaleString()}
+                数据更新时间：{formatDateTime(data.timestamp)}
               </Text>
             )}
             <a className={styles.actionLink} onClick={refresh}>
@@ -534,7 +540,7 @@ const ServerMonitorPage: React.FC = () => {
                       <div className={styles.processLabel}>进程 CPU</div>
                       <div className={styles.processValue}>
                         <Tag color={getUsageColor(data.process.cpuPercent)}>
-                          {data.process.cpuPercent.toFixed(1)}%
+                          {formatPercentValue(data.process.cpuPercent, { digits: 1 })}
                         </Tag>
                       </div>
                     </div>
@@ -552,17 +558,17 @@ const ServerMonitorPage: React.FC = () => {
                       <div className={styles.processLabel}>堆内存</div>
                       <div className={styles.processValue}>
                         <Progress
-                          percent={Math.round(
-                            (data.process.heapUsed /
-                              Math.max(data.process.heapTotal, 1)) *
-                              100,
+                          percent={calculatePercentage(
+                            data.process.heapUsed,
+                            data.process.heapTotal ?? 0,
                           )}
                           size="small"
-                          format={(p) => `${p}%`}
+                          format={(p) => formatPercentValue(p ?? 0, { digits: 0 })}
                           strokeColor={getUsageColor(
-                            (data.process.heapUsed /
-                              Math.max(data.process.heapTotal, 1)) *
-                              100,
+                            calculatePercentage(
+                              data.process.heapUsed,
+                              data.process.heapTotal ?? 0,
+                            ),
                           )}
                         />
                         <div className={styles.processSub}>

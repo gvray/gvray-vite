@@ -12,6 +12,7 @@ import {
 import { type ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import styles from './index.module.scss';
+import { formatDateTime } from '@/utils';
 import { useProfilePageModel } from './model';
 import TabLoginLog from './TabLoginLog';
 import TabPermissions from './TabPermissions';
@@ -183,9 +184,7 @@ export default function ProfilePage() {
                   <span>更新时间</span>
                   <Text type="secondary">
                     <Icon name="ClockCircleOutlined" />{' '}
-                    {model.updatedAt
-                      ? new Date(model.updatedAt).toLocaleDateString()
-                      : '-'}
+                    {formatDateTime(model.updatedAt, { timeStyle: 'none' })}
                   </Text>
                 </div>
               </div>

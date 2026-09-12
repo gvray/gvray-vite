@@ -1,5 +1,6 @@
 import { DateTimeFormat, Icon, StatusTag } from '@/components';
 import { useFeedback } from '@/hooks';
+import { formatJson } from '@gvray/formatkit';
 import type { DictOption } from '@/types/dict';
 import { logger } from '@/utils';
 import { copyText } from '@gvray/domkit';
@@ -129,15 +130,7 @@ const ConfigValueViewer: React.FC<ConfigValueViewerProps> = ({
           </Button>
         </ValueHeader>
         <ValueBox>
-          {config.type === 'json'
-            ? (() => {
-                try {
-                  return JSON.stringify(JSON.parse(config.value), null, 2);
-                } catch {
-                  return config.value;
-                }
-              })()
-            : config.value}
+          {config.type === 'json' ? formatJson(config.value) : config.value}
         </ValueBox>
       </ValueSection>
     </Modal>

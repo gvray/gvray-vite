@@ -8,7 +8,7 @@ import {
   markNoticeRead,
   queryNoticeList,
 } from '@/services/notice';
-import { ACCESS_TOKEN_KEY, logger } from '@/utils';
+import { ACCESS_TOKEN_KEY, formatDateTime, formatRelativeTime, logger } from '@/utils';
 import { sleep } from '@gvray/eskit';
 import { Badge, Button, Drawer, Empty, Popover, Spin, Tabs, Tag } from 'antd';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -361,32 +361,6 @@ const NoticeBell: React.FC = () => {
 
   const unreadList = notices.filter((n) => !n.isRead);
 
-  const formatTime = (time: string) => {
-    try {
-      const d = new Date(time);
-      const now = new Date();
-      const diff = now.getTime() - d.getTime();
-      const minutes = Math.floor(diff / 60000);
-      const hours = Math.floor(diff / 3600000);
-      const days = Math.floor(diff / 86400000);
-      if (minutes < 1) return '刚刚';
-      if (minutes < 60) return `${minutes} 分钟前`;
-      if (hours < 24) return `${hours} 小时前`;
-      if (days < 7) return `${days} 天前`;
-      return d.toLocaleDateString();
-    } catch {
-      return time;
-    }
-  };
-
-  const formatFullTime = (time: string) => {
-    try {
-      return new Date(time).toLocaleString();
-    } catch {
-      return time;
-    }
-  };
-
   const renderList = (list: API.NoticeResponseDto[], emptyText: string) => {
     if (list.length === 0) {
       return (
@@ -428,7 +402,7 @@ const NoticeBell: React.FC = () => {
                 <NoticeMeta>
                   <NoticeTime>
                     <Icon name="ClockCircleOutlined" style={{ fontSize: 11 }} />
-                    {formatTime(item.createdAt)}
+                    {formatRelativeTime(item.createdAt)}
                   </NoticeTime>
                   {isUnread && (
                     <NoticeAction
@@ -537,7 +511,7 @@ const NoticeBell: React.FC = () => {
             <DetailMeta>
               <DetailTime>
                 <Icon name="ClockCircleOutlined" />
-                {formatFullTime(detailNotice.createdAt)}
+                {formatDateTime(detailNotice.createdAt)}
               </DetailTime>
               <Tag
                 color={detailNotice.status === 'enabled' ? 'green' : 'default'}

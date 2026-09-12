@@ -9,15 +9,21 @@ import {
   queryProfileLoginLogs,
   queryProfilePermissions,
 } from '@/services/profile';
+import { normalizeListResponse } from '@gvray/adminkit';
+import { caseInsensitiveFilter } from '@gvray/eskit';
+import { formatDateRange } from '@gvray/datekit';
+import { getAvatarInitial } from '@gvray/formatkit';
 import { useAuthStore, useSettingStore } from '@/stores';
 import { logger, tokenManager } from '@/utils';
 import { runtimeConfig } from '@/utils/runtime-config';
 import type { FormInstance } from 'antd';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 export type LoginLogDateRange = [Dayjs | null, Dayjs | null] | null;
+
+const DAYJS_FORMAT = 'YYYY-MM-DD';
 
 // 默认头像从环境变量读取，空值则走组件层文字兜底
 
@@ -87,7 +93,7 @@ export function useProfilePageModel() {
       runtimeConfig.get().user.defaultAvatar ||
       __APP_DEFAULT_AVATAR_URL__ ||
       undefined,
-    avatarText: (meProfile?.nickname?.trim() || me?.username)?.[0] ?? '?',
+    avatarText: getAvatarInitial(meProfile?.nickname?.trim() || me?.username),
     displayName: meProfile?.nickname || me?.username || '用户名',
     accountStatusLabel: statusMeta.label,
     accountStatusColor: statusMeta.color,
@@ -152,14 +158,10 @@ export function useProfilePermissionsModel() {
 
   const tree = useMemo<PermissionTreeNode[]>(() => {
     if (!permData?.permissions) return [];
-    const kw = keyword.trim().toLowerCase();
-    const filtered = kw
-      ? permData.permissions.filter(
-          (p) =>
-            p.code?.toLowerCase().includes(kw) ||
-            p.name?.toLowerCase().includes(kw),
-        )
-      : permData.permissions;
+    const filtered = caseInsensitiveFilter(permData.permissions, keyword, [
+      (p) => p.code,
+      (p) => p.name,
+    ]);
     // buildPermissionTree expects PermissionResponseDto[]; UserPermissionSimpleDto
     // is a structural subset that buildPermissionTree only reads `code`/`name`/
     // `permissionId` from, so the cast is safe.
@@ -205,14 +207,17 @@ export function useProfileLoginLogModel() {
           ...overrides,
         };
         if (statusFilter !== undefined) params.result = statusFilter;
-        if (range?.[0])
-          params.createdAtStart = dayjs(range[0]).format('YYYY-MM-DD');
-        if (range?.[1])
-          params.createdAtEnd = dayjs(range[1]).format('YYYY-MM-DD');
+        const formattedRange =
+          range?.[0] && range?.[1]
+            ? formatDateRange([range[0].toDate(), range[1].toDate()], DAYJS_FORMAT)
+            : undefined;
+        if (formattedRange?.start) params.createdAtStart = formattedRange.start;
+        if (formattedRange?.end) params.createdAtEnd = formattedRange.end;
         const res = await queryProfileLoginLogs(params);
         if (res?.data) {
-          setData(res.data.items || []);
-          setTotal(res.data.total || 0);
+          const { items, total } = normalizeListResponse<API.LoginLogResponseDto>(res.data);
+          setData(items);
+          setTotal(total);
         }
       } catch {
         // silent

@@ -9,7 +9,7 @@ import {
 import { type TableProRef } from '@/components/TablePro';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
-import { callRef, logger } from '@/utils';
+import { callRef, confirmAction, logger } from '@/utils';
 import { Modal, Space, Table, Tag, Tooltip } from 'antd';
 import React, { useRef, useState } from 'react';
 import { getOnlineUserColumns } from './columns';
@@ -42,24 +42,19 @@ const OnlineUserPage: React.FC = () => {
   };
 
   const handleKickUser = (record: API.OnlineUserItemDto) => {
-    Modal.confirm({
-      title: '系统提示',
-      icon: <Icon name="ExclamationCircleOutlined" />,
+    confirmAction({
       content: `是否确认强退用户"${
         record.nickname || record.username
       }"？该用户的所有会话将被强制下线。`,
-      okText: '确认',
       okButtonProps: { danger: true },
-      cancelText: '取消',
-      onOk() {
-        return forceLogoutUser(record.userId)
-          .then(() => {
-            message.success('强退成功');
-            tableReload();
-          })
-          .catch((error) => {
-            logger.error(error);
-          });
+      async onOk() {
+        try {
+          await forceLogoutUser(record.userId);
+          message.success('强退成功');
+          tableReload();
+        } catch (error) {
+          logger.error(error);
+        }
       },
     });
   };
@@ -72,26 +67,21 @@ const OnlineUserPage: React.FC = () => {
       });
       return;
     }
-    Modal.confirm({
+    confirmAction({
       title: '批量强退确认',
-      icon: <Icon name="ExclamationCircleOutlined" />,
       content: `是否确认强退选中的 ${selectedRowKeys.length} 位用户？`,
-      okText: '确认',
       okButtonProps: { danger: true },
-      cancelText: '取消',
-      onOk() {
-        const promises = selectedRowKeys.map((key) =>
-          forceLogoutUser(String(key)),
-        );
-        return Promise.all(promises)
-          .then(() => {
-            message.success('批量强退成功');
-            setSelectedRowKeys([]);
-            tableReload();
-          })
-          .catch((error) => {
-            logger.error(error);
-          });
+      async onOk() {
+        try {
+          await Promise.all(
+            selectedRowKeys.map((key) => forceLogoutUser(String(key))),
+          );
+          message.success('批量强退成功');
+          setSelectedRowKeys([]);
+          tableReload();
+        } catch (error) {
+          logger.error(error);
+        }
       },
     });
   };
@@ -113,25 +103,20 @@ const OnlineUserPage: React.FC = () => {
   };
 
   const handleKickSession = (session: API.SessionDetailDto) => {
-    Modal.confirm({
-      title: '系统提示',
-      icon: <Icon name="ExclamationCircleOutlined" />,
+    confirmAction({
       content: '是否确认强退该会话？',
-      okText: '确认',
       okButtonProps: { danger: true },
-      cancelText: '取消',
-      onOk() {
-        return forceLogoutSession(sessionUserId, session.tokenHash)
-          .then(() => {
-            message.success('强退会话成功');
-            setSessionList((prev) =>
-              prev.filter((s) => s.tokenHash !== session.tokenHash),
-            );
-            tableReload();
-          })
-          .catch((error) => {
-            logger.error(error);
-          });
+      async onOk() {
+        try {
+          await forceLogoutSession(sessionUserId, session.tokenHash);
+          message.success('强退会话成功');
+          setSessionList((prev) =>
+            prev.filter((s) => s.tokenHash !== session.tokenHash),
+          );
+          tableReload();
+        } catch (error) {
+          logger.error(error);
+        }
       },
     });
   };

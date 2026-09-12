@@ -1,4 +1,6 @@
+import { extractListData } from '@gvray/adminkit';
 import { queryConfigList } from '@/services/config';
+import { safeJsonParse } from '@/utils';
 import { useCallback, useEffect, useState } from 'react';
 
 // 配置管理hooks
@@ -10,10 +12,8 @@ export const useConfigValue = (key: string) => {
   useEffect(() => {
     queryConfigList({ key } as any)
       .then((res: any) => {
-        const items = res?.data?.items ?? res?.data ?? [];
-        const config = Array.isArray(items)
-          ? items.find((c: any) => c.key === key)
-          : undefined;
+        const { items } = extractListData<any>(res);
+        const config = items.find((c: any) => c.key === key);
         setValue(config?.value);
       })
       .catch(() => {});
@@ -29,8 +29,8 @@ export const useConfigsByGroup = (group: string) => {
   useEffect(() => {
     queryConfigList({ group } as any)
       .then((res: any) => {
-        const items = res?.data?.items ?? res?.data ?? [];
-        setGroupConfigs(Array.isArray(items) ? items : []);
+        const { items } = extractListData<any>(res);
+        setGroupConfigs(items);
       })
       .catch(() => {});
   }, [group]);
@@ -45,8 +45,8 @@ export const useConfigsByType = (type: string) => {
   useEffect(() => {
     queryConfigList({ type } as any)
       .then((res: any) => {
-        const items = res?.data?.items ?? res?.data ?? [];
-        setTypeConfigs(Array.isArray(items) ? items : []);
+        const { items } = extractListData<any>(res);
+        setTypeConfigs(items);
       })
       .catch(() => {});
   }, [type]);
@@ -61,8 +61,8 @@ export const useEnabledConfigs = () => {
   useEffect(() => {
     queryConfigList({ status: 1 } as any)
       .then((res: any) => {
-        const items = res?.data?.items ?? res?.data ?? [];
-        setEnabledConfigs(Array.isArray(items) ? items : []);
+        const { items } = extractListData<any>(res);
+        setEnabledConfigs(items);
       })
       .catch(() => {});
   }, []);
@@ -119,12 +119,7 @@ export const useConfigValidation = () => {
       case 'boolean':
         return value === 'true' || value === 'false';
       case 'json':
-        try {
-          JSON.parse(value);
-          return true;
-        } catch {
-          return false;
-        }
+        return safeJsonParse(value) !== undefined;
       default:
         return true;
     }

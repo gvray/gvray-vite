@@ -1,16 +1,10 @@
 import { useSettingStore } from '@/stores';
+import { resolveThemeMode } from '@/utils';
 import { useMemo } from 'react';
 
 const useThemeMode = () => {
   const { theme } = useSettingStore();
-  const mode = useMemo(() => {
-    if (theme === 'system') {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light';
-    }
-    return theme;
-  }, [theme]);
+  const mode = useMemo(() => resolveThemeMode(theme), [theme]);
   return mode;
 };
 

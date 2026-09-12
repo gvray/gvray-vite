@@ -1,3 +1,4 @@
+import { formatDateRange } from '@gvray/datekit';
 import { Icon } from '@/components';
 import { Button, Col, DatePicker, Form, Input, Row, Select, Space } from 'antd';
 import { forwardRef, useImperativeHandle, useState } from 'react';
@@ -151,9 +152,11 @@ const AdvancedSearchForm = forwardRef(
         return;
       }
       // 处理日期范围
-      const createdAtStart = createdAt[0].format('YYYY-MM-DD');
-      const createdAtEnd = createdAt[1].format('YYYY-MM-DD');
-      onSearchFinish?.({ ...rest, createdAtStart, createdAtEnd });
+      const range =
+        createdAt[0] && createdAt[1]
+          ? formatDateRange([createdAt[0].toDate(), createdAt[1].toDate()], 'YYYY-MM-DD')
+          : undefined;
+      onSearchFinish?.({ ...rest, createdAtStart: range?.start, createdAtEnd: range?.end });
     };
 
     return (
