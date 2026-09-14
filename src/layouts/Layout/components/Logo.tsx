@@ -1,5 +1,5 @@
+import { useAppNavigate } from '@/hooks';
 import React from 'react';
-import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 interface LogoProps {
@@ -40,7 +40,7 @@ const LogoWrapper = styled.div<{
 `;
 
 const Logo: React.FC<LogoProps> = ({ collapsed, title }) => {
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   return (
     <LogoWrapper
       $collapsed={collapsed}

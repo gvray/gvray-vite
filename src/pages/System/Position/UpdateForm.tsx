@@ -1,5 +1,4 @@
-import { FormLoading } from '@/components';
-import FormGrid from '@/components/FormGrid';
+import { FormGrid, FormLoading } from '@/components';
 import { DEFAULT_MODAL_TITLE } from '@/constants';
 import { useFeedback } from '@/hooks';
 import {

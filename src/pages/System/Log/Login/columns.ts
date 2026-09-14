@@ -1,4 +1,4 @@
-import type { TableProColumnsType } from '@/components/TablePro';
+import type { TableProColumnsType } from '@/components';
 /**
  * 登录日志表格列配置
  */

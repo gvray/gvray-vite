@@ -1,4 +1,4 @@
-import type { TableProColumnsType } from '@/components/TablePro';
+import type { TableProColumnsType } from '@/components';
 
 /**
  * 缓存键列表表格列配置

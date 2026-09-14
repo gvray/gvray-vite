@@ -1,6 +1,6 @@
 import { extractListData } from '@gvray/adminkit';
+import { safeJsonParse } from '@gvray/eskit';
 import { queryConfigList } from '@/services/config';
-import { safeJsonParse } from '@/utils';
 import { useCallback, useEffect, useState } from 'react';
 
 // 配置管理hooks

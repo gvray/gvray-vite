@@ -1,16 +1,12 @@
 import { useSettingStore } from '@/stores';
-import {
-  getSystemTheme,
-  resolveThemeMode,
-  startSystemThemeWatcher,
-  stopSystemThemeWatcher,
-} from '@/utils/theme';
+import { resolveThemeMode } from '@/utils/theme';
+import { getPrefersColorScheme, onPrefersColorSchemeChange } from '@gvray/domkit';
 import { theme as antdTheme } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 
 const useAppTheme = () => {
   const { theme } = useSettingStore();
-  const [systemTheme, setSystemTheme] = useState(getSystemTheme);
+  const [systemTheme, setSystemTheme] = useState(getPrefersColorScheme);
   const resolvedMode = resolveThemeMode(theme, systemTheme);
 
   const themeAlgorithm = useMemo(() => {
@@ -20,12 +16,9 @@ const useAppTheme = () => {
   }, [resolvedMode]);
 
   useEffect(() => {
-    if (theme === 'system') {
-      startSystemThemeWatcher(setSystemTheme);
-    }
-    return () => {
-      stopSystemThemeWatcher();
-    };
+    if (theme !== 'system') return;
+    setSystemTheme(getPrefersColorScheme());
+    return onPrefersColorSchemeChange(setSystemTheme);
   }, [theme]);
 
   // 把解析后的主题写到 <html data-theme>，供自定义 CSS 变量（如 --gvray-shadow-card）

@@ -1,8 +1,6 @@
 import CryptoJS from 'crypto-js';
-const aseKey = '0123456789abcdef';
-const iv = 'abcdef0123456789';
-const key = CryptoJS.enc.Utf8.parse(aseKey);
-const ivs = CryptoJS.enc.Utf8.parse(iv);
+const key = CryptoJS.enc.Utf8.parse(__APP_AES_KEY__);
+const ivs = CryptoJS.enc.Utf8.parse(__APP_AES_IV__);
 
 //加密
 export function encrypt(data: string): string {

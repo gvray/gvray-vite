@@ -8,7 +8,7 @@ import {
   StatusTag,
 } from '@/components';
 import { PERM } from '@/constants';
-import { useFeedback } from '@/hooks';
+import { useAppNavigate, useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import { queryRoleOptions } from '@/services/role';
 import type { DictOption } from '@/types/dict';
@@ -26,7 +26,7 @@ import {
 import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { getPermissionAction, parsePermissionCode } from '@gvray/adminkit';
 import { arraysEqual, caseInsensitiveFilter } from '@gvray/eskit';
 import styles from './index.module.scss';
@@ -95,7 +95,7 @@ const getMethodTag = (method?: string) => {
 
 export default function AuthPermissionPage() {
   const { roleId = '' } = useParams<{ roleId: string }>();
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   const intl = useIntl();
   const dict = useDict<RoleDict>(['common_status']);
   const { message } = useFeedback();

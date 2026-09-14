@@ -1,4 +1,4 @@
-import PageLoading from '@/components/PageLoading';
+import { PageLoading } from '@/components';
 import React from 'react';
 
 /**

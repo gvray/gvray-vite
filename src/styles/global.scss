@@ -106,3 +106,48 @@ ol {
     }
   }
 }
+
+/* View Transitions：路由切换时只对内容区交叉过渡，sider/header/footer 冻住。
+   由 useAppNavigate 的 { viewTransition: true } + react-router 8 驱动；
+   浏览器不支持时自动降级为普通切换。 */
+.page-transition-root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  view-transition-name: page-content;
+}
+
+::view-transition-old(page-content) {
+  animation: page-fade-out 0.18s ease forwards;
+}
+
+::view-transition-new(page-content) {
+  animation: page-fade-in 0.22s ease forwards;
+}
+
+@keyframes page-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+

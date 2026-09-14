@@ -1,11 +1,10 @@
 import { getAvatarInitial } from '@gvray/formatkit';
-import { useFeedback } from '@/hooks';
+import { useAppNavigate, useFeedback } from '@/hooks';
 import { logout } from '@/services/auth';
 import { useAuthStore, useSettingStore } from '@/stores';
 import { logger, tokenManager } from '@/utils';
 import { runtimeConfig } from '@/utils/runtime-config';
 import { Avatar, Dropdown, type MenuProps } from 'antd';
-import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 const DEFAULT_AVATAR_URL = __APP_DEFAULT_AVATAR_URL__;
@@ -27,7 +26,7 @@ const UserMenu: React.FC = () => {
   const { profile, clearAuth } = useAuthStore();
   const { colorPrimary } = useSettingStore();
   const { message } = useFeedback();
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
 
   const handleLogout = async () => {
     try {

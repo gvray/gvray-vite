@@ -1,4 +1,4 @@
-import type { TableProColumnsType } from '@/components/TablePro';
+import type { TableProColumnsType } from '@/components';
 
 /**
  * 在线用户表格列配置

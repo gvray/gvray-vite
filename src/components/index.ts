@@ -21,6 +21,7 @@ import PagePlaceholder from './PagePlaceholder';
 import PermissionTree from './PermissionTree';
 import StatusTag from './StatusTag';
 import TablePro from './TablePro';
+import UserMenu from './UserMenu';
 
 export {
   AppBreadcrumb,
@@ -46,4 +47,15 @@ export {
   PermissionTree,
   StatusTag,
   TablePro,
+  UserMenu,
 };
+
+export { lazyProgress, NProgress } from './NavigationProgress';
+
+export type {
+  TableProColumnType,
+  TableProColumnGroupType,
+  TableProColumnsType,
+  TableProOptions,
+  TableProRef,
+} from './TablePro';

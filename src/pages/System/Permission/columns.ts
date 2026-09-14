@@ -1,4 +1,4 @@
-import type { TableProColumnsType } from '@/components/TablePro';
+import type { TableProColumnsType } from '@/components';
 import type { PermissionTreeNode } from './model';
 
 export const getPermissionColumns = (

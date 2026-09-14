@@ -7,6 +7,7 @@ import {
   useConfigsByType,
   useEnabledConfigs,
 } from './useConfig';
+import { useAppNavigate } from './useAppNavigate';
 import { useFeedback } from './useFeedback';
 import { useRouteMeta } from './useRouteMeta';
 import useAppTheme from './useTheme';
@@ -14,6 +15,7 @@ import useThemeMode from './useThemeMode';
 
 export {
   useAppTheme,
+  useAppNavigate,
   useAuth,
   useConfigCache,
   useConfigValidation,

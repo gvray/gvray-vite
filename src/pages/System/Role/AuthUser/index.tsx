@@ -8,7 +8,7 @@ import {
   StatusTag,
 } from '@/components';
 import { PERM } from '@/constants';
-import { useFeedback } from '@/hooks';
+import { useAppNavigate, useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import { queryRoleOptions } from '@/services/role';
 import type { DictOption } from '@/types/dict';
@@ -25,7 +25,7 @@ import {
   Typography,
 } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import styles from './index.module.scss';
 import { useAuthUser } from './model';
 
@@ -37,7 +37,7 @@ type RoleDict = {
 
 export default function AuthUserPage() {
   const { roleId = '' } = useParams<{ roleId: string }>();
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   const dict = useDict<RoleDict>(['common_status']);
   const { message } = useFeedback();
   const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);

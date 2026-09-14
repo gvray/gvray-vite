@@ -1,4 +1,4 @@
-import type { TableProColumnsType } from '@/components/TablePro';
+import type { TableProColumnsType } from '@/components';
 
 export const getDepartmentColumns =
   (): TableProColumnsType<API.DepartmentResponseDto> => {

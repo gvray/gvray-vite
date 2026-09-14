@@ -1,11 +1,10 @@
 import { useSettingStore } from '@/stores';
-import { type PropsWithChildren, useEffect, useState } from 'react';
+import { type PropsWithChildren } from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import AppBreadcrumb from '../AppBreadcrumb';
 
 type PageContainerWrapperProps = {
-  $isVisible?: boolean;
   $hasBreadcrumb?: boolean;
 };
 
@@ -29,18 +28,11 @@ const PageTitle = styled.div<PageContainerWrapperProps>`
   margin-top: ${({ $hasBreadcrumb }) => ($hasBreadcrumb ? '8px' : '0')};
 `;
 
-const PageContent = styled.div<{ $isVisible?: boolean }>`
+const PageContent = styled.div`
   flex: 1;
   padding: 24px;
   background: var(--gvray-color-bg-container);
   border-radius: var(--gvray-border-radius-lg);
-
-  transition: transform 0.15s ease, opacity 0.2s ease;
-
-  transform: ${({ $isVisible }) =>
-    $isVisible ? 'translateX(0)' : 'translateX(20px)'};
-
-  opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
 `;
 
 interface PageContainerProps {
@@ -55,15 +47,9 @@ const PageContainer: React.FC<PropsWithChildren<PageContainerProps>> = ({
   title,
   ...rest
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-
   const { showBreadcrumb } = useSettingStore();
 
   const hasHeader = Boolean(title || showBreadcrumb);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
 
   return (
     <PageContainerWrapper {...rest}>
@@ -83,7 +69,7 @@ const PageContainer: React.FC<PropsWithChildren<PageContainerProps>> = ({
         </PageHeader>
       )}
 
-      <PageContent $isVisible={isVisible}>{children}</PageContent>
+      <PageContent>{children}</PageContent>
     </PageContainerWrapper>
   );
 };

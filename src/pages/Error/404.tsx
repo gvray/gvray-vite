@@ -1,8 +1,8 @@
+import { useAppNavigate } from '@/hooks';
 import { Button, Result } from 'antd';
-import { useNavigate } from 'react-router';
 
 const NoFoundPage = () => {
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   return (
     <Result
       status="404"

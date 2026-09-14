@@ -1,5 +1,5 @@
 import { bootstrap } from '@/app/bootstrap';
-import AppLoading from '@/components/AppLoading';
+import { AppLoading } from '@/components';
 import { useAppTheme } from '@/hooks';
 import { toggleClass } from '@gvray/domkit';
 import { useSettingStore } from '@/stores';

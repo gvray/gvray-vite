@@ -6,7 +6,7 @@ import {
   PageContainer,
   TablePro,
 } from '@/components';
-import { type TableProRef } from '@/components/TablePro';
+import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import { callRef, confirmAction, logger } from '@/utils';

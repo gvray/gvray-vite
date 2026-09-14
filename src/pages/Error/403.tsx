@@ -1,9 +1,9 @@
+import { useAppNavigate } from '@/hooks';
 import { Button, Result } from 'antd';
 import React from 'react';
-import { useNavigate } from 'react-router';
 
 const NoAuthPage: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   return (
     <Result
       status="403"

@@ -1,4 +1,5 @@
 import { Icon } from '@/components';
+import { useAppNavigate } from '@/hooks';
 import type { SiderTheme } from '@/constants/runtime-settings';
 import { getParentPaths } from '@gvray/adminkit';
 import { useAuthStore, useSettingStore } from '@/stores';
@@ -7,7 +8,7 @@ import type { MenuProps } from 'antd';
 import { Layout, Menu, Skeleton } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
 import styled from 'styled-components';
 import Logo from '../Logo';
 import CollapseTrigger from './CollapseTrigger';
@@ -85,7 +86,7 @@ const SideNav: React.FC<SideNavProps> = ({
     (s) => s.toggleSidebarCollapsed,
   );
   const intl = useIntl();
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
 
   const location = useLocation();
 

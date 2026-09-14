@@ -1,8 +1,8 @@
-import { useFeedback } from '@/hooks';
+import { useAppNavigate, useFeedback } from '@/hooks';
 import { runtimeConfig } from '@/utils/runtime-config';
 import { getSafeLoginRedirect } from '@gvray/adminkit';
 import { ConfigProvider, Spin, theme } from 'antd';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 import styled from 'styled-components';
 import LoginBg from './components/LoginBg';
 import LoginCard from './components/LoginCard';
@@ -41,7 +41,7 @@ const LoginPage: React.FC = () => {
   const guestAccount = feature.guestAccount;
   const { message } = useFeedback();
 
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   const [searchParams] = useSearchParams();
 
   const {

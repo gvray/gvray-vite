@@ -1,5 +1,5 @@
 import { LOGIN_PATH } from '@/constants';
-import { useFeedback } from '@/hooks';
+import { useAppNavigate, useFeedback } from '@/hooks';
 import {
   buildPermissionTree,
   type PermissionTreeNode,
@@ -19,7 +19,6 @@ import { runtimeConfig } from '@/utils/runtime-config';
 import type { FormInstance } from 'antd';
 import { Dayjs } from 'dayjs';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
 
 export type LoginLogDateRange = [Dayjs | null, Dayjs | null] | null;
 
@@ -110,7 +109,7 @@ export function useProfileSecurityModel(passwordForm: FormInstance) {
   const profile = useAuthStore((s) => s.profile);
   const clearAuth = useAuthStore((s) => s.clearAuth);
   const { message } = useFeedback();
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
 
   const handleChangePassword = async (values: API.ChangePasswordDto) => {
     try {

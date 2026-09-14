@@ -86,7 +86,7 @@ const AppBreadcrumb: React.FC = () => {
   const items = [
     {
       title: (
-        <Link to="/">
+        <Link to="/" viewTransition>
           <Icon name="HomeOutlined" />
         </Link>
       ),
@@ -96,7 +96,9 @@ const AppBreadcrumb: React.FC = () => {
       return {
         title:
           !isLast && crumb.path ? (
-            <Link to={crumb.path}>{crumb.title}</Link>
+            <Link to={crumb.path} viewTransition>
+              {crumb.title}
+            </Link>
           ) : (
             crumb.title
           ),

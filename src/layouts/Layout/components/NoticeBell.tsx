@@ -1,6 +1,6 @@
 import { Icon } from '@/components';
 import { PERM } from '@/constants';
-import { useFeedback } from '@/hooks';
+import { useAppNavigate, useFeedback } from '@/hooks';
 import useAuth from '@/hooks/useAuth';
 import {
   getUnreadNoticeCount,
@@ -8,12 +8,12 @@ import {
   markNoticeRead,
   queryNoticeList,
 } from '@/services/notice';
-import { ACCESS_TOKEN_KEY, formatDateTime, formatRelativeTime, logger } from '@/utils';
+import { ACCESS_TOKEN_KEY, logger } from '@/utils';
+import { formatDateTime, timeAgo as formatRelativeTime } from '@gvray/datekit';
 import { sleep } from '@gvray/eskit';
 import { Badge, Button, Drawer, Empty, Popover, Spin, Tabs, Tag } from 'antd';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import storetify from 'storetify';
-import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 const TYPE_TAG: Record<string, { label: string; color: string }> = {
@@ -230,7 +230,7 @@ const DetailContent = styled.div`
 /* ── component ── */
 
 const NoticeBell: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   const { permissions } = useAuth();
   const { message } = useFeedback();
 

@@ -1,5 +1,4 @@
-import AppWatermark from '@/components/AppWatermark';
-import ErrorBoundary from '@/components/ErrorBoundary';
+import { AppWatermark, ErrorBoundary } from '@/components';
 import '@/components/Icon/init';
 import { useSettingStore } from '@/stores';
 import { runtimeConfig } from '@/utils/runtime-config';
@@ -41,7 +40,9 @@ export default function Layout() {
       <AppViewport>
         <AppHeader headerFixed={fixedHeader} />
         <ErrorBoundary>
-          <Outlet />
+          <div className="page-transition-root">
+            <Outlet />
+          </div>
         </ErrorBoundary>
         <AppFooter
           visible={showFooter}

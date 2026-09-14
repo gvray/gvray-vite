@@ -2,8 +2,9 @@ import { FormGrid, FormLoading } from '@/components';
 import { DEFAULT_MODAL_TITLE } from '@/constants';
 import { useFeedback } from '@/hooks';
 import { createConfig, getConfigById, updateConfig } from '@/services/config';
+import { safeJsonParse } from '@gvray/eskit';
 import type { DictOption } from '@/types/dict';
-import { logger, safeJsonParse } from '@/utils';
+import { logger } from '@/utils';
 import { createFormLayout } from '@gvray/adminkit';
 import {
   Form,

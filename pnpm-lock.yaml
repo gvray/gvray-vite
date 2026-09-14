@@ -12,20 +12,20 @@ importers:
         specifier: ^6.3.2
         version: 6.3.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@gvray/adminkit':
-        specifier: ^1.3.0
-        version: 1.3.0
+        specifier: ^1.3.1
+        version: 1.3.1
       '@gvray/colorkit':
         specifier: ^1.2.0
         version: 1.2.0
       '@gvray/datekit':
-        specifier: ^1.3.0
-        version: 1.3.0
+        specifier: ^1.4.0
+        version: 1.4.0
       '@gvray/domkit':
-        specifier: ^1.3.0
-        version: 1.3.0
+        specifier: ^1.4.0
+        version: 1.4.0
       '@gvray/eskit':
-        specifier: ^1.5.0
-        version: 1.5.0
+        specifier: ^1.6.0
+        version: 1.6.0
       '@gvray/formatkit':
         specifier: ^1.3.0
         version: 1.3.0
@@ -36,8 +36,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       '@gvray/pathkit':
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: ^1.2.2
+        version: 1.2.2
       '@gvray/request':
         specifier: ^1.2.0
         version: 1.2.0
@@ -568,23 +568,20 @@ packages:
   '@formatjs/intl@4.1.19':
     resolution: {integrity: sha512-bZMROATl+rzfL8wsDZ53i8XWHx5e6rVr8QlGT5GDvHImEUro4WE9pxUd2dobzmI3CtD+zkt/wkEdqcb+3CK8Fg==}
 
-  '@gvray/adminkit@1.3.0':
-    resolution: {integrity: sha512-ZER1DHrFz1k/frdCOjMpVKymI9YiI1rjnD2CEUD2QBxkNTn1MLtdBnDoAEEjTsj61GN788Pa5TjKBbMf/7ONig==}
+  '@gvray/adminkit@1.3.1':
+    resolution: {integrity: sha512-becfLQu2e2HiMZQTKfXMDJl3HIZAESBAdqem/b+tLFIco6VO6Hw653pAAJOq5Apoqh7qdECk6pvzof2YzRE7NA==}
 
   '@gvray/colorkit@1.2.0':
     resolution: {integrity: sha512-n4/H7HMwEVS1BGkY9vgvxaGwYvihdmbJZi6BkS5CWbbh9cmTbHsfluhTE9sAxjtcTMQ/r1dVN/6++0Jb/ms4CQ==}
 
-  '@gvray/datekit@1.3.0':
-    resolution: {integrity: sha512-qXAFALhe3LqcCVlmUpGARYT5f5eDYK7jKlmFguZJKxOC0NnHYN4yBbJosO7WsMQmHhE3BsE6q6hhP4RLySXzgQ==}
+  '@gvray/datekit@1.4.0':
+    resolution: {integrity: sha512-zvh2CPtdGlHiM6HMcauVGOkBAyJc1fT9Rl+vvnrxx5pPBBfOmom5Mny72RCUk3/qIYlGOXdoD24rAg30fT+Hmw==}
 
-  '@gvray/domkit@1.3.0':
-    resolution: {integrity: sha512-qYwEENYpUErJMHlK76aa39Jx6so1qNVtkecx12StPuI32fmj2YzzWCtBLUq2O896UAnADfw9zhbfEQVZrTX5xQ==}
+  '@gvray/domkit@1.4.0':
+    resolution: {integrity: sha512-d0zMYUC46F7nx+XF+u778zSVmJLhtPjl2H/tsqKyw5Valj8pJyY5L00qyXAnUu3dp0J7DrsAbQDSgN5DcU++7g==}
 
-  '@gvray/eskit@1.4.0':
-    resolution: {integrity: sha512-VlaRSjqi6TmVEGAOsH1jSGeycsXkOFPXS8A4Q6b9oCSGyFf0uHFhcIr5X27HSJZM1vWQcmBFTCP/WLyxLhixYQ==}
-
-  '@gvray/eskit@1.5.0':
-    resolution: {integrity: sha512-/0ykhZYydl5Euro+GigQYmf+y7s0O+1hqDaQSvmsqgzmdq3PrF7GZGGhWaSoa+rcO1WEKIGwQtFTNoi6khCNBw==}
+  '@gvray/eskit@1.6.0':
+    resolution: {integrity: sha512-ZvhbhJoJbq45I9dc4D6cvCaohLkV1TFZ5FDogw3uG4LhdyKvaB29PLpATx3gmVTLnpoOJJDgQtjpodOh5UKl1A==}
 
   '@gvray/formatkit@1.3.0':
     resolution: {integrity: sha512-NdeVedNMR6HbwAVShHJWcm12BEOh675DHLoCG8dak6aQHtsy+f3cbxqYw2CLY8fs7dmklhk65xOM5Jevz7RlJQ==}
@@ -595,8 +592,8 @@ packages:
   '@gvray/mathkit@1.2.0':
     resolution: {integrity: sha512-ZHS1eB4VCR5CikKnLjTq/th7G/3PFj22ySGrdK1wTh1PB9ARy2bfgmKgNhIOzuQt8uyjtUlw2v975yGSBKy9Pw==}
 
-  '@gvray/pathkit@1.2.0':
-    resolution: {integrity: sha512-USDi0Wmu5pJH9BBY0+OcIOnsyKtvzrbmLDlBN1f4VsTl6mSqo6AVRGilm8LrotboXbOdCF7d6KJ9s9Ktu9QaLw==}
+  '@gvray/pathkit@1.2.2':
+    resolution: {integrity: sha512-iLQlMmp0NB1RXG2FxHgT6TPZYw5/VWofKKgDUH1+hkqaG9q1/rTwXcMC81VVBPlswMTeDpDkt+mNpRhzfou7SQ==}
 
   '@gvray/request@1.2.0':
     resolution: {integrity: sha512-1wEiNdd25mVAJcEMBt2I14DDYGyIsrYlF6mQub4V+T2dEs+2yDuZtQ6+Dc4i/O+NvfjaK2EMLzUF/GrrTlhEKg==}
@@ -2644,21 +2641,19 @@ snapshots:
       '@formatjs/icu-messageformat-parser': 3.5.17
       intl-messageformat: 11.2.14
 
-  '@gvray/adminkit@1.3.0':
+  '@gvray/adminkit@1.3.1':
     dependencies:
-      '@gvray/eskit': 1.5.0
+      '@gvray/eskit': 1.6.0
 
   '@gvray/colorkit@1.2.0': {}
 
-  '@gvray/datekit@1.3.0': {}
+  '@gvray/datekit@1.4.0': {}
 
-  '@gvray/domkit@1.3.0':
+  '@gvray/domkit@1.4.0':
     dependencies:
-      '@gvray/eskit': 1.5.0
+      '@gvray/eskit': 1.6.0
 
-  '@gvray/eskit@1.4.0': {}
-
-  '@gvray/eskit@1.5.0': {}
+  '@gvray/eskit@1.6.0': {}
 
   '@gvray/formatkit@1.3.0': {}
 
@@ -2666,9 +2661,9 @@ snapshots:
 
   '@gvray/mathkit@1.2.0': {}
 
-  '@gvray/pathkit@1.2.0':
+  '@gvray/pathkit@1.2.2':
     dependencies:
-      '@gvray/eskit': 1.4.0
+      '@gvray/eskit': 1.6.0
 
   '@gvray/request@1.2.0':
     dependencies:

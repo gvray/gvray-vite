@@ -1,8 +1,7 @@
 import React, { Suspense } from 'react';
 import type { RouteObject } from 'react-router';
 import { createBrowserRouter } from 'react-router';
-import { lazyProgress } from '@/components/NavigationProgress';
-import PageLoading from '@/components/PageLoading';
+import { lazyProgress, PageLoading } from '@/components';
 import { routes as appRoutes, type AppRouteObject } from './routes';
 
 /**

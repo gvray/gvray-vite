@@ -1,4 +1,4 @@
-import UserMenu from '@/components/UserMenu';
+import { UserMenu } from '@/components';
 import { Layout, Space } from 'antd';
 import styled from 'styled-components';
 

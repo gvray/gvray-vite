@@ -8,15 +8,14 @@ import {
   StatusTag,
   TablePro,
 } from '@/components';
-import { type TableProRef } from '@/components/TablePro';
+import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
-import { useFeedback } from '@/hooks';
+import { useAppNavigate, useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import type { DictOption } from '@/types/dict';
 import { callRef, confirmAction, logger } from '@/utils';
 import { Space, Tag } from 'antd';
 import { useRef } from 'react';
-import { useNavigate } from 'react-router';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
 import { getDictionaryColumns } from './columns';
 import './index.scss';
@@ -27,7 +26,7 @@ type DictionaryDict = {
 };
 
 const DictionaryPage = () => {
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   const updateFormRef = useRef<UpdateFormRef>(null);
   const tableProRef = useRef<TableProRef>(null);
   const { fetchDictionaryTypeList, removeDictionaryType } = useDictionary();

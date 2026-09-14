@@ -2,7 +2,7 @@ import { Icon } from '@/components';
 import { maskPhone } from '@gvray/formatkit';
 import { queryProfile } from '@/services/profile';
 import { useAuthStore } from '@/stores';
-import { formatDateTime } from '@/utils';
+import { formatDateTime } from '@gvray/datekit';
 import {
   Alert,
   Card,

@@ -1,14 +1,12 @@
 import { AuthButton, Icon, PageContainer, TablePro } from '@/components';
-import { type TableProRef } from '@/components/TablePro';
+import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { normalizeListResponse } from '@gvray/adminkit';
-import { formatPercentValue } from '@gvray/formatkit';
+import { formatDuration, formatPercentValue, formatFileSize as formatBytes } from '@gvray/formatkit';
 import { useFeedback } from '@/hooks';
 import {
   callRef,
   confirmAction,
-  formatBytes,
-  formatDuration,
   getRateColor,
   logger,
 } from '@/utils';

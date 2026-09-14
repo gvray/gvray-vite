@@ -10,9 +10,10 @@ import {
   Typography,
 } from 'antd';
 import { type ReactNode } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation } from 'react-router';
+import { useAppNavigate } from '@/hooks';
 import styles from './index.module.scss';
-import { formatDateTime } from '@/utils';
+import { formatDateTime } from '@gvray/datekit';
 import { useProfilePageModel } from './model';
 import TabLoginLog from './TabLoginLog';
 import TabPermissions from './TabPermissions';
@@ -65,7 +66,7 @@ export default function ProfilePage() {
   const departmentName = model.profile?.department?.name || '未设置部门';
   const positionName = model.profile?.positions?.[0]?.name || '未设置岗位';
   const location = useLocation();
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
 
   const hashKey = location.hash?.replace(/^#/, '');
   const activeKey = TAB_META.some((t) => t.key === hashKey)
@@ -73,7 +74,7 @@ export default function ProfilePage() {
     : 'profile';
 
   const handleTabChange = (key: string) => {
-    navigate({ pathname: location.pathname, hash: key });
+    navigate({ pathname: location.pathname, hash: key }, { viewTransition: false });
   };
 
   const tabItems = TAB_META.map((item) => ({

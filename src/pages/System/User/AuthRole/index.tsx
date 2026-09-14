@@ -1,15 +1,18 @@
-import { AuthButton, Icon } from '@/components';
-import BackButton from '@/components/BackButton';
-import PageContainer from '@/components/PageContainer';
-import PageLoading from '@/components/PageLoading';
-import PagePlaceholder from '@/components/PagePlaceholder';
-import StatusTag from '@/components/StatusTag';
+import {
+  AuthButton,
+  BackButton,
+  Icon,
+  PageContainer,
+  PageLoading,
+  PagePlaceholder,
+  StatusTag,
+} from '@/components';
 import { PERM } from '@/constants';
-import { useFeedback } from '@/hooks';
+import { useAppNavigate, useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import { Button, Card, Space, Tag, Typography } from 'antd';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import styles from './index.module.scss';
 import { arraysEqualIgnoreOrder, toggleArrayItem } from '@gvray/eskit';
 import { useAuthRole } from './model';
@@ -18,7 +21,7 @@ const { Text } = Typography;
 
 export default function AuthRolePage() {
   const { userId = '' } = useParams<{ userId: string }>();
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   const { message } = useFeedback();
   const dict = useDict(['user_status']);
   const { roles, selectedUser, initializeData, submitUserRoles } =

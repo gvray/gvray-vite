@@ -17,6 +17,8 @@ const APP_DEFAULTS = {
   APP_LOGGING_ENABLED: false,
   APP_DEFAULT_LANGUAGE: 'zh-CN',
   APP_DEFAULT_AVATAR_URL: '',
+  APP_AES_KEY: '',
+  APP_AES_IV: '',
 } as const
 
 export function createAppDefines(mode: string): Record<string, string | number | boolean> {

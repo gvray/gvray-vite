@@ -1,11 +1,10 @@
 import { LOGIN_PATH } from '@/constants';
-import { useFeedback } from '@/hooks';
+import { useAppNavigate, useFeedback } from '@/hooks';
 import LoginBg from '@/pages/Login/components/LoginBg';
 import { runtimeConfig } from '@/utils/runtime-config';
 import { ConfigProvider, Spin, theme } from 'antd';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router';
 import RegisterCard from './components/RegisterCard';
 import type { RegisterTab } from './model';
 import { useRegisterModel } from './model';
@@ -41,7 +40,7 @@ const RegisterPage: React.FC = () => {
   const registerEnabled = feature.register;
   const { message } = useFeedback();
 
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
 
   useEffect(() => {
     if (!registerEnabled) {

@@ -4,12 +4,12 @@ import {
   DateTimeFormat,
   Icon,
   PageContainer,
+  StatusTag,
   TablePro,
+  type TableProRef,
 } from '@/components';
-import StatusTag from '@/components/StatusTag';
-import { type TableProRef } from '@/components/TablePro';
 import { PERM } from '@/constants';
-import { useAuth, useFeedback } from '@/hooks';
+import { useAppNavigate, useAuth, useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import { hasPermissions } from '@gvray/adminkit';
 import type { DictOption } from '@/types/dict';
@@ -17,7 +17,6 @@ import { callRef, confirmAction, logger } from '@/utils';
 import type { MenuProps } from 'antd';
 import { Button, Dropdown, Space } from 'antd';
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
 import { getRoleColumns } from './columns';
 import AuthDataScopeModal from './components/AuthDataScopeModal';
 import { useRoleModel } from './model';
@@ -28,7 +27,7 @@ type RoleDict = {
 };
 
 const RolePage = () => {
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   const updateFormRef = useRef<UpdateFormRef>(null);
   const tableProRef = useRef<TableProRef>(null);
   const dict = useDict<RoleDict>(['common_status']);
