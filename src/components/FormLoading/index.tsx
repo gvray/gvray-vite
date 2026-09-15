@@ -23,7 +23,7 @@ const FormLoading: React.FC<FormLoadingProps> = ({
       spinning={loading}
       tip={tip}
       delay={150}
-      wrapperClassName={styles.formLoading}
+      classNames={{ root: styles.formLoading }}
     >
       {children}
     </Spin>

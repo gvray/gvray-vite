@@ -497,7 +497,7 @@ const NoticeBell: React.FC = () => {
         title="通知详情"
         open={detailVisible}
         onClose={handleCloseDetail}
-        width={520}
+        size={520}
         closeIcon={<Icon name="CloseOutlined" />}
       >
         {detailNotice && (

@@ -222,7 +222,7 @@ const CacheMonitorPage: React.FC = () => {
             <Card
               loading={statsLoading}
               className={styles.statCard}
-              bodyStyle={{ padding: 16 }}
+              styles={{ body: { padding: 16 } }}
             >
               <Statistic
                 title="命中率"
@@ -237,7 +237,7 @@ const CacheMonitorPage: React.FC = () => {
             <Card
               loading={statsLoading}
               className={styles.statCard}
-              bodyStyle={{ padding: 16 }}
+              styles={{ body: { padding: 16 } }}
             >
               <Statistic
                 title="命中次数"
@@ -250,7 +250,7 @@ const CacheMonitorPage: React.FC = () => {
             <Card
               loading={statsLoading}
               className={styles.statCard}
-              bodyStyle={{ padding: 16 }}
+              styles={{ body: { padding: 16 } }}
             >
               <Statistic
                 title="未命中次数"
@@ -263,7 +263,7 @@ const CacheMonitorPage: React.FC = () => {
             <Card
               loading={statsLoading}
               className={styles.statCard}
-              bodyStyle={{ padding: 16 }}
+              styles={{ body: { padding: 16 } }}
             >
               <Statistic
                 title="总 Key 数"
@@ -276,7 +276,7 @@ const CacheMonitorPage: React.FC = () => {
             <Card
               loading={statsLoading}
               className={styles.statCard}
-              bodyStyle={{ padding: 16 }}
+              styles={{ body: { padding: 16 } }}
             >
               <Statistic
                 title="已用内存"
@@ -289,7 +289,7 @@ const CacheMonitorPage: React.FC = () => {
             <Card
               loading={statsLoading}
               className={styles.statCard}
-              bodyStyle={{ padding: 16 }}
+              styles={{ body: { padding: 16 } }}
             >
               <Statistic
                 title="清理次数"

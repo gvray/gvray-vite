@@ -33,14 +33,14 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       '@gvray/mathkit':
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: ^1.3.0
+        version: 1.3.0
       '@gvray/pathkit':
         specifier: ^1.2.2
         version: 1.2.2
       '@gvray/request':
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: ^1.2.1
+        version: 1.2.1
       '@gvray/requestkit':
         specifier: ^1.2.0
         version: 1.2.0
@@ -589,14 +589,14 @@ packages:
   '@gvray/logger@1.1.0':
     resolution: {integrity: sha512-AU6goLvIBZbAbA26AJ+/NZcuwHctHQH+OhhmZAqqywuAEiec7HtHjql80s5GptzFTO7AZ5z/Io4Pyd8lsn1kCw==}
 
-  '@gvray/mathkit@1.2.0':
-    resolution: {integrity: sha512-ZHS1eB4VCR5CikKnLjTq/th7G/3PFj22ySGrdK1wTh1PB9ARy2bfgmKgNhIOzuQt8uyjtUlw2v975yGSBKy9Pw==}
+  '@gvray/mathkit@1.3.0':
+    resolution: {integrity: sha512-7jch5sg8tQFztrV3Wf2TwzCmAguMLrDOerJoct1Xjg7Qo+hqNcLZvNiG2/XuE8s5JbKOE2z/AfoIE3bKAa0MaQ==}
 
   '@gvray/pathkit@1.2.2':
     resolution: {integrity: sha512-iLQlMmp0NB1RXG2FxHgT6TPZYw5/VWofKKgDUH1+hkqaG9q1/rTwXcMC81VVBPlswMTeDpDkt+mNpRhzfou7SQ==}
 
-  '@gvray/request@1.2.0':
-    resolution: {integrity: sha512-1wEiNdd25mVAJcEMBt2I14DDYGyIsrYlF6mQub4V+T2dEs+2yDuZtQ6+Dc4i/O+NvfjaK2EMLzUF/GrrTlhEKg==}
+  '@gvray/request@1.2.1':
+    resolution: {integrity: sha512-fV8hr5MociTEVf9QK2L3h6QEr2qWH0+2220bTkjl6SfLvcrwEAQA3dItnHDe0y5QWLd6+JSYb8s3kvskjdbIMQ==}
 
   '@gvray/requestkit@1.2.0':
     resolution: {integrity: sha512-bYVT0BV1DUdXt6jB4VhJlcFNdotsN2gKkvIxELHablX21EAe+u1EzeFjWwhBn8Z+WK9ueDHh02PQlIkXwRl93A==}
@@ -2659,13 +2659,13 @@ snapshots:
 
   '@gvray/logger@1.1.0': {}
 
-  '@gvray/mathkit@1.2.0': {}
+  '@gvray/mathkit@1.3.0': {}
 
   '@gvray/pathkit@1.2.2':
     dependencies:
       '@gvray/eskit': 1.6.0
 
-  '@gvray/request@1.2.0':
+  '@gvray/request@1.2.1':
     dependencies:
       axios: 1.20.0
     transitivePeerDependencies:

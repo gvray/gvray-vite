@@ -32,7 +32,12 @@ export function createAppDefines(mode: string): Record<string, string | number |
     if (typeof fallback === 'number') {
       defines[globalKey] = Number(raw ?? fallback)
     } else if (typeof fallback === 'boolean') {
-      defines[globalKey] = raw === 'true'
+      // 未显式设置时按环境推断：非 prod 默认开启便于调试，prod 默认关闭避免生产日志噪声
+      if (key === 'APP_LOGGING_ENABLED' && raw === undefined) {
+        defines[globalKey] = process.env.APP_ENV !== 'prod'
+      } else {
+        defines[globalKey] = raw === 'true'
+      }
     } else {
       defines[globalKey] = JSON.stringify(raw ?? fallback)
     }

@@ -351,7 +351,7 @@ const ServerMonitorPage: React.FC = () => {
               <Card
                 loading={loading}
                 className={styles.overviewCard}
-                bodyStyle={{ padding: 16 }}
+                styles={{ body: { padding: 16 } }}
               >
                 <div className={styles.cardHeader}>
                   <span className={styles.cardIcon}>{card.icon}</span>

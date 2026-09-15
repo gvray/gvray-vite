@@ -8,10 +8,9 @@ import {
 /**
  * 运行时配置单例。
  *
- * 数据在应用启动时（getInitialState）通过 API 获取一次，
- * 登录成功后（loadInitData）可能刷新一次。
+ * 数据在应用启动时（bootstrap）通过 API 获取一次，登录后不再刷新。
  * 由于运行时配置在会话期间不会变，不放进 reactive store，
- * 组件/工具函数直接读取即可（getInitialState 阻塞渲染，确保挂载时已就绪）。
+ * 组件/工具函数直接读取即可（bootstrap 阻塞渲染，确保挂载时已就绪）。
  */
 
 /** 把后端返回的 ui 字段名做标准化：defaultXxxYyy → xxxYyy */

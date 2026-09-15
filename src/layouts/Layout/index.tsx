@@ -3,7 +3,7 @@ import '@/components/Icon/init';
 import { useSettingStore } from '@/stores';
 import { runtimeConfig } from '@/utils/runtime-config';
 import { Layout as AntdLayout } from 'antd';
-import { Outlet } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 import styled from 'styled-components';
 import AppFooter from './components/AppFooter';
 import AppHeader from './components/AppHeader';
@@ -29,6 +29,7 @@ export default function Layout() {
     fixedHeader,
     showFooter,
   } = useSettingStore();
+  const { pathname } = useLocation();
 
   return (
     <AppLayout>
@@ -39,7 +40,7 @@ export default function Layout() {
       />
       <AppViewport>
         <AppHeader headerFixed={fixedHeader} />
-        <ErrorBoundary>
+        <ErrorBoundary key={pathname}>
           <div className="page-transition-root">
             <Outlet />
           </div>
