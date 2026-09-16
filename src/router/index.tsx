@@ -49,11 +49,22 @@ const componentMap: Record<string, React.ComponentType<Record<string, never>>> =
   ),
 };
 
-const LazyWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <Suspense fallback={<PageLoading />}>{children}</Suspense>
+const LazyWrapper: React.FC<{
+  children: React.ReactNode;
+  fullScreen?: boolean;
+}> = ({ children, fullScreen }) => (
+  <Suspense fallback={<PageLoading fullScreen={fullScreen} />}>
+    {children}
+  </Suspense>
 );
 
-function normalizeRoutes(routes: AppRouteObject[]): RouteObject[] {
+// Layout 内容区（.page-transition-root 是 flex 容器）内的页面走 flex:1 撑满，
+// 不撑出整屏滚动条；其余路由（BasicLayout / Layout 本身 / Login / Register / 404）
+// 的父级不是 flex，需整屏居中（100vh，不依赖父级高度）。
+function normalizeRoutes(
+  routes: AppRouteObject[],
+  parentIsLayout = false,
+): RouteObject[] {
   return routes.map((route) => {
     const { component, meta, children, ...rest } = route;
 
@@ -64,7 +75,7 @@ function normalizeRoutes(routes: AppRouteObject[]): RouteObject[] {
         console.warn(`[Router] Unknown component: ${component}`);
       }
       element = (
-        <LazyWrapper>
+        <LazyWrapper fullScreen={!parentIsLayout}>
           {Component ? <Component /> : null}
         </LazyWrapper>
       );
@@ -74,7 +85,9 @@ function normalizeRoutes(routes: AppRouteObject[]): RouteObject[] {
       ...rest,
       element,
       meta,
-      children: children ? normalizeRoutes(children) : undefined,
+      children: children
+        ? normalizeRoutes(children, component === 'layouts/Layout')
+        : undefined,
     } as RouteObject;
   });
 }

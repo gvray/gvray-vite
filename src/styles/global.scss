@@ -15,6 +15,13 @@ svg {
   max-width: 100%;
 }
 
+// antd 内联图标（.anticon 内的 svg）用 1em 控制尺寸，需撤销上面的全局重置：
+// antd v6 Button 改为 inline-flex，max-width:100% 会让图标在 flex 按钮里被压成一点
+.anticon svg {
+  display: inline-block;
+  max-width: none;
+}
+
 button,
 input,
 select,

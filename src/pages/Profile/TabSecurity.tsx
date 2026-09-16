@@ -5,7 +5,7 @@ import {
   Card,
   Form,
   Input,
-  List,
+  Listy,
   Space,
   Tag,
   Typography,
@@ -37,7 +37,7 @@ const TabSecurity: React.FC = () => {
           type="info"
           showIcon
           className={styles.securityAlert}
-          message="密码修改成功后将清除当前登录状态，需要重新登录。"
+          title="密码修改成功后将清除当前登录状态，需要重新登录。"
         />
         <Form
           form={passwordForm}
@@ -127,8 +127,8 @@ const TabSecurity: React.FC = () => {
         className={styles.moduleCard}
         size="small"
       >
-        <List
-          dataSource={[
+        <Listy
+          items={[
             {
               icon: <Icon name="MailOutlined" />,
               title: '邮箱绑定',
@@ -152,27 +152,22 @@ const TabSecurity: React.FC = () => {
               ok: true,
             },
           ]}
-          renderItem={(item) => (
-            <List.Item className={styles.responsiveListItem}>
-              <List.Item.Meta
-                avatar={
-                  <span
-                    className={item.ok ? styles.safeIcon : styles.mutedIcon}
-                  >
-                    {item.icon}
-                  </span>
-                }
-                title={
-                  <Space size={8} wrap>
-                    <Text className={styles.listTitle}>{item.title}</Text>
-                    <Tag color={item.ok ? 'green' : 'default'}>
-                      {item.ok ? '已完成' : '待完善'}
-                    </Tag>
-                  </Space>
-                }
-                description={<Text type="secondary">{item.desc}</Text>}
-              />
-            </List.Item>
+          rowKey="title"
+          itemRender={(item) => (
+            <div className={styles.responsiveListItem}>
+              <span className={item.ok ? styles.safeIcon : styles.mutedIcon}>
+                {item.icon}
+              </span>
+              <div className={styles.securityItemContent}>
+                <Space size={8} wrap>
+                  <Text className={styles.listTitle}>{item.title}</Text>
+                  <Tag color={item.ok ? 'green' : 'default'}>
+                    {item.ok ? '已完成' : '待完善'}
+                  </Tag>
+                </Space>
+                <Text type="secondary">{item.desc}</Text>
+              </div>
+            </div>
           )}
         />
         <Alert
@@ -180,7 +175,7 @@ const TabSecurity: React.FC = () => {
           showIcon
           className={styles.securityAlert}
           icon={<Icon name="CheckCircleFilled" />}
-          message="权限、登录记录和密码修改均来自真实接口能力。"
+          title="权限、登录记录和密码修改均来自真实接口能力。"
         />
       </Card>
     </div>

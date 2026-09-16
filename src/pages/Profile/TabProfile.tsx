@@ -55,7 +55,7 @@ const TabProfile: React.FC<TabProfileProps> = ({ profile }) => {
         type="info"
         showIcon
         className={styles.profileNotice}
-        message="账号基础资料由系统维护，若需变更请联系管理员。"
+        title="账号基础资料由系统维护，若需变更请联系管理员。"
       />
 
       <Card

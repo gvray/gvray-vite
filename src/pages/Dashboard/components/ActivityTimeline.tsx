@@ -143,7 +143,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({
       <Timeline
         items={logs.map((log) => ({
           color: getTimelineDotColor(log.status),
-          children: (
+          content: (
             <ActivityItem>
               <ActivityLeft>
                 <span style={{ fontSize: 16 }}>

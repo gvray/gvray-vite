@@ -13,7 +13,7 @@ import {
   Button,
   Card,
   Col,
-  List,
+  Listy,
   Popconfirm,
   Row,
   Select,
@@ -185,7 +185,7 @@ const TabPreferences: React.FC = () => {
   return (
     <Row gutter={[16, 16]}>
       {/* 外观与布局 */}
-      <Col xs={24} xxl={12}>
+      <Col xs={24} lg={12} xxl={8}>
         <Card
           title={
             <>
@@ -195,8 +195,8 @@ const TabPreferences: React.FC = () => {
           size="small"
           className={styles.prefCard}
         >
-          <List
-            dataSource={[
+          <Listy
+            items={[
               {
                 title: '主题模式',
                 desc: '切换浅色 / 深色主题',
@@ -269,31 +269,28 @@ const TabPreferences: React.FC = () => {
                 ),
               },
             ]}
-            renderItem={(item) => (
-              <List.Item>
-                <List.Item.Meta
-                  avatar={
-                    <Icon
-                      name="LayoutOutlined"
-                      style={{ color: 'var(--gvray-color-text-placeholder)' }}
-                    />
-                  }
-                  title={<Text style={{ fontSize: 13 }}>{item.title}</Text>}
-                  description={
-                    <Text type="secondary" style={{ fontSize: 12 }}>
-                      {item.desc}
-                    </Text>
-                  }
+            rowKey="title"
+            itemRender={(item) => (
+              <div className={styles.prefListItem}>
+                <Icon
+                  name="LayoutOutlined"
+                  style={{ color: 'var(--gvray-color-text-placeholder)' }}
                 />
+                <div className={styles.prefListItemText}>
+                  <Text style={{ fontSize: 13 }}>{item.title}</Text>
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    {item.desc}
+                  </Text>
+                </div>
                 {item.extra}
-              </List.Item>
+              </div>
             )}
           />
         </Card>
       </Col>
 
       {/* 数据与功能 */}
-      <Col xs={24} xxl={12}>
+      <Col xs={24} lg={12} xxl={8}>
         <Card
           title={
             <>
@@ -303,8 +300,8 @@ const TabPreferences: React.FC = () => {
           size="small"
           className={styles.prefCard}
         >
-          <List
-            dataSource={[
+          <Listy
+            items={[
               {
                 title: '默认分页数',
                 desc: '每页显示条数',
@@ -352,31 +349,28 @@ const TabPreferences: React.FC = () => {
                 ),
               },
             ]}
-            renderItem={(item) => (
-              <List.Item>
-                <List.Item.Meta
-                  avatar={
-                    <Icon
-                      name="SettingOutlined"
-                      style={{ color: 'var(--gvray-color-text-placeholder)' }}
-                    />
-                  }
-                  title={<Text style={{ fontSize: 13 }}>{item.title}</Text>}
-                  description={
-                    <Text type="secondary" style={{ fontSize: 12 }}>
-                      {item.desc}
-                    </Text>
-                  }
+            rowKey="title"
+            itemRender={(item) => (
+              <div className={styles.prefListItem}>
+                <Icon
+                  name="SettingOutlined"
+                  style={{ color: 'var(--gvray-color-text-placeholder)' }}
                 />
+                <div className={styles.prefListItemText}>
+                  <Text style={{ fontSize: 13 }}>{item.title}</Text>
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    {item.desc}
+                  </Text>
+                </div>
                 {item.extra}
-              </List.Item>
+              </div>
             )}
           />
         </Card>
       </Col>
 
       {/* 重置 */}
-      <Col xs={24} xxl={12}>
+      <Col xs={24} lg={12} xxl={8}>
         <Card
           title={
             <>

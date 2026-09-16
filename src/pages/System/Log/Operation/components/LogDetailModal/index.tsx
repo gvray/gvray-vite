@@ -315,7 +315,7 @@ const LogDetailModal: React.FC<LogDetailModalProps> = ({
         {data.message ? (
           <Section>
             <Alert
-              message={String(data.message)}
+              title={String(data.message)}
               type={data.result === 'success' ? 'success' : 'error'}
               showIcon
             />

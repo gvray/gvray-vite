@@ -227,8 +227,10 @@ const CacheMonitorPage: React.FC = () => {
               <Statistic
                 title="命中率"
                 value={stats ? formatPercentValue(stats.hitRate * 100, { digits: 0 }) : '0%'}
-                valueStyle={{
-                  color: stats ? getRateColor(stats.hitRate) : '#ff4d4f',
+                styles={{
+                  content: {
+                    color: stats ? getRateColor(stats.hitRate) : '#ff4d4f',
+                  },
                 }}
               />
             </Card>
@@ -242,7 +244,7 @@ const CacheMonitorPage: React.FC = () => {
               <Statistic
                 title="命中次数"
                 value={stats?.hits ?? 0}
-                valueStyle={{ color: token.colorText }}
+                styles={{ content: { color: token.colorText } }}
               />
             </Card>
           </Col>
@@ -255,7 +257,7 @@ const CacheMonitorPage: React.FC = () => {
               <Statistic
                 title="未命中次数"
                 value={stats?.misses ?? 0}
-                valueStyle={{ color: '#ff4d4f' }}
+                styles={{ content: { color: '#ff4d4f' } }}
               />
             </Card>
           </Col>
@@ -268,7 +270,7 @@ const CacheMonitorPage: React.FC = () => {
               <Statistic
                 title="总 Key 数"
                 value={stats?.totalKeys ?? 0}
-                valueStyle={{ color: token.colorText }}
+                styles={{ content: { color: token.colorText } }}
               />
             </Card>
           </Col>
@@ -281,7 +283,7 @@ const CacheMonitorPage: React.FC = () => {
               <Statistic
                 title="已用内存"
                 value={stats ? formatBytes(stats.usedMemory) : '0 B'}
-                valueStyle={{ color: token.colorText, fontSize: 20 }}
+                styles={{ content: { color: token.colorText, fontSize: 20 } }}
               />
             </Card>
           </Col>
@@ -294,7 +296,7 @@ const CacheMonitorPage: React.FC = () => {
               <Statistic
                 title="清理次数"
                 value={stats?.evictions ?? 0}
-                valueStyle={{ color: token.colorText }}
+                styles={{ content: { color: token.colorText } }}
               />
             </Card>
           </Col>
@@ -361,7 +363,7 @@ const CacheMonitorPage: React.FC = () => {
         okButtonProps={{ danger: true }}
         okText="确认清理"
       >
-        <Space direction="vertical" style={{ width: '100%' }}>
+        <Space orientation="vertical" style={{ width: '100%' }}>
           <Text>请输入要清理的 key 匹配模式：</Text>
           <Input
             placeholder="如 sys:dict:* 或不填清空全部"

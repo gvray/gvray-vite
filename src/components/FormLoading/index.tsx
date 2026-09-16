@@ -4,7 +4,7 @@ import styles from './index.module.scss';
 
 export interface FormLoadingProps {
   loading?: boolean;
-  tip?: string;
+  description?: string;
   children: React.ReactNode;
 }
 
@@ -15,13 +15,13 @@ export interface FormLoadingProps {
  */
 const FormLoading: React.FC<FormLoadingProps> = ({
   loading,
-  tip,
+  description,
   children,
 }) => {
   return (
     <Spin
       spinning={loading}
-      tip={tip}
+      description={description}
       delay={150}
       classNames={{ root: styles.formLoading }}
     >
