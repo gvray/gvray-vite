@@ -1,21 +1,17 @@
 import {
   AuthButton,
-  CopyId,
-  DateTimeFormat,
   Icon,
   PageContainer,
-  StatusTag,
   TablePro,
 } from '@/components';
 import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
-import type { DictOption } from '@/types/dict';
 import { callRef, confirmAction, logger } from '@/utils';
 import { Space } from 'antd';
 import React, { useRef } from 'react';
-import { getLoginLogColumns } from './columns';
+import { getLoginLogColumns, type LoginLogDict } from './columns';
 import { useLoginLog } from './model';
 
 const LoginLog: React.FC = () => {
@@ -29,9 +25,7 @@ const LoginLog: React.FC = () => {
   } = useLoginLog();
   const [deleting, setDeleting] = React.useState(false);
   const [clearing, setClearing] = React.useState(false);
-  const dict = useDict<{
-    common_status: DictOption[];
-  }>(['common_status']);
+  const dict = useDict<LoginLogDict>(['common_status']);
   const { message } = useFeedback();
 
   const tableReload = () => {
@@ -42,36 +36,7 @@ const LoginLog: React.FC = () => {
     setSelectedRows(keys);
   };
 
-  // 获取表格列配置并添加渲染函数
-  const columns = getLoginLogColumns().map((column) => {
-    if ('dataIndex' in column && column.dataIndex === 'userId') {
-      return {
-        ...column,
-        render: (userId: string) => <CopyId id={userId} />,
-      };
-    }
-    if ('dataIndex' in column && column.dataIndex === 'status') {
-      return {
-        ...column,
-        advancedSearch: {
-          type: 'SELECT' as const,
-          value: dict.common_status,
-        },
-        render: (status: string | number) => (
-          <StatusTag value={status} options={dict.common_status} />
-        ),
-      };
-    }
-    if ('dataIndex' in column && column.dataIndex === 'createdAt') {
-      return {
-        ...column,
-        render: (time: string) => {
-          return <DateTimeFormat value={time} />;
-        },
-      };
-    }
-    return column;
-  });
+  const columns = getLoginLogColumns(dict);
 
   const handleDelete = async () => {
     confirmAction({

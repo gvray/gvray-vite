@@ -1,3 +1,4 @@
+import Access from './Access';
 import AppBreadcrumb from './AppBreadcrumb';
 import AppLoading from './AppLoading';
 import AppWatermark from './AppWatermark';
@@ -24,6 +25,7 @@ import TablePro from './TablePro';
 import UserMenu from './UserMenu';
 
 export {
+  Access,
   AppBreadcrumb,
   AppLoading,
   AppWatermark,

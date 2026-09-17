@@ -1,27 +1,19 @@
 import {
   AuthButton,
-  CopyId,
-  DateTimeFormat,
   Icon,
   PageContainer,
-  StatusTag,
   TablePro,
 } from '@/components';
 import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
-import type { DictOption } from '@/types/dict';
 import { callRef, confirmAction, logger } from '@/utils';
 import { Space } from 'antd';
 import { useRef } from 'react';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
-import { getPositionColumns } from './columns';
+import { getPositionColumns, type PositionDict } from './columns';
 import { usePosition } from './model';
-
-type PositionDict = {
-  common_status: DictOption[];
-};
 
 const PositionPage = () => {
   const updateFormRef = useRef<UpdateFormRef>(null);
@@ -62,35 +54,8 @@ const PositionPage = () => {
     tableReload();
   };
 
-  let columns = getPositionColumns().map((column: any) => {
-    if (column.dataIndex === 'positionId') {
-      return {
-        ...column,
-        render: (positionId: string) => <CopyId id={positionId} />,
-      };
-    }
-    if (column.dataIndex === 'status') {
-      return {
-        ...column,
-        advancedSearch: {
-          type: 'SELECT',
-          value: dict.common_status,
-        },
-        render: (status: string | number) => (
-          <StatusTag value={status} options={dict.common_status} />
-        ),
-      };
-    }
-    if (column.dataIndex === 'createdAt') {
-      return {
-        ...column,
-        render: (time: string) => <DateTimeFormat value={time} />,
-      };
-    }
-    return column;
-  });
-  columns = [
-    ...columns,
+  const columns = [
+    ...getPositionColumns(dict),
     {
       title: '操作',
       key: 'action',

@@ -10,6 +10,8 @@ export default defineConfig(({ mode }) => {
   const mockEnabled = define.__APP_MOCK_ENABLED__ as boolean
 
   return {
+    // 子路径部署（如 GitHub Pages）通过 APP_BASE_PATH 注入 base；默认 / 兼容根路径部署（Docker）
+    base: process.env.APP_BASE_PATH || '/',
     resolve: {
       alias: {
         '@': path.resolve(import.meta.dirname, './src'),

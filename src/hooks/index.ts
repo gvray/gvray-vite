@@ -1,4 +1,5 @@
 import useAuth from './useAuth';
+import useAccess from './useAccess';
 import {
   useConfigCache,
   useConfigValidation,
@@ -15,6 +16,7 @@ import useThemeMode from './useThemeMode';
 
 export {
   useAppTheme,
+  useAccess,
   useAppNavigate,
   useAuth,
   useConfigCache,

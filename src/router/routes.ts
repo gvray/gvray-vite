@@ -1,5 +1,6 @@
 import type { RouteObject } from 'react-router';
 import type { RouteMeta } from '@/types/route';
+import { PERM } from '@/constants/permission';
 
 export interface AppRouteObject extends Omit<RouteObject, 'children' | 'element'> {
   /** 组件路径标识，由 {@link normalizeRoutes} 解析为真实组件 */
@@ -71,7 +72,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/User',
             meta: {
               title: '用户管理',
-              permissions: ['system:user:list'],
+              permissions: [PERM.USER_LIST],
             },
           },
           {
@@ -79,7 +80,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/Role',
             meta: {
               title: '角色管理',
-              permissions: ['system:role:list'],
+              permissions: [PERM.ROLE_LIST],
             },
           },
           {
@@ -87,7 +88,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/Permission',
             meta: {
               title: '权限管理',
-              permissions: ['system:permission:list'],
+              permissions: [PERM.PERMISSION_LIST],
             },
           },
           {
@@ -95,7 +96,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/Menu',
             meta: {
               title: '菜单管理',
-              permissions: ['system:menu:list'],
+              permissions: [PERM.MENU_LIST],
             },
           },
           {
@@ -103,7 +104,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/Department',
             meta: {
               title: '部门管理',
-              permissions: ['system:department:list'],
+              permissions: [PERM.DEPARTMENT_LIST],
             },
           },
           {
@@ -111,7 +112,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/Position',
             meta: {
               title: '职位管理',
-              permissions: ['system:position:list'],
+              permissions: [PERM.POSITION_LIST],
             },
           },
           {
@@ -119,7 +120,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/Dictionary',
             meta: {
               title: '字典管理',
-              permissions: ['system:dictionary:list'],
+              permissions: [PERM.DICTIONARY_LIST],
             },
           },
           {
@@ -127,7 +128,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/Dictionary/Items',
             meta: {
               title: '字典项管理',
-              permissions: ['system:dictionary:list'],
+              permissions: [PERM.DICTIONARY_LIST],
             },
           },
           {
@@ -135,7 +136,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/Config',
             meta: {
               title: '系统配置',
-              permissions: ['system:config:list'],
+              permissions: [PERM.CONFIG_LIST],
             },
           },
           {
@@ -143,7 +144,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/Notice',
             meta: {
               title: '通知公告',
-              permissions: ['system:notice:list'],
+              permissions: [PERM.NOTICE_LIST],
             },
           },
           {
@@ -157,7 +158,7 @@ export const routes: AppRouteObject[] = [
                 component: 'pages/System/Log/Login',
                 meta: {
                   title: '登录日志',
-                  permissions: ['system:log-login:list'],
+                  permissions: [PERM.LOG_LOGIN_LIST],
                 },
               },
               {
@@ -165,7 +166,7 @@ export const routes: AppRouteObject[] = [
                 component: 'pages/System/Log/Operation',
                 meta: {
                   title: '操作日志',
-                  permissions: ['system:log-operation:list'],
+                  permissions: [PERM.LOG_OPERATION_LIST],
                 },
               },
             ],
@@ -175,7 +176,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/User/AuthRole',
             meta: {
               title: '用户分配角色',
-              permissions: ['system:user:update-roles'],
+              permissions: [PERM.USER_UPDATE_ROLES],
             },
           },
           {
@@ -183,7 +184,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/Role/AuthPermission',
             meta: {
               title: '角色分配权限',
-              permissions: ['system:role:update-permissions'],
+              permissions: [PERM.ROLE_UPDATE_PERMISSIONS],
             },
           },
           {
@@ -191,7 +192,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/System/Role/AuthUser',
             meta: {
               title: '角色分配用户',
-              permissions: ['system:role:update-users'],
+              permissions: [PERM.ROLE_UPDATE_USERS],
             },
           },
           {
@@ -199,7 +200,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/Monitor/Server',
             meta: {
               title: '服务监控',
-              permissions: ['monitor:server:list'],
+              permissions: [PERM.MONITOR_SERVER_LIST],
             },
           },
           {
@@ -207,7 +208,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/Monitor/OnlineUser',
             meta: {
               title: '在线用户',
-              permissions: ['monitor:online-user:list'],
+              permissions: [PERM.MONITOR_ONLINE_USER_LIST],
             },
           },
           {
@@ -215,7 +216,7 @@ export const routes: AppRouteObject[] = [
             component: 'pages/Monitor/CacheMonitor',
             meta: {
               title: '缓存监控',
-              permissions: ['monitor:cache:list'],
+              permissions: [PERM.MONITOR_CACHE_LIST],
             },
           },
         ],

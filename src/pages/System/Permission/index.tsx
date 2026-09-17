@@ -1,6 +1,5 @@
 import {
   AuthButton,
-  DateTimeFormat,
   Icon,
   PageContainer,
   TablePro,
@@ -9,7 +8,7 @@ import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import { callRef, logger } from '@/utils';
-import { Space, Tag, Tooltip, Typography } from 'antd';
+import { Space } from 'antd';
 import { useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
@@ -59,128 +58,7 @@ const PermissionPage = () => {
     tableReload();
   };
 
-  const columns = getPermissionColumns(intl.formatMessage).map(
-    (column: any) => {
-      if ('dataIndex' in column && column.dataIndex === 'name') {
-        return {
-          ...column,
-          render: (_: string, record: PermissionTreeNode) => {
-            const name = record.intlId
-              ? intl.formatMessage({
-                  id: record.intlId,
-                  defaultMessage: record.name,
-                })
-              : record.name;
-            if (record.nodeType === 'DOMAIN') {
-              return (
-                <Typography.Text strong className="domain-name">
-                  {name}
-                </Typography.Text>
-              );
-            }
-            if (record.nodeType === 'RESOURCE') {
-              return (
-                <Typography.Text strong type="secondary">
-                  {name}
-                </Typography.Text>
-              );
-            }
-            return (
-              <Tooltip title={name} placement="topLeft">
-                <span>{name}</span>
-              </Tooltip>
-            );
-          },
-        };
-      }
-      if ('dataIndex' in column && column.dataIndex === 'code') {
-        return {
-          ...column,
-          render: (code: string, record: PermissionTreeNode) => {
-            if (!code) return '-';
-            return (
-              <Tooltip title={code} placement="topLeft">
-                <Typography.Text
-                  code
-                  copyable={
-                    record.isVirtual
-                      ? false
-                      : {
-                          text: code,
-                          tooltips: [
-                            intl.formatMessage({ id: 'permission.copy.copy' }),
-                            intl.formatMessage({
-                              id: 'permission.copy.copied',
-                            }),
-                          ],
-                        }
-                  }
-                >
-                  {code}
-                </Typography.Text>
-              </Tooltip>
-            );
-          },
-        };
-      }
-      if ('dataIndex' in column && column.dataIndex === 'origin') {
-        return {
-          ...column,
-          render: (origin: string, record: PermissionTreeNode) => {
-            if (record.isVirtual) {
-              return (
-                <Tag color="default">
-                  {intl.formatMessage({ id: 'permission.tag.group' })}
-                </Tag>
-              );
-            }
-            return (
-              <Tag color={origin === 'SYSTEM' ? 'blue' : 'green'}>
-                {origin === 'SYSTEM'
-                  ? intl.formatMessage({ id: 'permission.origin.system' })
-                  : intl.formatMessage({ id: 'permission.origin.user' })}
-              </Tag>
-            );
-          },
-        };
-      }
-      if ('dataIndex' in column && column.dataIndex === 'updatedAt') {
-        return {
-          ...column,
-          render: (time: string, record: PermissionTreeNode) => {
-            if (record.isVirtual || !time) return '-';
-            return <DateTimeFormat value={time} />;
-          },
-        };
-      }
-      if ('dataIndex' in column && column.dataIndex === 'description') {
-        return {
-          ...column,
-          render: (desc: string, record: PermissionTreeNode) => {
-            if (record.isVirtual) {
-              const defaultDesc =
-                record.nodeType === 'DOMAIN'
-                  ? intl.formatMessage({ id: 'permission.desc.domain' })
-                  : intl.formatMessage({ id: 'permission.desc.resource' });
-              return (
-                <Typography.Text type="secondary">
-                  {defaultDesc}
-                </Typography.Text>
-              );
-            }
-            if (!desc)
-              return <Typography.Text type="secondary">-</Typography.Text>;
-            return (
-              <Tooltip title={desc} placement="topLeft">
-                <span>{desc}</span>
-              </Tooltip>
-            );
-          },
-        };
-      }
-      return column;
-    },
-  );
+  const columns = getPermissionColumns(intl.formatMessage);
 
   const actionColumn = {
     title: intl.formatMessage({ id: 'permission.column.action' }),

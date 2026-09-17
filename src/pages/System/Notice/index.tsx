@@ -1,26 +1,19 @@
 import {
   AuthButton,
-  DateTimeFormat,
   Icon,
   PageContainer,
-  StatusTag,
   TablePro,
 } from '@/components';
 import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import { callRef, confirmAction, logger } from '@/utils';
-import { Modal, Space, Tag } from 'antd';
+import { Modal, Space } from 'antd';
 import { useRef, useState } from 'react';
 import { getNoticeColumns } from './columns';
 import NoticeDetailModal from './components/NoticeDetailModal';
 import { useNoticeModel } from './model';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
-
-const noticeTypeMap: Record<string, string> = {
-  notice: '通知',
-  announcement: '通告',
-};
 
 const NoticePage = () => {
   const updateFormRef = useRef<UpdateFormRef>(null);
@@ -111,88 +104,44 @@ const NoticePage = () => {
     });
   };
 
-  // 构建列定义
-  let columns = getNoticeColumns().map((column: any) => {
-    if (column.dataIndex === 'type') {
-      return {
-        ...column,
-        advancedSearch: {
-          type: 'SELECT',
-          value: [
-            { label: '通知', value: 'notice' },
-            { label: '通告', value: 'announcement' },
-          ],
-        },
-        render: (type: string) => <Tag>{noticeTypeMap[type] || type}</Tag>,
-      };
-    }
-    if (column.dataIndex === 'status') {
-      return {
-        ...column,
-        advancedSearch: {
-          type: 'SELECT',
-          value: [
-            { label: '启用', value: 'enabled' },
-            { label: '禁用', value: 'disabled' },
-          ],
-        },
-        render: (status: string) => (
-          <StatusTag
-            value={status}
-            options={[
-              { label: '启用', value: 'enabled' },
-              { label: '禁用', value: 'disabled' },
-            ]}
-          />
-        ),
-      };
-    }
-    if (column.dataIndex === 'createdAt') {
-      return {
-        ...column,
-        render: (time: string) => <DateTimeFormat value={time} />,
-      };
-    }
-    return column;
-  });
-
-  const actionColumn: any = {
-    title: '操作',
-    key: 'action',
-    width: 200,
-    fixed: 'right',
-    render: (record: API.NoticeResponseDto) => (
-      <Space size={0}>
-        <AuthButton
-          type="link"
-          icon={<Icon name="EyeOutlined" />}
-          onClick={() => handleView(record)}
-          perms={[PERM.NOTICE_VIEW]}
-        >
-          查看
-        </AuthButton>
-        <AuthButton
-          type="link"
-          icon={<Icon name="EditOutlined" />}
-          onClick={() => handleUpdate(record)}
-          perms={[PERM.NOTICE_UPDATE]}
-        >
-          修改
-        </AuthButton>
-        <AuthButton
-          danger
-          type="link"
-          icon={<Icon name="DeleteOutlined" />}
-          onClick={() => handleDelete(record)}
-          perms={[PERM.NOTICE_DELETE]}
-        >
-          删除
-        </AuthButton>
-      </Space>
-    ),
-  };
-
-  columns.push(actionColumn);
+  const columns = [
+    ...getNoticeColumns(),
+    {
+      title: '操作',
+      key: 'action',
+      width: 200,
+      fixed: 'right' as const,
+      render: (record: API.NoticeResponseDto) => (
+        <Space size={0}>
+          <AuthButton
+            type="link"
+            icon={<Icon name="EyeOutlined" />}
+            onClick={() => handleView(record)}
+            perms={[PERM.NOTICE_VIEW]}
+          >
+            查看
+          </AuthButton>
+          <AuthButton
+            type="link"
+            icon={<Icon name="EditOutlined" />}
+            onClick={() => handleUpdate(record)}
+            perms={[PERM.NOTICE_UPDATE]}
+          >
+            修改
+          </AuthButton>
+          <AuthButton
+            danger
+            type="link"
+            icon={<Icon name="DeleteOutlined" />}
+            onClick={() => handleDelete(record)}
+            perms={[PERM.NOTICE_DELETE]}
+          >
+            删除
+          </AuthButton>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <PageContainer>

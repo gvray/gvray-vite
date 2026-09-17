@@ -1,6 +1,5 @@
 import {
   AuthButton,
-  DateTimeFormat,
   PageContainer,
   TablePro,
 } from '@/components';
@@ -8,7 +7,7 @@ import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import { callRef, confirmAction, logger } from '@/utils';
-import { Modal, Tag, Tooltip } from 'antd';
+import { Modal } from 'antd';
 import React from 'react';
 import { getOperationLogColumns } from './columns';
 import LogDetailModal from './components/LogDetailModal';
@@ -127,53 +126,8 @@ const OperationLogPage: React.FC = () => {
       },
     });
   };
-  let columns = getOperationLogColumns().map((column) => {
-    if ('dataIndex' in column && column.dataIndex === 'result') {
-      return {
-        ...column,
-        render: (result: string) => (
-          <Tag color={result === 'success' ? 'success' : 'error'}>
-            {result === 'success' ? '成功' : '失败'}
-          </Tag>
-        ),
-      };
-    }
-    if (
-      'dataIndex' in column &&
-      (column.dataIndex === 'resource' || column.dataIndex === 'path')
-    ) {
-      return {
-        ...column,
-        render: (text: string) => (
-          <Tooltip placement="topLeft" title={text}>
-            <span
-              style={{
-                display: 'inline-block',
-                maxWidth: 180,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                verticalAlign: 'bottom',
-              }}
-            >
-              {text}
-            </span>
-          </Tooltip>
-        ),
-      };
-    }
-    if ('dataIndex' in column && column.dataIndex === 'createdAt') {
-      return {
-        ...column,
-        render: (createdAt: string) => {
-          return <DateTimeFormat value={createdAt} />;
-        },
-      };
-    }
-    return column;
-  });
-  columns = [
-    ...columns,
+  const columns = [
+    ...getOperationLogColumns(),
     {
       title: '操作',
       render: (_: string, record: any) => (

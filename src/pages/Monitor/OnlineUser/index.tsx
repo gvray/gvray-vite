@@ -1,6 +1,5 @@
 import {
   AuthButton,
-  CopyId,
   DateTimeFormat,
   Icon,
   PageContainer,
@@ -10,7 +9,7 @@ import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import { callRef, confirmAction, logger } from '@/utils';
-import { Modal, Space, Table, Tag, Tooltip } from 'antd';
+import { Modal, Space, Table, Tooltip } from 'antd';
 import React, { useRef, useState } from 'react';
 import { getOnlineUserColumns } from './columns';
 import { useOnlineUserModel } from './model';
@@ -121,36 +120,12 @@ const OnlineUserPage: React.FC = () => {
     });
   };
 
-  let columns = getOnlineUserColumns().map((column: any) => {
-    if (column.dataIndex === 'userId') {
-      return {
-        ...column,
-        render: (userId: string) => <CopyId id={userId} />,
-      };
-    }
-    if (column.dataIndex === 'lastActiveAt') {
-      return {
-        ...column,
-        render: (time: string) => (
-          <DateTimeFormat value={time} format="YYYY-MM-DD HH:mm:ss" />
-        ),
-      };
-    }
-    if (column.dataIndex === 'sessionCount') {
-      return {
-        ...column,
-        render: (count: number) => <Tag color="success">{count || 1}</Tag>,
-      };
-    }
-    return column;
-  });
-
-  columns = [
-    ...columns,
+  const columns = [
+    ...getOnlineUserColumns(),
     {
       title: '操作',
       key: 'action',
-      fixed: 'right',
+      fixed: 'right' as const,
       width: 180,
       render: (record: API.OnlineUserItemDto) => (
         <Space size={0}>

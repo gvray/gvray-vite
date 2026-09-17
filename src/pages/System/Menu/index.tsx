@@ -1,26 +1,19 @@
 import {
   AuthButton,
-  DateTimeFormat,
   Icon,
   PageContainer,
-  StatusTag,
   TablePro,
 } from '@/components';
 import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
-import type { DictOption } from '@/types/dict';
 import { callRef, confirmAction, logger } from '@/utils';
-import { Space, Tag } from 'antd';
+import { Space } from 'antd';
 import { useCallback, useRef, useState } from 'react';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
-import { getMenuColumns } from './columns';
+import { getMenuColumns, type MenuDict } from './columns';
 import { useMenuModel } from './model';
-
-type MenuDict = {
-  common_status: DictOption[];
-};
 
 const MenuPage = () => {
   const updateFormRef = useRef<UpdateFormRef>(null);
@@ -80,72 +73,8 @@ const MenuPage = () => {
     tableReload();
   };
 
-  let columns = getMenuColumns().map((column: any) => {
-    if ('dataIndex' in column && column.dataIndex === 'icon') {
-      return {
-        ...column,
-        render: (_: any, record: API.MenuTreeNodeDto) => {
-          if (record?.icon) {
-            return <Icon name={record.icon} />;
-          }
-          return '-';
-        },
-      };
-    }
-    if ('dataIndex' in column && column.dataIndex === 'type') {
-      return {
-        ...column,
-        advancedSearch: {
-          type: 'SELECT',
-          value: [
-            { label: '目录', value: 'CATALOG' },
-            { label: '菜单', value: 'MENU' },
-          ],
-        },
-        render: (type: string) => (
-          <Tag color={type === 'CATALOG' ? 'processing' : 'green'}>
-            {type === 'CATALOG' ? '目录' : '菜单'}
-          </Tag>
-        ),
-      };
-    }
-    if ('dataIndex' in column && column.dataIndex === 'status') {
-      return {
-        ...column,
-        advancedSearch: {
-          type: 'SELECT',
-          value: dict.common_status,
-        },
-        render: (status: string) => (
-          <StatusTag value={status} options={dict.common_status} />
-        ),
-      };
-    }
-    if ('dataIndex' in column && column.dataIndex === 'hidden') {
-      return {
-        ...column,
-        render: (hidden: boolean) => (
-          <Tag color={hidden ? 'default' : 'green'}>{hidden ? '是' : '否'}</Tag>
-        ),
-      };
-    }
-    if ('dataIndex' in column && column.dataIndex === 'path') {
-      return {
-        ...column,
-        render: (path: string) => path || '-',
-      };
-    }
-    if ('dataIndex' in column && column.dataIndex === 'createdAt') {
-      return {
-        ...column,
-        render: (time: string) => <DateTimeFormat value={time} />,
-      };
-    }
-    return column;
-  });
-
-  columns = [
-    ...columns,
+  const columns = [
+    ...getMenuColumns(dict),
     {
       title: '操作',
       key: 'action',

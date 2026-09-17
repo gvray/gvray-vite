@@ -2,7 +2,7 @@ import { AuthButton, Icon, PageContainer, TablePro } from '@/components';
 import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { normalizeListResponse } from '@gvray/adminkit';
-import { formatDuration, formatPercentValue, formatFileSize as formatBytes } from '@gvray/formatkit';
+import { formatFileSize as formatBytes, formatPercentValue } from '@gvray/formatkit';
 import { useFeedback } from '@/hooks';
 import {
   callRef,
@@ -113,37 +113,13 @@ const CacheMonitorPage: React.FC = () => {
     await doClearCache(pattern);
   };
 
-  const columns = useMemo(
-    () =>
-      getCacheKeyColumns().map((column: any) => {
-        if (column.dataIndex === 'ttl') {
-          return {
-            ...column,
-            render: (ttl: number) => {
-              if (typeof ttl !== 'number') return '-';
-              if (ttl === -1) return <Tag>永久</Tag>;
-              if (ttl === -2) return <Tag color="red">已过期</Tag>;
-              return formatDuration(ttl);
-            },
-          };
-        }
-        if (column.dataIndex === 'size') {
-          return {
-            ...column,
-            render: (size: number) =>
-              typeof size === 'number' ? formatBytes(size) : '-',
-          };
-        }
-        return column;
-      }),
-    [],
-  );
+  const columns = getCacheKeyColumns();
 
   const actionColumn = useMemo(
     () => ({
       title: '操作',
       key: 'action',
-      fixed: 'right',
+      fixed: 'right' as const,
       width: 100,
       render: (record: API.CacheKeyInfoDto) => (
         <Space size={0}>

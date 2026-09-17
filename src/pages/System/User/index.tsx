@@ -1,10 +1,7 @@
 import {
   AuthButton,
-  CopyId,
-  DateTimeFormat,
   Icon,
   PageContainer,
-  StatusTag,
   TablePro,
   type TableProRef,
 } from '@/components';
@@ -12,19 +9,13 @@ import { PERM } from '@/constants';
 import { useAppNavigate, useAuth, useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import { hasPermissions } from '@gvray/adminkit';
-import type { DictOption } from '@/types/dict';
 import { callRef, confirmAction, logger } from '@/utils';
 import type { MenuProps } from 'antd';
 import { Button, Dropdown, Form, Input, Modal, Space } from 'antd';
 import { useRef, useState } from 'react';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
-import { getUserColumns } from './columns';
+import { getUserColumns, type UserDict } from './columns';
 import { useUserModel } from './model';
-
-type UserDict = {
-  user_status: DictOption[];
-  user_gender: DictOption[];
-};
 
 const UserPage = () => {
   const navigate = useAppNavigate();
@@ -128,35 +119,8 @@ const UserPage = () => {
     );
   };
 
-  let columns = getUserColumns().map((column: any) => {
-    if (column.dataIndex === 'userId') {
-      return {
-        ...column,
-        render: (userId: string) => <CopyId id={userId} />,
-      };
-    }
-    if (column.dataIndex === 'status') {
-      return {
-        ...column,
-        advancedSearch: {
-          type: 'SELECT',
-          value: dict['user_status'],
-        },
-        render: (status: string) => (
-          <StatusTag value={status} options={dict['user_status']} />
-        ),
-      };
-    }
-    if (column.dataIndex === 'createdAt') {
-      return {
-        ...column,
-        render: (time: string) => <DateTimeFormat value={time} />,
-      };
-    }
-    return column;
-  });
-  columns = [
-    ...columns,
+  const columns = [
+    ...getUserColumns(dict),
     {
       title: '操作',
       key: 'action',

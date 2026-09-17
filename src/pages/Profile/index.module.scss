@@ -258,6 +258,10 @@
       background: var(--gvray-color-bg-container);
     }
 
+    :global(.ant-tabs-nav::before) {
+      display: none;
+    }
+
     :global(.ant-tabs-nav-wrap) {
       overflow: auto;
     }

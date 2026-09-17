@@ -1,31 +1,23 @@
 import {
   AuthButton,
-  CopyId,
-  DateTimeFormat,
   Icon,
   PageContainer,
-  StatusTag,
   TablePro,
 } from '@/components';
 import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
-import type { DictOption } from '@/types/dict';
 import { callRef, confirmAction, logger } from '@/utils';
-import { Button, Card, Space, Tag, Typography } from 'antd';
+import { Button, Card, Space, Typography } from 'antd';
 import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
-import { getDictionaryItemColumns } from './columns';
+import { getDictionaryItemColumns, type DictionaryDict } from './columns';
 import './index.scss';
 import { useDictionaryItems } from './model';
 
 const { Text } = Typography;
-
-type DictionaryDict = {
-  common_status: DictOption[];
-};
 
 const DictionaryItemsPage = () => {
   const { typeId } = useParams();
@@ -89,58 +81,13 @@ const DictionaryItemsPage = () => {
     tableReload();
   };
 
-  let columns = getDictionaryItemColumns().map((column: any) => {
-    if (column.dataIndex === 'itemId') {
-      return {
-        ...column,
-        render: (itemId: string) => <CopyId id={itemId} />,
-      };
-    }
-    if (column.dataIndex === 'label') {
-      return {
-        ...column,
-        render: (label: string) => <Text>{label}</Text>,
-      };
-    }
-    if (column.dataIndex === 'value') {
-      return {
-        ...column,
-        render: (value: string) => <Tag color="processing">{value}</Tag>,
-      };
-    }
-    if (column.dataIndex === 'sort') {
-      return {
-        ...column,
-        render: (sort: number) => <Tag>{sort}</Tag>,
-      };
-    }
-    if (column.dataIndex === 'status') {
-      return {
-        ...column,
-        advancedSearch: {
-          type: 'SELECT',
-          value: dict.common_status,
-        },
-        render: (status: string | number) => (
-          <StatusTag value={status} options={dict.common_status} />
-        ),
-      };
-    }
-    if (column.dataIndex === 'createdAt') {
-      return {
-        ...column,
-        render: (time: string) => <DateTimeFormat value={time} />,
-      };
-    }
-    return column;
-  });
-  columns = [
-    ...columns,
+  const columns = [
+    ...getDictionaryItemColumns(dict),
     {
       title: '操作',
       key: 'action',
       width: 150,
-      fixed: 'right',
+      fixed: 'right' as const,
       render: (record: API.DictionaryItemResponseDto) => {
         return (
           <Space size="small">

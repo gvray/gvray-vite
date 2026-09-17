@@ -1,10 +1,7 @@
 import {
   AuthButton,
-  CopyId,
-  DateTimeFormat,
   Icon,
   PageContainer,
-  StatusTag,
   TablePro,
   type TableProRef,
 } from '@/components';
@@ -12,19 +9,14 @@ import { PERM } from '@/constants';
 import { useAppNavigate, useAuth, useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
 import { hasPermissions } from '@gvray/adminkit';
-import type { DictOption } from '@/types/dict';
 import { callRef, confirmAction, logger } from '@/utils';
 import type { MenuProps } from 'antd';
 import { Button, Dropdown, Space } from 'antd';
 import { useRef, useState } from 'react';
-import { getRoleColumns } from './columns';
+import { getRoleColumns, type RoleDict } from './columns';
 import AuthDataScopeModal from './components/AuthDataScopeModal';
 import { useRoleModel } from './model';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
-
-type RoleDict = {
-  common_status: DictOption[];
-};
 
 const RolePage = () => {
   const navigate = useAppNavigate();
@@ -132,35 +124,8 @@ const RolePage = () => {
     );
   };
 
-  let columns = getRoleColumns().map((column: any) => {
-    if (column.dataIndex === 'roleId') {
-      return {
-        ...column,
-        render: (roleId: string) => <CopyId id={roleId} />,
-      };
-    }
-    if (column.dataIndex === 'status') {
-      return {
-        ...column,
-        advancedSearch: {
-          type: 'SELECT',
-          value: dict['common_status'],
-        },
-        render: (status: number) => (
-          <StatusTag value={status} options={dict.common_status} />
-        ),
-      };
-    }
-    if (column.dataIndex === 'createdAt') {
-      return {
-        ...column,
-        render: (time: string) => <DateTimeFormat value={time} />,
-      };
-    }
-    return column;
-  });
-  columns = [
-    ...columns,
+  const columns = [
+    ...getRoleColumns(dict),
     {
       title: '操作',
       key: 'action',

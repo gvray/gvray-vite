@@ -1,29 +1,20 @@
 import {
   AuthButton,
-  CellName,
-  CopyId,
-  DateTimeFormat,
   Icon,
   PageContainer,
-  StatusTag,
   TablePro,
 } from '@/components';
 import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { useAppNavigate, useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
-import type { DictOption } from '@/types/dict';
 import { callRef, confirmAction, logger } from '@/utils';
-import { Space, Tag } from 'antd';
+import { Space } from 'antd';
 import { useRef } from 'react';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
-import { getDictionaryColumns } from './columns';
+import { getDictionaryColumns, type DictionaryDict } from './columns';
 import './index.scss';
 import { useDictionary } from './model';
-
-type DictionaryDict = {
-  common_status: DictOption[];
-};
 
 const DictionaryPage = () => {
   const navigate = useAppNavigate();
@@ -87,54 +78,13 @@ const DictionaryPage = () => {
     tableReload();
   };
 
-  let columns = getDictionaryColumns().map((column: any) => {
-    if (column.dataIndex === 'typeId') {
-      return {
-        ...column,
-        render: (typeId: string) => <CopyId id={typeId} $width={80} />,
-      };
-    }
-    if (column.dataIndex === 'name') {
-      return {
-        ...column,
-        render: (name: string, record: API.DictionaryTypeResponseDto) => (
-          <CellName name={name} description={record.description} />
-        ),
-      };
-    }
-    if (column.dataIndex === 'code') {
-      return {
-        ...column,
-        render: (code: string) => <Tag color="processing">{code}</Tag>,
-      };
-    }
-    if (column.dataIndex === 'status') {
-      return {
-        ...column,
-        advancedSearch: {
-          type: 'SELECT',
-          value: dict.common_status,
-        },
-        render: (status: string | number) => (
-          <StatusTag value={status} options={dict.common_status} />
-        ),
-      };
-    }
-    if (column.dataIndex === 'createdAt') {
-      return {
-        ...column,
-        render: (time: string) => <DateTimeFormat value={time} />,
-      };
-    }
-    return column;
-  }) as any;
-  columns = [
-    ...columns,
+  const columns = [
+    ...getDictionaryColumns(dict),
     {
       title: '操作',
       key: 'action',
       width: 200,
-      fixed: 'right',
+      fixed: 'right' as const,
       render: (record: API.DictionaryTypeResponseDto) => {
         return (
           <Space size="small">

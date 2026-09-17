@@ -1,5 +1,4 @@
-import { hasPermissions } from '@gvray/adminkit';
-import { useAuth } from '@/hooks';
+import { useAccess } from '@/hooks';
 import { Button, type ButtonProps, Tooltip } from 'antd';
 import React from 'react';
 
@@ -19,15 +18,7 @@ const AuthButton: React.FC<AuthButtonProps> = ({
   denyMessage = '无操作权限',
   ...buttonProps
 }) => {
-  const { permissions } = useAuth();
-
-  const hasPermission = React.useMemo(
-    () =>
-      hasPermissions(permissions, perms, {
-        matchMode: anyOf ? 'some' : 'every',
-      }),
-    [permissions, perms, anyOf],
-  );
+  const hasPermission = useAccess(perms, { anyOf });
 
   if (hasPermission) {
     return <Button {...buttonProps}>{children}</Button>;

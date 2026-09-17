@@ -92,4 +92,6 @@ function normalizeRoutes(
   });
 }
 
-export const router = createBrowserRouter(normalizeRoutes(appRoutes));
+export const router = createBrowserRouter(normalizeRoutes(appRoutes), {
+  basename: import.meta.env.BASE_URL,
+});

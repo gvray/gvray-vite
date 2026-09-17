@@ -1,26 +1,19 @@
 import {
   AuthButton,
-  DateTimeFormat,
   Icon,
   PageContainer,
-  StatusTag,
   TablePro,
 } from '@/components';
 import { type TableProRef } from '@/components';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
 import useDict from '@/hooks/useDict';
-import type { DictOption } from '@/types/dict';
 import { callRef, confirmAction, logger } from '@/utils';
 import { Space } from 'antd';
 import { useRef } from 'react';
 import UpdateForm, { type UpdateFormRef } from './UpdateForm';
-import { getDepartmentColumns } from './columns';
+import { getDepartmentColumns, type DepartmentDict } from './columns';
 import { useDepartmentModel } from './model';
-
-type DepartmentDict = {
-  common_status: DictOption[];
-};
 const DepartmentPage = () => {
   const updateFormRef = useRef<UpdateFormRef>(null);
   const { removeDepartment, fetchDepartmentTree } = useDepartmentModel();
@@ -53,29 +46,8 @@ const DepartmentPage = () => {
   const handleOk = () => {
     callRef(tableProRef, (t) => t.reload());
   };
-  let columns = getDepartmentColumns().map((column: any) => {
-    if (column.dataIndex === 'status') {
-      return {
-        ...column,
-        advancedSearch: {
-          type: 'SELECT',
-          value: dict.common_status,
-        },
-        render: (status: string | number) => (
-          <StatusTag value={status} options={dict.common_status} />
-        ),
-      };
-    }
-    if (column.dataIndex === 'createdAt') {
-      return {
-        ...column,
-        render: (time: string) => <DateTimeFormat value={time} />,
-      };
-    }
-    return column;
-  });
-  columns = [
-    ...columns,
+  const columns = [
+    ...getDepartmentColumns(dict),
     {
       title: '操作',
       key: 'action',
