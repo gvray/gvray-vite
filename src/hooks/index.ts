@@ -29,3 +29,5 @@ export {
   useRouteMeta,
   useThemeMode,
 };
+
+export type { UseAccessOptions } from './useAccess';

@@ -1,4 +1,5 @@
 import { type ColorPrimary, type ThemeMode } from './theme';
+import { publicAsset } from '@/utils/public-asset';
 
 export interface FeatureConfig {
   register: boolean;
@@ -111,8 +112,8 @@ export const DEFAULT_RUNTIME_CONFIG: AppRuntimeConfig = {
   },
   system: {
     name: 'GVRAY Admin',
-    logo: '/logo.svg',
-    favicon: '/favicon.ico',
+    logo: publicAsset('logo.svg'),
+    favicon: publicAsset('favicon.ico'),
     copyright: '© 2025 GVRAY Admin. All rights reserved.',
     icp: '',
     timezone: 'Asia/Shanghai',

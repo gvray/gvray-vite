@@ -10,3 +10,4 @@ export { confirmAction, type ConfirmActionOptions } from './modal';
 export * from './token';
 export * from './url';
 export { resolveThemeMode } from './theme';
+export { publicAsset } from './public-asset';

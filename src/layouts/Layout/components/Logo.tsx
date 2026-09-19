@@ -1,4 +1,5 @@
 import { useAppNavigate } from '@/hooks';
+import { publicAsset } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -48,7 +49,7 @@ const Logo: React.FC<LogoProps> = ({ collapsed, title }) => {
         navigate('/');
       }}
     >
-      <img className="logo-img" src="/logo.svg" alt="Logo" />
+      <img className="logo-img" src={publicAsset('logo.svg')} alt="Logo" />
       {!collapsed && <strong className="logo-title">{title}</strong>}
     </LogoWrapper>
   );
