@@ -52,7 +52,7 @@ const client = createClient({
           token.access_token_expires_in,
         );
       },
-      exclude: ['/auth/login', '/auth/refresh', '/system/notices/unread/count'], // 排除不需要刷新 token 的接口
+      exclude: ['/auth/login', '/auth/refresh', '/system/notices/unread/count', '/system/monitors/cache-stats'], // 排除不需要刷新 token 的接口
     },
     logging: __APP_LOGGING_ENABLED__, // 请求日志开关，生产环境默认关闭
   },

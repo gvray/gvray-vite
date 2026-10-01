@@ -31,6 +31,18 @@ i18n,
 theme
 -->
 
+## 📸 Project Preview
+
+<p align="center">
+  <img src="./docs/screenshots/2026-10-01/light/demo.webp" width="49%" alt="Light Theme" />
+  
+  <img src="./docs/screenshots/2026-10-01/dark/demo.webp" width="49%" alt="Dark Theme" />
+</p>
+
+**Live Demo:**
+- [vite.gvray.com](https://vite.gvray.com) · **Primary**
+- [GitHub Pages](https://gvray.github.io/gvray-vite) · **Fallback**
+
 ## ✨ Core Capabilities
 
 | Capability | Description |

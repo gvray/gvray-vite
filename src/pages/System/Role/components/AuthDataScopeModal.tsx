@@ -1,7 +1,7 @@
 import { AuthButton, Icon } from '@/components';
 import { PERM } from '@/constants';
 import { useFeedback } from '@/hooks';
-import { queryDepartmentTree } from '@/services/department';
+import { queryDepartmentOptions } from '@/services/department';
 import {
   assignRoleDataScopes,
   getRoleById,
@@ -15,12 +15,14 @@ import {
   Radio,
   Row,
   Space,
+  Spin,
   Tag,
   Tree,
   Typography,
   theme,
 } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
 import styled from 'styled-components';
 
 const { Text } = Typography;
@@ -80,10 +82,6 @@ const PermissionTypeOption = styled.div<{ selected?: boolean }>`
 const DepartmentTreeContainer = styled.div`
   max-height: 300px;
   overflow-y: auto;
-  border: 1px solid ${({ theme }) => theme.colorBorder};
-  border-radius: 6px;
-  padding: 12px;
-  background: ${({ theme }) => theme.colorBgLayout};
 `;
 
 export const DataScope = {
@@ -173,7 +171,7 @@ export default function AuthDataScopeModal({
       const [roleRes, dataScopesRes, departmentsRes] = await Promise.all([
         getRoleById(roleId),
         getRoleDataScopesById(roleId),
-        queryDepartmentTree(),
+        queryDepartmentOptions(),
       ]);
       setCurrentRole({
         ...roleRes.data,
@@ -181,10 +179,11 @@ export default function AuthDataScopeModal({
 
       // 设置当前数据权限配置
       if (dataScopesRes.data) {
-        console.log('数据权限配置:', dataScopesRes.data);
         setDataScope(dataScopesRes.data.dataScope as DataScope);
         if (dataScopesRes.data.dataScope === DataScope.CUSTOM) {
-          setSelectedDeptIds(dataScopesRes.data.departmentIds || []);
+          const deptIds =
+            dataScopesRes.data.departments?.map((d) => d.departmentId) || [];
+          setSelectedDeptIds(deptIds);
         }
       }
 
@@ -233,8 +232,6 @@ export default function AuthDataScopeModal({
         delete dataScopesData.departmentIds;
       }
 
-      console.log('提交的数据权限配置:', dataScopesData);
-
       await assignRoleDataScopes(roleId, dataScopesData);
       message.success('数据权限分配成功');
       onSuccess?.();
@@ -252,23 +249,43 @@ export default function AuthDataScopeModal({
     setSelectedDeptIds([]);
   };
 
-  // 将部门数据转换为树形结构
-  const convertToTreeData = (
-    deptList: API.DepartmentResponseDto[],
-  ): Record<string, unknown>[] => {
-    return deptList.map((dept) => ({
-      title: (
-        <Space>
-          <span>{dept.name}</span>
-          <Tag color="processing">{dept.description}</Tag>
-        </Space>
-      ),
-      key: dept.departmentId,
-      children: dept.children?.length
-        ? convertToTreeData(dept.children.flat())
-        : undefined,
-    }));
-  };
+  // 将扁平部门列表构建为树形结构
+  const departmentTreeData = useMemo(() => {
+    type DeptTreeNode = {
+      key: string;
+      title: ReactNode;
+      children: DeptTreeNode[];
+    };
+    const nodeMap = new Map<string, DeptTreeNode>();
+    const roots: DeptTreeNode[] = [];
+
+    departments.forEach((dept) => {
+      nodeMap.set(dept.departmentId, {
+        key: dept.departmentId,
+        title: (
+          <Space>
+            <span>{dept.name}</span>
+            {dept.description && (
+              <Tag color="processing">{dept.description}</Tag>
+            )}
+          </Space>
+        ),
+        children: [],
+      });
+    });
+
+    departments.forEach((dept) => {
+      const node = nodeMap.get(dept.departmentId)!;
+      const parent = dept.parentId ? nodeMap.get(dept.parentId) : null;
+      if (parent) {
+        parent.children.push(node);
+      } else {
+        roots.push(node);
+      }
+    });
+
+    return roots;
+  }, [departments]);
 
   return (
     <Modal
@@ -307,104 +324,94 @@ export default function AuthDataScopeModal({
         </AuthButton>,
       ]}
       destroyOnHidden
+      styles={{
+        body: {
+          maxHeight: '500px',
+          overflowY: 'auto',
+          scrollbarGutter: 'stable',
+        },
+      }}
     >
-      <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-        {loading ? (
-          <div style={{ textAlign: 'center', padding: '40px 0' }}>
-            加载中...
-          </div>
-        ) : (
-          <div>
-            {/* 数据权限类型选择 */}
-            <div style={{ marginBottom: '24px' }}>
-              <Text
-                strong
-                style={{
-                  fontSize: '16px',
-                  marginBottom: '16px',
-                  display: 'block',
-                }}
-              >
-                选择数据权限类型：
-              </Text>
+      <Spin spinning={loading}>
+        <Text
+          strong
+          style={{
+            fontSize: '16px',
+            marginBottom: '16px',
+            display: 'block',
+          }}
+        >
+          选择数据权限类型：
+        </Text>
 
-              <Radio.Group
-                value={dataScope}
-                onChange={(e) => handlePermissionTypeChange(e.target.value)}
-              >
-                <Row gutter={[16, 12]}>
-                  {PERMISSION_TYPES.map((type) => {
-                    return (
-                      <Col span={24} key={type.value}>
-                        <PermissionTypeOption
-                          theme={token}
-                          selected={dataScope === type.value}
-                          onClick={() => handlePermissionTypeChange(type.value)}
-                        >
-                          <div
-                            className="option-icon"
-                            style={{ color: type.color }}
+        <Radio.Group
+          value={dataScope}
+          onChange={(e) => handlePermissionTypeChange(e.target.value)}
+        >
+          <Row gutter={[16, 12]}>
+            {PERMISSION_TYPES.map((type) => (
+              <Col span={24} key={type.value}>
+                <PermissionTypeOption
+                  theme={token}
+                  selected={dataScope === type.value}
+                  onClick={() => handlePermissionTypeChange(type.value)}
+                >
+                  <div className="option-icon" style={{ color: type.color }}>
+                    {type.icon}
+                  </div>
+                  <div className="option-content">
+                    <div className="option-title">{type.label}</div>
+                    <div className="option-description">
+                      {type.description}
+                    </div>
+                  </div>
+                  <div className="option-radio">
+                    <Radio value={type.value} />
+                  </div>
+                </PermissionTypeOption>
+                {/* 自定义部门选择 - 作为自定义权限的子项 */}
+                {type.value === DataScope.CUSTOM &&
+                  dataScope === DataScope.CUSTOM && (
+                    <div
+                      style={{
+                        marginTop: '4px',
+                        marginLeft: '24px',
+                        paddingLeft: '16px',
+                        borderLeft: `2px solid ${token.colorPrimaryBorder}`,
+                      }}
+                    >
+                      <div style={{ marginBottom: '12px' }}>
+                        <Text strong>选择允许访问的部门：</Text>
+                        {selectedDeptIds.length > 0 && (
+                          <Tag
+                            color="processing"
+                            style={{ marginLeft: '8px' }}
                           >
-                            {type.icon}
-                          </div>
-                          <div className="option-content">
-                            <div className="option-title">{type.label}</div>
-                            <div className="option-description">
-                              {type.description}
-                            </div>
-                          </div>
-                          <div className="option-radio">
-                            <Radio value={type.value} />
-                          </div>
-                        </PermissionTypeOption>
-                        {/* 自定义部门选择 - 在自定义权限选项内部 */}
-                        {type.value === DataScope.CUSTOM &&
-                          dataScope === DataScope.CUSTOM && (
-                            <Col span={24}>
-                              <div
-                                style={{
-                                  marginTop: '16px',
-                                  paddingTop: '16px',
-                                  borderTop: '1px solid #f0f0f0',
-                                  width: '100%',
-                                }}
-                              >
-                                <div style={{ marginBottom: '12px' }}>
-                                  <Text strong>选择允许访问的部门：</Text>
-                                  {selectedDeptIds.length > 0 && (
-                                    <Tag
-                                      color="processing"
-                                      style={{ marginLeft: '8px' }}
-                                    >
-                                      已选 {selectedDeptIds.length} 个部门
-                                    </Tag>
-                                  )}
-                                </div>
-                                <DepartmentTreeContainer theme={token}>
-                                  <Tree
-                                    checkable
-                                    checkedKeys={selectedDeptIds}
-                                    onCheck={(checkedKeys) =>
-                                      handleDepartmentChange(
-                                        checkedKeys as string[],
-                                      )
-                                    }
-                                    treeData={convertToTreeData(departments)}
-                                    defaultExpandAll
-                                  />
-                                </DepartmentTreeContainer>
-                              </div>
-                            </Col>
-                          )}
-                      </Col>
-                    );
-                  })}
-                </Row>
-              </Radio.Group>
-            </div>
-          </div>
-        )}
-      </div>
+                            已选 {selectedDeptIds.length} 个部门
+                          </Tag>
+                        )}
+                      </div>
+                      <DepartmentTreeContainer
+                        theme={token}
+                        style={{ maxWidth: '480px' }}
+                      >
+                        <Tree
+                          checkable
+                          checkedKeys={selectedDeptIds}
+                          onCheck={(checkedKeys) =>
+                            handleDepartmentChange(checkedKeys as string[])
+                          }
+                          treeData={departmentTreeData}
+                          defaultExpandAll
+                        />
+                      </DepartmentTreeContainer>
+                    </div>
+                  )}
+              </Col>
+            ))}
+          </Row>
+        </Radio.Group>
+      </Spin>
     </Modal>
   );
 }

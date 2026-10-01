@@ -31,6 +31,19 @@ i18n,
 theme
 -->
 
+## 📸 项目预览
+
+<p align="center">
+  <img src="./docs/screenshots/2026-10-01/light/demo.webp" width="49%" alt="Light Theme" />
+  
+  <img src="./docs/screenshots/2026-10-01/dark/demo.webp" width="49%" alt="Dark Theme" />
+</p>
+
+**在线预览：**
+- [vite.gvray.com](https://vite.gvray.com) · **主站**
+- [GitHub Pages](https://gvray.github.io/gvray-vite) · **备用**
+
+
 ## ✨ 核心能力
 
 | 能力 | 描述 |

@@ -28,6 +28,6 @@ export default defineConfig(({ mode }) => {
       },
     },
     define,
-    plugins: createVitePlugins(mockEnabled),
+    plugins: createVitePlugins(mockEnabled, mode),
   }
 })

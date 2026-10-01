@@ -108,7 +108,7 @@ export function assignRoleUsers(roleId: string, data: API.AssignUsersDto) {
 
 /** 获取角色数据权限 */
 export function getRoleDataScopesById(roleId: string) {
-  return request<API.Response<API.AssignDataScopeDto>>(
+  return request<API.Response<API.RoleDataScopeResponseDto>>(
     `/system/roles/${roleId}/data-scope`,
     {
       method: 'GET',
